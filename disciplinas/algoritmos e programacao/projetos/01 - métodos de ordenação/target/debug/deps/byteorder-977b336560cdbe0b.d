@@ -1,0 +1,8 @@
+/Users/math/Documents/mestrado/disciplinas/algoritmos e programacao/projetos/01 - métodos de ordenação/target/debug/deps/byteorder-977b336560cdbe0b.d: /Users/math/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/lib.rs /Users/math/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/io.rs
+
+/Users/math/Documents/mestrado/disciplinas/algoritmos e programacao/projetos/01 - métodos de ordenação/target/debug/deps/libbyteorder-977b336560cdbe0b.rlib: /Users/math/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/lib.rs /Users/math/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/io.rs
+
+/Users/math/Documents/mestrado/disciplinas/algoritmos e programacao/projetos/01 - métodos de ordenação/target/debug/deps/libbyteorder-977b336560cdbe0b.rmeta: /Users/math/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/lib.rs /Users/math/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/io.rs
+
+/Users/math/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/lib.rs:
+/Users/math/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/byteorder-1.5.0/src/io.rs:
