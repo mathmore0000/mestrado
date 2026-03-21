@@ -1,0 +1,4 @@
+[submodule "disciplinas/modelos de linguagem e generativos/projetos/projeto-simulacao-opiniao-publica"]
+	path = disciplinas/modelos de linguagem e generativos/projetos/projeto-simulacao-opiniao-publica
+	url = https://github.com/olucasaguiar/projeto-simulacao-opiniao-publica
+	branch = main
