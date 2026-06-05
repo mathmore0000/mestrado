@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CQRS — Mackenzie 2026</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070d1e;
+  --sur:rgba(255,255,255,.05);
+  --bdr:rgba(255,255,255,.09);
+  --acc1:#3b82f6;--acc1l:#60a5fa;
+  --acc2:#f59e0b;--acc2l:#fbbf24;
+  --pos:#10b981;--posl:#34d399;
+  --neg:#ef4444;--negl:#f87171;
+  --tx:#f1f5f9;--mt:#94a3b8;--dm:#475569;
+  --bl:var(--acc1);--bll:var(--acc1l);
+  --gd:var(--acc2);--gdl:var(--acc2l);
+  --gn:var(--pos);--gnl:var(--posl);
+  --rd:var(--neg);--rdl:var(--negl);
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);
+  font-family:-apple-system,'Segoe UI',system-ui,sans-serif;color:var(--tx);
+  -webkit-font-smoothing:antialiased}
+#deck{position:relative;width:100%;height:100%;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;padding:48px 68px 80px;
+  opacity:0;pointer-events:none;will-change:transform,opacity}
+.slide.on{opacity:1;pointer-events:auto}
+#prog{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(255,255,255,.05);z-index:999}
+#progf{height:100%;background:linear-gradient(90deg,var(--bl),var(--gd));
+  border-radius:0 2px 2px 0;transition:width .4s ease}
+#nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:13px;z-index:999;
+  background:rgba(7,13,30,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--bdr);border-radius:100px;padding:7px 16px}
+.nb{width:30px;height:30px;border-radius:50%;border:1px solid var(--bdr);
+  background:var(--sur);color:var(--tx);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:17px;line-height:1;
+  transition:background .2s,border-color .2s,transform .1s;user-select:none}
+.nb:hover:not(:disabled){background:var(--bl);border-color:var(--bl);transform:scale(1.06)}
+.nb:active:not(:disabled){transform:scale(.94)}
+.nb:disabled{opacity:.22;cursor:default}
+#dots{display:flex;gap:5px;align-items:center}
+.dot{width:6px;height:6px;border-radius:3px;background:var(--dm);cursor:pointer;transition:all .28s}
+.dot.on{background:var(--bll);width:17px}
+#ctr{font-size:11px;color:var(--mt);font-variant-numeric:tabular-nums;min-width:34px}
+#hint{position:fixed;top:14px;right:18px;font-size:11px;color:var(--dm);
+  display:flex;gap:5px;align-items:center;pointer-events:none}
+.key{border:1px solid var(--dm);border-radius:4px;padding:1px 5px;font-size:10px}
+.eye{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bll);margin-bottom:9px}
+h1{font-size:clamp(1.9rem,3.6vw,3.2rem);font-weight:800;line-height:1.12}
+h2{font-size:clamp(1.3rem,2.6vw,2.1rem);font-weight:700;line-height:1.2}
+h3{font-size:clamp(.9rem,1.5vw,1.2rem);font-weight:600;line-height:1.35}
+p{font-size:clamp(.78rem,1vw,.92rem);line-height:1.7;color:var(--mt)}
+.grad{background:linear-gradient(135deg,var(--bll),var(--gdl));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rule{width:50px;height:3px;background:linear-gradient(90deg,var(--bl),transparent);
+  border-radius:2px;margin:11px 0 20px}
+.w{width:100%;max-width:1060px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:22px;width:100%}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%}
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:13px;padding:22px}
+.pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;
+  font-size:11px;font-weight:600;margin-bottom:9px}
+.pb{background:rgba(59,130,246,.15);color:var(--bll);border:1px solid rgba(59,130,246,.3)}
+.pg{background:rgba(16,185,129,.15);color:var(--gnl);border:1px solid rgba(16,185,129,.3)}
+.po{background:rgba(245,158,11,.15);color:var(--gdl);border:1px solid rgba(245,158,11,.3)}
+.pr{background:rgba(239,68,68,.15);color:var(--rdl);border:1px solid rgba(239,68,68,.3)}
+ul.lst{list-style:none;display:flex;flex-direction:column;gap:9px}
+ul.lst li{display:flex;gap:8px;font-size:clamp(.76rem,.98vw,.86rem);color:var(--mt);line-height:1.55}
+ul.lst li::before{content:'→';color:var(--bll);font-weight:700;flex-shrink:0}
+.steps{display:flex;flex-direction:column;gap:13px;width:100%}
+.step{display:flex;gap:13px;align-items:flex-start}
+.sn{width:25px;height:25px;border-radius:50%;background:var(--bl);color:#fff;
+  font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px}
+.sn.g{background:var(--gn)}.sn.r{background:var(--rd)}.sn.o{background:var(--gd)}
+.sb h4{font-size:clamp(.8rem,1.05vw,.9rem);font-weight:600;margin-bottom:2px;color:var(--tx)}
+.sb p{font-size:clamp(.72rem,.92vw,.8rem)}
+.blbl{font-size:11px;color:var(--mt);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:9px 14px;text-align:left;font-size:11px;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--mt);border-bottom:1px solid var(--bdr)}
+.tbl td{padding:11px 14px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--mt)}
+.tbl tr:last-child td{border-bottom:none}
+.win{color:var(--gnl);font-weight:700}.lose{color:var(--rdl)}
+.mstrip{display:flex;gap:28px;align-items:center;justify-content:center;flex-wrap:wrap}
+.mitem{text-align:center}
+.mval{font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:800;line-height:1;margin-bottom:2px}
+.mlbl{font-size:10px;color:var(--mt);text-transform:uppercase;letter-spacing:.07em}
+.msep{width:1px;height:48px;background:var(--bdr)}
+.pbox{background:#050c1c;border:1px solid rgba(59,130,246,.2);border-radius:9px;
+  padding:16px;font-family:'SF Mono',Consolas,monospace;
+  font-size:clamp(9px,.92vw,11px);color:#7dd3fc;line-height:1.75;
+  white-space:pre;overflow-x:auto}
+.mbox{border-radius:13px;padding:18px;border:1px solid var(--bdr)}
+.mbox.a{background:linear-gradient(135deg,rgba(59,130,246,.09),rgba(16,185,129,.04));
+  border-color:rgba(59,130,246,.28)}
+.mbox.b{background:linear-gradient(135deg,rgba(245,158,11,.09),rgba(239,68,68,.04));
+  border-color:rgba(245,158,11,.28)}
+.cmeta{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.cm{font-size:13px;color:var(--mt)}
+.cdot{width:3px;height:3px;border-radius:50%;background:var(--dm)}
+code{font-family:'SF Mono',Consolas,monospace;font-size:.85em;color:var(--bll);
+  background:rgba(59,130,246,.1);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<div id="prog"><div id="progf"></div></div>
+<div id="hint"><span class="key">←</span><span class="key">→</span>&nbsp;← → navegar · Space avançar</div>
+<div id="deck">
+
+<!-- ── SLIDE 1 · CAPA ── -->
+<div class="slide on" id="s1" style="text-align:center;
+  background:
+    radial-gradient(ellipse 70% 60% at 75% 25%,rgba(59,130,246,.12) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 20% 80%,rgba(245,158,11,.07) 0%,transparent 50%),
+    var(--bg)">
+  <div class="w">
+    <p class="eye">Universidade Presbiteriana Mackenzie</p>
+    <h1 class="grad" style="font-size:clamp(2.8rem,5vw,4.2rem);margin-bottom:10px">CQRS</h1>
+    <h2 style="font-weight:400;color:var(--mt);font-size:clamp(1rem,1.9vw,1.4rem);margin-bottom:6px">
+      Separando Leituras e Escritas para Escalar sem Quebrar o Banco
+    </h2>
+    <p style="color:var(--dm);font-size:.82rem;margin-bottom:6px">
+      Sincronização de dados desnormalizados em sistemas distribuídos orientados a eventos
+    </p>
+    <div class="rule" style="margin:22px auto"></div>
+    <div class="cmeta">
+      <span class="cm">Matheus Moreira</span>
+      <div class="cdot"></div>
+      <span class="cm">Lucas Aguiar</span>
+      <div class="cdot"></div>
+      <span class="cm">Tópicos Avançados de Arquitetura · 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 2 · A JORNADA DE JORGE ── -->
+<div class="slide" id="s2">
+  <div class="w">
+    <div class="eye">Estudo de Caso</div>
+    <h2>A Jornada de Jorge</h2>
+    <div class="rule"></div>
+    <div class="steps">
+      <div class="step">
+        <div class="sn">1</div>
+        <div class="sb">
+          <h4>Fim de semana — O MVP</h4>
+          <p>Jorge usa IA generativa e codifica uma rede social de comunidades de nicho em um fim de semana. React, Node.js, PostgreSQL normalizado. "Se funcionar neste fim de semana, publico na segunda."</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="sn g">2</div>
+        <div class="sb">
+          <h4>Primeiro mês — Validação</h4>
+          <p>Os primeiros 100 usuários aparecem organicamente. Feedback positivo valida o conceito. <em style="color:var(--tx)">"Que app incrível! As comunidades de nicho foram uma sacada genial."</em></p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="sn g">3</div>
+        <div class="sb">
+          <h4>Dois meses — Tração orgânica</h4>
+          <p>Tráfego cresce 500%. O backend acompanha sem dificuldade — é só adicionar containers. Jorge respira aliviado.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="sn r">4</div>
+        <div class="sb">
+          <h4>Três meses — 10.000 usuários · Os problemas começam</h4>
+          <p>Notificações de erro acordam Jorge de madrugada. <em style="color:var(--rdl)">"O feed demora uma eternidade pra carregar. Já pensei em desinstalar."</em> O backend não está sobrecarregado. O culpado é outro.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 3 · A CRISE ── -->
+<div class="slide" id="s3">
+  <div class="w g2" style="align-items:start">
+    <div>
+      <div class="eye">Diagnóstico</div>
+      <h2>A Crise</h2>
+      <div class="rule"></div>
+      <p style="margin-bottom:12px">Jorge analisa os logs do PostgreSQL <span style="font-size:.72rem;color:var(--dm)">(cenário ilustrativo)</span>:</p>
+      <div class="pbox">$ top -p $(pgrep postgres)
+→ CPU: 98.7% · I/O Wait: 64%
+
+SELECT count(*) FROM pg_stat_activity
+  WHERE wait_event_type = 'Lock';
+→ 342 conexões aguardando locks</div>
+      <div style="margin-top:14px;padding:14px 16px;background:rgba(239,68,68,.07);
+        border-left:3px solid var(--rd);border-radius:6px">
+        <p style="color:var(--tx);font-size:.82rem">O backend foi escalado horizontalmente — o banco não. <strong style="color:var(--rdl)">O problema não é de código. É arquitetural.</strong> Operações de leitura e escrita competem pelo mesmo recurso físico.</p>
+      </div>
+    </div>
+    <div>
+      <p class="blbl" style="margin-top:2px">A query culpada — executada a cada abertura do feed</p>
+      <div class="pbox" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content, p.created_at,
+       u.name, u.avatar_url,
+       COUNT(DISTINCT l.id) AS likes_count,
+       COUNT(DISTINCT c.id) AS comments_count
+FROM posts p
+JOIN users u ON u.id = p.author_id
+LEFT JOIN likes    l ON l.post_id = p.id
+LEFT JOIN comments c ON c.post_id = p.id
+WHERE p.author_id IN (
+  SELECT followed_id FROM follows
+  WHERE follower_id = :user_id
+)
+ORDER BY p.created_at DESC
+LIMIT 20;</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="pill pr">4 JOINs</span>
+        <span class="pill pr">2 COUNTs em runtime</span>
+        <span class="pill pr">Subquery correlacionada</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 4 · O CUSTO DA LATÊNCIA ── -->
+<div class="slide" id="s4">
+  <div class="w">
+    <div class="eye">Impacto Financeiro</div>
+    <h2>Arquitetura Vira Prejuízo</h2>
+    <div class="rule"></div>
+    <div class="mstrip" style="margin-bottom:28px">
+      <div class="mitem">
+        <div class="mval" style="color:var(--rdl)">−1%</div>
+        <div class="mlbl">receita por 100ms adicionais</div>
+        <div style="font-size:10px;color:var(--dm);margin-top:5px">Linden, Amazon (2006)</div>
+      </div>
+      <div class="msep"></div>
+      <div class="mitem">
+        <div class="mval" style="color:var(--rdl)">−20%</div>
+        <div class="mlbl">buscas com atraso de 500ms</div>
+        <div style="font-size:10px;color:var(--dm);margin-top:5px">Mayer, Google (2006)</div>
+      </div>
+      <div class="msep"></div>
+      <div class="mitem">
+        <div class="mval" style="color:var(--rdl)">$72–99M</div>
+        <div class="mlbl">estimativa Prime Day 2018</div>
+        <div style="font-size:10px;color:var(--dm);margin-top:5px">Digital Commerce 360 (2018)</div>
+      </div>
+    </div>
+    <div style="padding:18px 24px;background:rgba(59,130,246,.06);
+      border-left:3px solid var(--bl);border-radius:8px;max-width:760px;margin:0 auto">
+      <p>Brutlag (2009) confirmou em estudo controlado que atrasos adicionais reduzem engajamento de forma mensurável. Latência não é uma métrica de engenharia — é um risco de receita. <strong style="color:var(--bll)">Quando a arquitetura vira gargalo, o banco de dados vira prejuízo financeiro.</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 5 · O PADRÃO CQRS ── -->
+<div class="slide" id="s5">
+  <div class="w g2" style="align-items:start">
+    <div>
+      <div class="eye">Padrão Arquitetural</div>
+      <h2>CQRS</h2>
+      <div class="rule"></div>
+      <p style="margin-bottom:14px"><strong style="color:var(--tx)">Command Query Responsibility Segregation</strong> — separa operações de <span style="color:var(--gdl)">escrita</span> (Commands) das de <span style="color:var(--bll)">leitura</span> (Queries) em modelos, armazenamentos e pipelines distintos (Young, 2010; Fowler, 2011).</p>
+      <p style="margin-bottom:14px">Extensão arquitetural do CQS de Meyer (1988): um método é ou um <em>command</em> (muda estado, não retorna) ou uma <em>query</em> (retorna valor, não muda estado) — nunca os dois.</p>
+      <div style="padding:14px 16px;background:rgba(245,158,11,.06);
+        border-left:3px solid var(--gd);border-radius:6px">
+        <p style="color:var(--gdl);font-size:.82rem;font-weight:600">Ato IV — A proposta de Jorge: separar fisicamente os caminhos de leitura e escrita.</p>
+      </div>
+    </div>
+    <div>
+      <p class="blbl">Linha do tempo</p>
+      <table class="tbl">
+        <thead><tr><th>Ano</th><th>Marco</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--bll);font-weight:700;white-space:nowrap">1988</td>
+            <td>Bertrand Meyer — CQS em <em>Object-Oriented Software Construction</em></td>
+          </tr>
+          <tr>
+            <td style="color:var(--bll);font-weight:700;white-space:nowrap">2009</td>
+            <td>Udi Dahan — <em>Clarified CQRS</em>, aplicação em sistemas distribuídos</td>
+          </tr>
+          <tr>
+            <td style="color:var(--bll);font-weight:700;white-space:nowrap">2010</td>
+            <td>Greg Young — formaliza CQRS e integra ao Domain-Driven Design</td>
+          </tr>
+          <tr>
+            <td style="color:var(--bll);font-weight:700;white-space:nowrap">2011</td>
+            <td>Martin Fowler — análise definitiva em martinfowler.com</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 6 · WRITE MODEL vs READ MODEL ── -->
+<div class="slide" id="s6">
+  <div class="w g2" style="align-items:start">
+    <div class="mbox b" style="height:100%">
+      <div class="eye">Command Side</div>
+      <h3 style="color:var(--gdl);margin-bottom:10px">Modelo de Escrita</h3>
+      <p style="margin-bottom:12px">Normalizado, consistente, otimizado para <strong style="color:var(--tx)">integridade</strong>. Opera sob <strong style="color:var(--gdl)">ACID</strong> (Gray &amp; Reuter, 1992). Cada fato em um único lugar (Codd, 1970).</p>
+      <div class="pbox" style="font-size:clamp(8px,.85vw,10.5px)">users    (id, name, avatar_url)
+posts    (id, author_id, content)
+likes    (id, user_id, post_id)
+follows  (id, follower_id, followed_id)
+comments (id, post_id, author_id, content)</div>
+      <p style="margin-top:10px;font-size:.78rem">Anomalias de atualização impossíveis. Se o nome de um usuário muda, só <code>users</code> precisa ser atualizada.</p>
+    </div>
+    <div class="mbox a" style="height:100%">
+      <div class="eye">Query Side</div>
+      <h3 style="color:var(--bll);margin-bottom:10px">Modelo de Leitura</h3>
+      <p style="margin-bottom:12px">Desnormalizado, otimizado para <strong style="color:var(--tx)">velocidade</strong>. Opera sob <strong style="color:var(--bll)">BASE</strong> — Basically Available, Soft State, Eventual Consistency (Pritchett, 2008).</p>
+      <div class="pbox" style="font-size:clamp(8px,.85vw,10.5px)">feed_items (
+  user_id,
+  post_id, content, created_at,
+  author_name,    -- ← de users
+  author_avatar,  -- ← de users
+  likes_count,    -- ← pré-computado
+  comments_count  -- ← pré-computado
+)</div>
+      <p style="margin-top:10px;font-size:.78rem">Sem JOINs. Sem COUNTs. Custo deslocado da leitura para a escrita (Kleppmann, 2017).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 7 · ANTES E DEPOIS ── -->
+<div class="slide" id="s7">
+  <div class="w g2" style="align-items:start">
+    <div>
+      <div class="eye">Antes do CQRS</div>
+      <h3 style="color:var(--rdl);margin-bottom:12px">Query Normalizada</h3>
+      <div class="pbox" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content,
+       u.name, u.avatar_url,
+       COUNT(DISTINCT l.id) AS likes_count,
+       COUNT(DISTINCT c.id) AS comments_count
+FROM posts p
+JOIN users u ON u.id = p.author_id
+LEFT JOIN likes    l ON l.post_id = p.id
+LEFT JOIN comments c ON c.post_id = p.id
+WHERE p.author_id IN (
+  SELECT followed_id FROM follows
+  WHERE follower_id = :user_id
+)
+ORDER BY p.created_at DESC LIMIT 20;</div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="pill pr">4 JOINs</span>
+        <span class="pill pr">2 COUNTs</span>
+        <span class="pill pr">Subquery correlacionada</span>
+      </div>
+    </div>
+    <div>
+      <div class="eye">Depois do CQRS</div>
+      <h3 style="color:var(--gnl);margin-bottom:12px">Query Desnormalizada</h3>
+      <div class="pbox">SELECT * FROM feed_items
+WHERE user_id = :user_id
+ORDER BY created_at DESC
+LIMIT 20;</div>
+      <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="pill pg">0 JOINs</span>
+        <span class="pill pg">dados pré-computados</span>
+        <span class="pill pg">index scan simples</span>
+      </div>
+      <div style="margin-top:16px;padding:14px 16px;background:rgba(16,185,129,.06);
+        border-left:3px solid var(--gn);border-radius:6px">
+        <p style="color:var(--tx);font-size:.82rem">O custo de computação foi deslocado do momento da <strong style="color:var(--rdl)">leitura</strong> para o momento da <strong style="color:var(--gnl)">escrita</strong> — que ocorre muito menos vezes em sistemas de feed (Stonebraker et al., 2007).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 8 · DOMAIN EVENTS + KAFKA FLOW ── -->
+<div class="slide" id="s8">
+  <div class="w g2" style="align-items:start">
+    <div>
+      <div class="eye">Sincronização</div>
+      <h2>Domain Events + Kafka</h2>
+      <div class="rule"></div>
+      <p style="margin-bottom:14px"><strong style="color:var(--tx)">Domain events</strong> representam algo que aconteceu no domínio (Evans, 2003). Cada mudança de estado gera um evento publicado no broker que atualiza o modelo de leitura de forma assíncrona.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="sn">1</div>
+          <div class="sb"><h4>Comando chega</h4><p>Usuário curte → <code>CurtirPost</code> chega ao serviço de escrita</p></div>
+        </div>
+        <div class="step">
+          <div class="sn">2</div>
+          <div class="sb"><h4>Escrita atômica</h4><p>Persiste em <code>likes</code> + grava evento em <code>outbox</code> — mesma transação</p></div>
+        </div>
+        <div class="step">
+          <div class="sn">3</div>
+          <div class="sb"><h4>Publicação confiável</h4><p>Relay lê <code>outbox</code> e publica <code>PostCurtido</code> no Kafka</p></div>
+        </div>
+        <div class="step">
+          <div class="sn g">4</div>
+          <div class="sb"><h4>Consumidor atualiza</h4><p>Consumer incrementa <code>likes_count</code> no modelo de leitura</p></div>
+        </div>
+        <div class="step">
+          <div class="sn g">5</div>
+          <div class="sb"><h4>Feed reflete</h4><p>Próxima leitura do feed retorna o valor atualizado</p></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="blbl" style="margin-top:2px">O problema do dual write</p>
+      <div style="padding:16px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.22);
+        border-radius:13px;margin-bottom:12px">
+        <h4 style="color:var(--rdl);margin-bottom:8px;font-size:.88rem">⚠ Janela de falha</h4>
+        <p style="font-size:.78rem">Se o processo crashar entre a escrita no banco (passo 2) e a publicação no Kafka (passo 3), o modelo de leitura nunca é atualizado — divergência silenciosa e permanente.</p>
+      </div>
+      <div style="padding:16px;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.22);
+        border-radius:13px">
+        <h4 style="color:var(--gnl);margin-bottom:8px;font-size:.88rem">✓ Transactional Outbox</h4>
+        <p style="font-size:.78rem">Gravar o evento na tabela <code>outbox</code> na mesma transação da escrita principal. Um relay separado publica de forma idempotente. A atomicidade da transação garante que escrita e evento ocorrem juntos ou não ocorrem (Richardson, 2018).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 9 · APACHE KAFKA ── -->
+<div class="slide" id="s9">
+  <div class="w g2" style="align-items:start">
+    <div>
+      <div class="eye">Infraestrutura de Eventos</div>
+      <h2>Apache Kafka</h2>
+      <div class="rule"></div>
+      <p style="margin-bottom:16px">Plataforma de streaming distribuído baseada em <strong style="color:var(--tx)">log imutável e particionado</strong>. Mensagens persistidas em disco — não deletadas após consumo (Kreps et al., 2011).</p>
+      <ul class="lst">
+        <li><strong style="color:var(--tx)">Múltiplos consumidores independentes:</strong> <code>PostCurtido</code> consumido simultaneamente por feed, notificações e analytics — sem coordenação entre eles</li>
+        <li><strong style="color:var(--tx)">Reprocessamento:</strong> consumidores releem eventos de qualquer offset — rebuild do modelo de leitura sem perda de dados</li>
+        <li><strong style="color:var(--tx)">Ordenação por partição:</strong> eventos do mesmo <code>post_id</code> roteados para a mesma partição garantem ordem correta do <code>likes_count</code> (Narkhede et al., 2017)</li>
+      </ul>
+    </div>
+    <div>
+      <p class="blbl">Garantias de entrega</p>
+      <div class="mbox a" style="margin-bottom:12px">
+        <h4 style="color:var(--bll);margin-bottom:8px">At-least-once delivery</h4>
+        <p style="font-size:.8rem">O evento é entregue, mas pode ser entregue mais de uma vez em caso de falha. O consumidor deve ser <strong style="color:var(--tx)">idempotente</strong> — processar o mesmo evento duas vezes não deve alterar o resultado final.</p>
+        <p style="font-size:.75rem;color:var(--dm);margin-top:8px">Implementação: registrar IDs de eventos processados antes de aplicar a atualização.</p>
+      </div>
+      <div class="mbox b">
+        <h4 style="color:var(--gdl);margin-bottom:8px">Exactly-once delivery</h4>
+        <p style="font-size:.8rem">Garantia mais forte, custo de performance maior. Suportado via transações e <em>idempotent producers</em> desde Kafka 0.11 (Narkhede et al., 2017).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 10 · CONSISTÊNCIA EVENTUAL ── -->
+<div class="slide" id="s10">
+  <div class="w g2" style="align-items:start">
+    <div>
+      <div class="eye">Teoria</div>
+      <h2>Consistência Eventual</h2>
+      <div class="rule"></div>
+      <p style="margin-bottom:14px">O Teorema CAP (Brewer, 2000; Gilbert &amp; Lynch, 2002) estabelece que sistemas distribuídos não podem garantir simultaneamente <strong style="color:var(--tx)">C</strong>onsistência, <strong style="color:var(--tx)">D</strong>isponibilidade e tolerância a <strong style="color:var(--tx)">P</strong>artições.</p>
+      <p style="margin-bottom:14px">A sincronização assíncrona do CQRS implica uma escolha <strong style="color:var(--bll)">AP</strong>: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).</p>
+      <div style="padding:14px 16px;background:rgba(59,130,246,.06);
+        border-left:3px solid var(--bl);border-radius:6px">
+        <p style="font-size:.82rem"><strong style="color:var(--bll)">Analogia:</strong> quando você posta uma foto no Instagram, seus seguidores não a veem no mesmo milissegundo — o feed converge em segundos. Isso é consistência eventual — aceitável para interações humanas (Vogels, 2009).</p>
+      </div>
+    </div>
+    <div>
+      <p class="blbl">ACID vs BASE</p>
+      <table class="tbl">
+        <thead>
+          <tr><th>Propriedade</th><th style="color:var(--gdl)">ACID — Escrita</th><th style="color:var(--bll)">BASE — Leitura</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Consistência</td><td class="win">Forte, imediata</td><td style="color:var(--gdl)">Eventual</td></tr>
+          <tr><td>Disponibilidade</td><td class="lose">Limitada (locks)</td><td class="win">Alta</td></tr>
+          <tr><td>Estado</td><td class="win">Sempre válido</td><td style="color:var(--mt)">Soft state</td></tr>
+          <tr><td>Prioridade</td><td style="color:var(--gdl)">Integridade</td><td style="color:var(--bll)">Velocidade</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:10px;font-size:.72rem;color:var(--dm)">Gray &amp; Reuter (1992) · Pritchett (2008) · Vogels (2009)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 11 · EVENT SOURCING ── -->
+<div class="slide" id="s11">
+  <div class="w g2" style="align-items:start">
+    <div>
+      <div class="eye">Padrão Complementar</div>
+      <h2>Event Sourcing</h2>
+      <div class="rule"></div>
+      <p style="margin-bottom:14px">Em vez de armazenar o <strong style="color:var(--tx)">estado atual</strong>, armazena a <strong style="color:var(--bll)">sequência de eventos</strong> que o produziu. O estado é derivado reproduzindo os eventos em ordem (Young, 2010; Fowler, 2005).</p>
+      <ul class="lst" style="margin-bottom:16px">
+        <li><strong style="color:var(--tx)">Auditoria completa:</strong> cada mudança é um fato histórico imutável</li>
+        <li><strong style="color:var(--tx)">Replay:</strong> modelo de leitura corrompido? Reproduz eventos desde o início</li>
+        <li><strong style="color:var(--tx)">Projeções múltiplas:</strong> diferentes modelos de leitura derivados do mesmo log de eventos</li>
+      </ul>
+      <div style="padding:14px 16px;background:rgba(59,130,246,.06);
+        border-left:3px solid var(--bl);border-radius:6px">
+        <p style="font-size:.82rem"><strong style="color:var(--bll)">CQRS + Event Sourcing:</strong> os eventos do <em>event store</em> são os mesmos domain events que alimentam o Kafka e atualizam o modelo de leitura — combinação natural. Replay tem custo operacional significativo em históricos longos.</p>
+      </div>
+    </div>
+    <div>
+      <p class="blbl">Event Store (append-only) — feed do Jorge</p>
+      <div class="pbox">001 · UsuarioCriado
+     { id: 42, nome: "Jorge" }
+
+002 · ComunidadeCriada
+     { id: 7, titulo: "Jardinagem" }
+
+003 · MembroAderido
+     { userId: 42, commId: 7 }
+
+004 · PostPublicado
+     { postId: 101, texto: "Olá!" }
+
+005 · PostCurtido
+     { postId: 101, userId: 99 }</div>
+      <p style="margin-top:12px;font-size:.78rem">O modelo de leitura é uma <strong style="color:var(--tx)">projeção</strong> derivada deste log. Qualquer visão dos dados pode ser reconstruída a partir dos eventos.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 12 · ADOÇÃO NA INDÚSTRIA ── -->
+<div class="slide" id="s12">
+  <div class="w">
+    <div class="eye">Evidência Empírica</div>
+    <h2>Adoção na Indústria</h2>
+    <div class="rule"></div>
+    <div class="g3">
+      <div class="card">
+        <div class="pill pb">Amazon · 2004–2007</div>
+        <h3 style="margin-bottom:10px">DynamoDB</h3>
+        <p style="margin-bottom:8px"><strong style="color:var(--rdl)">Problema:</strong> banco Oracle centralizado com locks severos durante picos como Black Friday.</p>
+        <p style="margin-bottom:10px"><strong style="color:var(--gnl)">Solução:</strong> separação completa de leitura/escrita com consistência eventual como premissa de design.</p>
+        <p style="font-size:.72rem;color:var(--dm)">DeCandia et al., SOSP '07</p>
+      </div>
+      <div class="card">
+        <div class="pill pb">Netflix · 2009–2016</div>
+        <h3 style="margin-bottom:10px">Microserviços + CQRS</h3>
+        <p style="margin-bottom:8px"><strong style="color:var(--rdl)">Problema:</strong> monólito Oracle não escalava globalmente. ACID gerava latência incompatível com novos mercados.</p>
+        <p style="margin-bottom:10px"><strong style="color:var(--gnl)">Solução:</strong> Cassandra + Elasticsearch para leitura; MySQL particionado para escrita.</p>
+        <p style="font-size:.72rem;color:var(--dm)">Izrailevsky &amp; Meshenberg, Netflix Tech Blog, 2016</p>
+      </div>
+      <div class="card">
+        <div class="pill pb">Uber · 2014–2016</div>
+        <h3 style="margin-bottom:10px">Schemaless + Cassandra</h3>
+        <p style="margin-bottom:8px"><strong style="color:var(--rdl)">Problema:</strong> contenção entre escritas (corridas) e leituras (ETA, tarifas) gerava timeouts.</p>
+        <p style="margin-bottom:10px"><strong style="color:var(--gnl)">Solução:</strong> CQRS com Schemaless (MySQL) para escritas e Cassandra para leituras, via log de eventos.</p>
+        <p style="font-size:.72rem;color:var(--dm)">Crunkilton et al., Uber Engineering Blog, 2016</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SLIDE 13 · OBRIGADO ── -->
+<div class="slide" id="s13" style="text-align:center;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(59,130,246,.13) 0%,transparent 65%),var(--bg)">
+  <div class="w">
+    <div class="eye">Encerramento</div>
+    <h1 style="margin-bottom:8px">Obrigado!</h1>
+    <div class="rule" style="margin:18px auto 26px"></div>
+    <div class="mstrip" style="margin-bottom:30px">
+      <div class="mitem">
+        <div class="mval" style="color:var(--bll)">CQRS</div>
+        <div class="mlbl">separação de responsabilidades</div>
+      </div>
+      <div class="msep"></div>
+      <div class="mitem">
+        <div class="mval" style="color:var(--gdl)">Outbox</div>
+        <div class="mlbl">dual write resolvido</div>
+      </div>
+      <div class="msep"></div>
+      <div class="mitem">
+        <div class="mval" style="color:var(--gnl)">BASE</div>
+        <div class="mlbl">consistência eventual</div>
+      </div>
+    </div>
+    <div class="cmeta">
+      <span class="cm">Matheus Moreira</span>
+      <div class="cdot"></div>
+      <span class="cm">Lucas Aguiar</span>
+      <div class="cdot"></div>
+      <span class="cm">Universidade Presbiteriana Mackenzie · 2026</span>
+    </div>
+    <p style="margin-top:18px;font-size:.74rem;color:var(--dm)">
+      Young (2010) · Fowler (2011) · Kleppmann (2017) · Pritchett (2008) · Gilbert &amp; Lynch (2002) · Richardson (2018)
+    </p>
+  </div>
+</div>
+
+</div><!-- /#deck -->
+
+<nav id="nav">
+  <button class="nb" id="bp" onclick="go(-1)" disabled>&#8249;</button>
+  <div id="dots"></div>
+  <span id="ctr">1 / 13</span>
+  <button class="nb" id="bn" onclick="go(1)">&#8250;</button>
+</nav>
+
+<script>
+const N=13;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<N;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.onclick=()=>goTo(i);
+  dotsEl.appendChild(d);
+}
+function syncUI(){
+  document.getElementById('ctr').textContent=`${cur+1} / ${N}`;
+  document.getElementById('bp').disabled=cur===0;
+  document.getElementById('bn').disabled=cur===N-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  document.getElementById('progf').style.width=(cur/(N-1)*100)+'%';
+}
+function goTo(idx){
+  if(busy||idx===cur||idx<0||idx>=N)return;
+  busy=true;
+  const dir=idx>cur?1:-1;
+  const slides=document.querySelectorAll('.slide');
+  const from=slides[cur],to=slides[idx];
+  to.style.cssText='transition:none;transform:translateX('+dir*100+'%);opacity:1;pointer-events:none';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const T='transform .46s cubic-bezier(.4,0,.2,1),opacity .46s ease';
+    from.style.cssText='transition:'+T+';transform:translateX('+(-dir*100)+'%);opacity:0';
+    to.style.cssText='transition:'+T+';transform:translateX(0);opacity:1;pointer-events:none';
+    setTimeout(()=>{
+      from.classList.remove('on');from.style.cssText='';
+      to.classList.add('on');to.style.cssText='';
+      cur=idx;syncUI();busy=false;
+    },470);
+  }));
+}
+function go(d){goTo(cur+d);}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();go(1);}
+  else if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();go(-1);}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);});
+syncUI();
+</script>
+</body>
+</html>
