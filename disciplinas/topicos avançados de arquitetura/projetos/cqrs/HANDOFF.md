@@ -2,7 +2,7 @@
 **Disciplina:** Tópicos Avançados de Arquitetura — Universidade Presbiteriana Mackenzie  
 **Apresentadores:** Matheus Moreira · Lucas Aguiar  
 **Formato:** 30 min de apresentação + 5 min de Q&A  
-**Última atualização:** 2026-06-06 (sessão 2)
+**Última atualização:** 2026-06-06 (sessão 3)
 
 ---
 
@@ -11,7 +11,7 @@
 | Arquivo | Descrição |
 |---------|-----------|
 | `cqrs.md` | Documento-fonte — narrativa completa, referências acadêmicas verificadas |
-| `presentation.html` | 16 slides, tema Mackenzie PPGA (light, navy/red), responsivo com `clamp()` |
+| `presentation.html` | 17 slides, tema Mackenzie PPGA (light, navy/red), responsivo com `clamp()` |
 | `SESSION_NOTES.md` | Notas técnicas para continuação via Claude Code |
 | `HANDOFF.md` | Este arquivo |
 
@@ -21,24 +21,25 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 
 ## Estado atual dos slides
 
-| # | Slide | Status |
-|---|-------|--------|
-| 1 | Capa | ✓ Título: "Computação aplicada em Arquitetura de Software" · Subtítulo longo |
-| 2 | Conheçam Jorge | ✓ Narrativa + mock MVP |
-| 3 | Como vocês construiriam? | ✓ Pausa para discussão + revela monolito |
-| 4 | A Jornada de Jorge | ✓ **Step animation** — cada → revela um passo (4 steps) |
-| 5 | A Crise — diagnóstico + query culpada | ✓ |
-| 6 | Arquitetura Vira Prejuízo — latência/receita | ✓ **Step animation** — cada → revela uma métrica (4 grupos + card) |
-| 7 | O Padrão CQRS — definição + timeline | ✓ |
-| 8 | Arquitetura CQRS — diagrama geral | ✓ |
-| 9 | Modelos Especializados · 1/2 | ✓ **Novo título** — "Separação de Modelos · 1 / 2" |
-| 10 | A Query Antes e Depois do CQRS · 2/2 | ✓ **Novo título** — "Separação de Modelos · 2 / 2" |
-| 11 | Domain Events + Kafka + Dual Write | ✓ Step animation Kafka (original) |
-| 12 | Apache Kafka — propriedades + garantias | ✓ |
-| 13 | Consistência Eventual — CAP + ACID/BASE | ✓ |
-| 14 | Event Sourcing | ✓ |
-| 15 | Adoção na Indústria — Amazon/Netflix/Uber | ✓ |
-| 16 | Obrigado | ✓ |
+| # | ID | Slide | Status |
+|---|-----|-------|--------|
+| 1 | s1 | Capa | ✓ Auto-reveal (cover slide) |
+| 2 | s2 | Conheçam Jorge | ✓ **Step** — card+img / navy card / quote |
+| 3 | s3 | Como vocês construiriam? | ✓ **Step** — discussion card / warn card · coluna única |
+| 4 | smono | Arquitetura Monolítica Clássica | ✓ **NOVO** slide dedicado ao diagrama monolito |
+| 5 | s4 | A Jornada de Jorge | ✓ **Step** — 4 passos individuais |
+| 6 | s5 | A Crise — diagnóstico + query culpada | ✓ **Step** — 4 grupos sincronizados (L/R) |
+| 7 | s6 | Arquitetura Vira Prejuízo — latência/receita | ✓ **Step** — 4 métricas + card |
+| 8 | s7 | O Padrão CQRS — definição + timeline | ✓ **Step** — 3 grupos (L/R sincronizados) |
+| 9 | s8 | Arquitetura CQRS — diagrama geral | ✓ **Step** — diagrama / pills |
+| 10 | s9 | Modelos Especializados · 1/2 | ✓ **Step** — 4 layers (L/R sincronizados) |
+| 11 | s10 | A Query Antes e Depois do CQRS · 2/2 | ✓ **Step** — 4 layers (L/R sincronizados) |
+| 12 | s11 | Domain Events + Kafka + Dual Write | ✓ **Step Kafka** — dot + left steps sincronizados; ← reverte |
+| 13 | s12 | Apache Kafka — propriedades + garantias | ✓ **Step** — 3 grupos (L/R sincronizados) |
+| 14 | s13 | Consistência Eventual — CAP + ACID/BASE | ✓ **Step** — 3 grupos (L/R sincronizados) |
+| 15 | s14 | Event Sourcing | ✓ **Step** — 3 grupos (L/R sincronizados) |
+| 16 | s15 | Adoção na Indústria — Amazon/Netflix/Uber | ✓ **Step** — disclaimer + 3 cards individualmente |
+| 17 | s16 | Obrigado | ✓ Auto-reveal (closing slide) |
 
 ---
 
@@ -92,6 +93,15 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 - ✓ **Título + breadcrumb S10** — "Separação de Modelos · 2 / 2 · A Query Antes e Depois do CQRS"
 - ✓ **check-doc 3ª rodada** — sem novos blockers; mesmas pendências manuais de antes
 
+## O que foi feito — sessão 3 (2026-06-06)
+
+- ✓ **goBackward()** — ← reverte step animations (doBk/stepKafkaBack) antes de navegar; botão esquerdo e ArrowLeft atualizados
+- ✓ **Step animation em todos os slides de conteúdo** — sistema genérico data-group + buildSteps() substitui handlers específicos; S2, S3, smono, S4, S5, S6, S7, S8, S9, S10, S12, S13, S14, S15 cobertos
+- ✓ **Slide smono** — "Arquitetura Monolítica Clássica" como slide dedicado full-width (espelho de S8/CQRS); S3 virou coluna única de discussão
+- ✓ **Kafka sync** — 5 left steps de S11 agora revelam em sincronia com o dot; ← reverte dot + left step
+- ✓ **CSS fix S12** — `ul.lst li code{background:none;padding:0}` remove o fundo azul de PostCurtido, post_id, likes_count
+- ✓ **N=17**, KAFKA_IDX=11; todos os índices JS atualizados
+
 ---
 
 ## Decisões tomadas (não reverter sem discussão)
@@ -108,7 +118,8 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
   - Indústria: qualificado como "princípios relacionados, não CQRS formal"
 - **Dual write + transactional outbox:** incluído explicitamente
 - **Animações:** `.reveal` com delays `.d1`–`.d9`, disparam ao entrar no slide
-- **Step animation:** JS step counter + CSS `.step-anim` / `.visible`; `goForward()` despacha para o handler do slide atual; padrão usado em S4, S6, S11 — ver SESSION_NOTES.md
+- **Step animation:** sistema genérico `data-group` + `buildSteps()`; `goForward()` / `goBackward()` despacham para slide correto; Kafka (S11) permanece handler especial sincronizando dot + left steps — ver SESSION_NOTES.md
+- **Slide smono:** slide dedicado ao monolito (id="smono"), entre s3 e s4, N=17, KAFKA_IDX=11
 
 ---
 

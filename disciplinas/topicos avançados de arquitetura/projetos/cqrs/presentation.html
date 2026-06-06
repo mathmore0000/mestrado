@@ -80,6 +80,7 @@ h4{font-family:var(--ff-head);font-size:clamp(.9rem,1.15vw,1.4rem);font-weight:6
 p{font-size:clamp(.85rem,1.15vw,1.3rem);line-height:1.7;color:var(--mt)}
 code{font-family:var(--ff-code);font-size:.85em;color:var(--blue);
   background:rgba(37,99,235,.09);padding:1px 5px;border-radius:4px}
+ul.lst li code{background:none;padding:0}
 
 /* ── RULE ───────────────────────────────────────────────────── */
 .rule{width:48px;height:3px;background:var(--red);border-radius:2px;margin:10px 0 18px;flex-shrink:0}
@@ -157,14 +158,7 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
 .cm{font-size:clamp(12px,.95vw,17px);color:var(--mt);font-family:var(--ff-head)}
 .cdot{width:3px;height:3px;border-radius:50%;background:var(--bdr)}
 
-/* ── STACK LAYERS (slide Como vocês) ────────────────────────── */
-.stack{display:flex;flex-direction:column;gap:8px}
-.layer{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;
-  padding:12px 16px;display:flex;align-items:center;gap:12px}
-.badge{font-family:var(--ff-head);font-size:clamp(10px,.75vw,13px);font-weight:700;
-  background:var(--primary);color:#fff;border-radius:6px;padding:3px 8px;flex-shrink:0}
-
-/* ── KAFKA FLOW ANIMATION (slide 11) ───────────────────────── */
+/* ── KAFKA FLOW ANIMATION ───────────────────────────────────── */
 .kflow{background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
   padding:16px 14px 12px;box-shadow:var(--shadow);margin-bottom:12px}
 .kflow-header{display:flex;justify-content:space-between;gap:6px}
@@ -184,7 +178,6 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
   background:var(--red);transform:translate(-50%,-50%);
   box-shadow:0 0 8px rgba(218,41,28,.55);opacity:0}
 .kflow-n43{opacity:0;color:var(--pos);font-weight:700}
-
 .kflow-dot{transition:left .55s cubic-bezier(.4,0,.2,1),opacity .3s ease}
 .kflow-n42{transition:opacity .3s ease}
 .kflow-n43{transition:opacity .3s ease}
@@ -226,19 +219,19 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
       <div class="eye reveal d1">Estudo de Caso Simulado</div>
       <h2 class="reveal d2">Conheçam Jorge</h2>
       <div class="rule reveal d3"></div>
-      <div class="card reveal d4" style="margin-bottom:14px">
+      <div class="card step-anim" data-group="1" style="margin-bottom:14px">
         <p>Jorge é um desenvolvedor que usa inteligência artificial todos os dias para ser mais produtivo. Em um fim de semana, ele decide transformar uma ideia ambiciosa em realidade: criar uma <strong style="color:var(--primary)">rede social centrada em comunidades de nicho</strong>, pensada para o público jovem.</p>
       </div>
-      <div class="card navy reveal d5" style="margin-bottom:14px">
+      <div class="card navy step-anim" data-group="2" style="margin-bottom:14px">
         <p>A estratégia de Jorge é simples: construir rápido, publicar cedo e validar a ideia com usuários reais antes de investir em infraestrutura robusta. Esse comportamento é típico de startups e MVPs — e amplificado pelo Vibe Coding.</p>
       </div>
-      <blockquote class="reveal d6" style="border-left:3px solid var(--red);padding:12px 16px;
+      <blockquote class="step-anim" data-group="3" style="border-left:3px solid var(--red);padding:12px 16px;
         background:rgba(218,41,28,.04);border-radius:0 10px 10px 0;
         font-style:italic;font-size:clamp(.8rem,1vw,.9rem);color:var(--mt)">
         "Com vibe coding, devo montar ainda neste fim de semana uma versão testável para alguns usuários e validar minha ideia."
       </blockquote>
     </div>
-    <div class="reveal d4" style="display:flex;flex-direction:column;gap:12px">
+    <div class="step-anim" data-group="1" style="display:flex;flex-direction:column;gap:12px">
       <div style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
         padding:16px;box-shadow:var(--shadow);text-align:center">
         <p class="eye" style="margin-bottom:10px">Figura 1 — MVP funcional</p>
@@ -252,30 +245,35 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
 
 <!-- ══ S3 · COMO VOCÊS CONSTRUIRIAM? ══════════════════════════ -->
 <div class="slide" id="s3">
-  <div class="w g2" style="align-items:start">
-    <div>
-      <div class="eye reveal d1">Momento de Reflexão</div>
-      <h2 class="reveal d2">Como vocês construiriam a arquitetura desse sistema?</h2>
-      <div class="rule reveal d3"></div>
-      <div class="card reveal d4" style="margin-bottom:12px">
-        <h4>Pausa para discussão</h4>
-        <p>Antes de revelar a escolha de Jorge, reflitam: quais tecnologias, padrões e decisões de banco de dados vocês adotariam para um MVP que precisa sair rápido?</p>
-      </div>
-      <div class="card warn reveal d5">
-        <p><strong style="color:var(--primary)">Software não nasce robusto — e isso é aceitável.</strong> A engenharia precisa projetar para o cenário atual e evoluir conforme o sistema cresce. Um MVP superengenheirado pode comprometer a validação do produto.</p>
-      </div>
+  <div class="w" style="max-width:700px">
+    <div class="eye reveal d1">Momento de Reflexão</div>
+    <h2 class="reveal d2">Como vocês construiriam a arquitetura desse sistema?</h2>
+    <div class="rule reveal d3"></div>
+    <div class="card step-anim" data-group="1" style="margin-bottom:12px">
+      <h4>Pausa para discussão</h4>
+      <p>Antes de revelar a escolha de Jorge, reflitam: quais tecnologias, padrões e decisões de banco de dados vocês adotariam para um MVP que precisa sair rápido?</p>
     </div>
-    <div>
-      <div class="eye reveal d6" style="margin-top:2px">A escolha de Jorge</div>
-      <h3 class="reveal d6" style="margin-bottom:12px">Arquitetura Monolítica Clássica</h3>
-      <div class="reveal d7" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;padding:12px;box-shadow:var(--shadow)">
-        <img src="assets/arquitetura-sem-cqrs.png" alt="Arquitetura monolítica sem CQRS"
-          style="width:100%;border-radius:8px;display:block">
-      </div>
-      <div class="reveal d8" style="margin-top:10px;padding:10px 14px;
-        background:rgba(15,45,89,.04);border-left:3px solid var(--primary);border-radius:0 8px 8px 0">
-        <p style="font-size:.78rem">Escolha correta para um MVP. O problema aparece quando leituras e escritas começam a competir pelo mesmo banco.</p>
-      </div>
+    <div class="card warn step-anim" data-group="2">
+      <p><strong style="color:var(--primary)">Software não nasce robusto — e isso é aceitável.</strong> A engenharia precisa projetar para o cenário atual e evoluir conforme o sistema cresce. Um MVP superengenheirado pode comprometer a validação do produto.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SMONO · ARQUITETURA MONOLÍTICA ══════════════════════════ -->
+<div class="slide" id="smono">
+  <div class="w">
+    <div class="eye reveal d1">A Escolha de Jorge</div>
+    <h2 class="reveal d2">Arquitetura Monolítica Clássica</h2>
+    <div class="rule reveal d3"></div>
+    <div class="step-anim" data-group="1" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
+      padding:16px;box-shadow:var(--shadow);margin-top:4px">
+      <img src="assets/arquitetura-sem-cqrs.png" alt="Arquitetura monolítica sem CQRS"
+        style="width:100%;max-height:440px;object-fit:contain;border-radius:8px;display:block">
+    </div>
+    <div class="step-anim" data-group="2" style="margin-top:12px;display:flex;gap:20px;justify-content:center">
+      <span class="pill pb">Banco único para leituras e escritas</span>
+      <span class="pill pr">JOINs em tempo de execução</span>
+      <span class="pill pg">Correto para um MVP</span>
     </div>
   </div>
 </div>
@@ -287,28 +285,28 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
     <h2 class="reveal d2">A Jornada de Jorge</h2>
     <div class="rule reveal d3"></div>
     <div class="steps">
-      <div class="step step-anim">
+      <div class="step step-anim" data-group="1">
         <div class="sn">1</div>
         <div class="sb">
           <h4>Fim de semana — O MVP</h4>
           <p>Jorge usa IA generativa e codifica uma rede social de comunidades de nicho. React, Node.js, PostgreSQL normalizado. <em>"Se funcionar neste fim de semana, publico na segunda."</em></p>
         </div>
       </div>
-      <div class="step step-anim">
+      <div class="step step-anim" data-group="2">
         <div class="sn g">2</div>
         <div class="sb">
           <h4>Primeiro mês — Validação orgânica</h4>
           <p>Os primeiros 100 usuários aparecem. Feedback positivo valida o conceito. <em>"Que app incrível! As comunidades de nicho foram uma sacada genial."</em></p>
         </div>
       </div>
-      <div class="step step-anim">
+      <div class="step step-anim" data-group="3">
         <div class="sn g">3</div>
         <div class="sb">
           <h4>Dois meses — Tração orgânica</h4>
           <p>Tráfego cresce 500%. O backend acompanha sem dificuldade — é só adicionar containers. Jorge respira aliviado.</p>
         </div>
       </div>
-      <div class="step step-anim">
+      <div class="step step-anim" data-group="4">
         <div class="sn r">4</div>
         <div class="sb">
           <h4>Três meses — 10.000 usuários · A crise começa</h4>
@@ -326,14 +324,14 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
       <div class="eye reveal d1">Diagnóstico</div>
       <h2 class="reveal d2">A Crise</h2>
       <div class="rule reveal d3"></div>
-      <p class="reveal d3" style="margin-bottom:10px">Jorge analisa os logs do PostgreSQL <span style="font-size:.72rem;color:var(--dm)">(cenário ilustrativo)</span>:</p>
-      <div class="pbox reveal d4">$ top -p $(pgrep postgres)
+      <p class="step-anim" data-group="1" style="margin-bottom:10px">Jorge analisa os logs do PostgreSQL <span style="font-size:.72rem;color:var(--dm)">(cenário ilustrativo)</span>:</p>
+      <div class="pbox step-anim" data-group="2">$ top -p $(pgrep postgres)
 → CPU: 98.7% · I/O Wait: 64%
 
 SELECT count(*) FROM pg_stat_activity
   WHERE wait_event_type = 'Lock';
 → 342 conexões aguardando locks</div>
-      <div class="reveal d5" style="margin-top:14px;display:flex;gap:10px">
+      <div class="step-anim" data-group="3" style="margin-top:14px;display:flex;gap:10px">
         <div style="flex:1;background:rgba(218,41,28,.05);border:1px solid rgba(218,41,28,.2);border-radius:10px;padding:14px;text-align:center">
           <div class="mval red" style="font-size:clamp(1.4rem,2.2vw,2.6rem)">89%</div>
           <div class="mlbl">consultas de leitura</div>
@@ -343,14 +341,14 @@ SELECT count(*) FROM pg_stat_activity
           <div class="mlbl">operações de escrita</div>
         </div>
       </div>
-      <div class="card red reveal d6" style="margin-top:10px">
+      <div class="card red step-anim" data-group="4" style="margin-top:10px">
         <h4>Diagnóstico final</h4>
         <p>O backend foi escalado horizontalmente — o banco não. <strong style="color:var(--neg)">O problema não é de código. É arquitetural.</strong> 89% das operações são leituras disputando o mesmo recurso das escritas.</p>
       </div>
     </div>
     <div>
-      <p class="eye reveal d3" style="margin-top:2px">A query culpada — executada a cada abertura do feed</p>
-      <div class="pbox reveal d4" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content, p.created_at,
+      <p class="eye step-anim" data-group="1" style="margin-top:2px">A query culpada — executada a cada abertura do feed</p>
+      <div class="pbox step-anim" data-group="2" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content, p.created_at,
        u.name, u.avatar_url,
        COUNT(DISTINCT l.id) AS likes_count,
        COUNT(DISTINCT c.id) AS comments_count
@@ -364,7 +362,7 @@ WHERE p.author_id IN (
 )
 ORDER BY p.created_at DESC
 LIMIT 20;</div>
-      <div class="reveal d5" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+      <div class="step-anim" data-group="4" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
         <span class="pill pr">4 JOINs</span>
         <span class="pill pr">2 COUNTs em runtime</span>
         <span class="pill pr">Subquery correlacionada</span>
@@ -380,31 +378,31 @@ LIMIT 20;</div>
     <h2 class="reveal d2">Arquitetura Vira Prejuízo</h2>
     <div class="rule reveal d3"></div>
     <div class="mstrip" style="margin:24px 0 20px">
-      <div class="mitem step-anim s6g1">
+      <div class="mitem step-anim" data-group="1">
         <div class="mval red">−1%</div>
         <div class="mlbl">receita por 100ms adicionais</div>
         <div class="msrc">Linden, Amazon (2006)</div>
       </div>
-      <div class="msep step-anim s6g1"></div>
-      <div class="mitem step-anim s6g2">
+      <div class="msep step-anim" data-group="1"></div>
+      <div class="mitem step-anim" data-group="2">
         <div class="mval red">−20%</div>
         <div class="mlbl">buscas com atraso de 500ms</div>
         <div class="msrc">Mayer, Google (2006)</div>
       </div>
-      <div class="msep step-anim s6g2"></div>
-      <div class="mitem step-anim s6g3">
+      <div class="msep step-anim" data-group="2"></div>
+      <div class="mitem step-anim" data-group="3">
         <div class="mval red">$72–99M</div>
         <div class="mlbl">estimativa Prime Day 2018</div>
         <div class="msrc">Digital Commerce 360 (2018)</div>
       </div>
-      <div class="msep step-anim s6g3"></div>
-      <div class="mitem step-anim s6g4">
+      <div class="msep step-anim" data-group="3"></div>
+      <div class="mitem step-anim" data-group="4">
         <div class="mval red">$5,6k</div>
         <div class="mlbl">custo médio por minuto fora do ar</div>
         <div class="msrc">Gartner (2014)</div>
       </div>
     </div>
-    <div class="card blue step-anim s6card">
+    <div class="card blue step-anim" data-group="5">
       <p>Brutlag (2009) confirmou em estudo controlado que atrasos adicionais reduzem engajamento de forma mensurável. Latência não é só uma métrica de engenharia — é um risco direto de receita. <strong style="color:var(--primary)">Quando a arquitetura vira gargalo, o banco de dados vira prejuízo financeiro.</strong></p>
     </div>
   </div>
@@ -417,16 +415,16 @@ LIMIT 20;</div>
       <div class="eye reveal d1">Padrão Arquitetural</div>
       <h2 class="reveal d2">CQRS</h2>
       <div class="rule reveal d3"></div>
-      <p class="reveal d3" style="margin-bottom:12px"><strong style="color:var(--primary)">Command Query Responsibility Segregation</strong> — separa operações de <span style="color:var(--red);font-weight:600">escrita</span> (Commands) das de <span style="color:var(--blue);font-weight:600">leitura</span> (Queries) em modelos, armazenamentos e pipelines distintos (Young, 2010; Fowler, 2011).</p>
-      <p class="reveal d4" style="margin-bottom:14px">Extensão arquitetural do CQS de Meyer (1988): um método é ou um <em>command</em> (muda estado, não retorna) ou uma <em>query</em> (retorna valor, não muda estado) — nunca os dois.</p>
-      <div class="card navy reveal d5">
+      <p class="step-anim" data-group="1" style="margin-bottom:12px"><strong style="color:var(--primary)">Command Query Responsibility Segregation</strong> — separa operações de <span style="color:var(--red);font-weight:600">escrita</span> (Commands) das de <span style="color:var(--blue);font-weight:600">leitura</span> (Queries) em modelos, armazenamentos e pipelines distintos (Young, 2010; Fowler, 2011).</p>
+      <p class="step-anim" data-group="2" style="margin-bottom:14px">Extensão arquitetural do CQS de Meyer (1988): um método é ou um <em>command</em> (muda estado, não retorna) ou uma <em>query</em> (retorna valor, não muda estado) — nunca os dois.</p>
+      <div class="card navy step-anim" data-group="3">
         <h4>A proposta de Jorge</h4>
         <p>Separar fisicamente os caminhos de leitura e escrita. A latência do feed cai de <strong style="color:var(--neg)">1.200ms</strong> para menos de <strong style="color:var(--pos)">50ms</strong>. Os bloqueios desaparecem.</p>
       </div>
     </div>
     <div>
-      <p class="eye reveal d3" style="margin-top:2px">Linha do tempo</p>
-      <table class="tbl reveal d4">
+      <p class="eye step-anim" data-group="1" style="margin-top:2px">Linha do tempo</p>
+      <table class="tbl step-anim" data-group="2">
         <thead><tr><th>Ano</th><th>Marco</th></tr></thead>
         <tbody>
           <tr><td class="num">1988</td><td>Bertrand Meyer — CQS em <em>Object-Oriented Software Construction</em></td></tr>
@@ -445,12 +443,12 @@ LIMIT 20;</div>
     <div class="eye reveal d1">Visão Geral</div>
     <h2 class="reveal d2">Arquitetura CQRS</h2>
     <div class="rule reveal d3"></div>
-    <div class="reveal d4" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
+    <div class="step-anim" data-group="1" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
       padding:16px;box-shadow:var(--shadow);margin-top:4px">
       <img src="assets/arquitetura-com-cqrs.png" alt="Arquitetura com CQRS"
         style="width:100%;max-height:440px;object-fit:contain;border-radius:8px;display:block">
     </div>
-    <div class="reveal d5" style="margin-top:12px;display:flex;gap:20px;justify-content:center">
+    <div class="step-anim" data-group="2" style="margin-top:12px;display:flex;gap:20px;justify-content:center">
       <span class="pill pr">Commands → Write Service → Write DB (ACID)</span>
       <span class="pill pbl">Queries → Read Service → Read DB (BASE)</span>
       <span class="pill pb">Sincronização via eventos assíncronos</span>
@@ -468,21 +466,21 @@ LIMIT 20;</div>
     </div>
     <div class="g2" style="align-items:start">
       <div class="mbox b">
-        <div class="eye reveal d4">Command Side</div>
-        <h3 class="reveal d5" style="color:var(--red);margin-bottom:10px">Modelo de Escrita · ACID</h3>
-        <p class="reveal d6" style="margin-bottom:12px">Normalizado, consistente, voltado para <strong style="color:var(--tx)">integridade</strong>. Cada fato em um único lugar — anomalias de atualização impossíveis (Codd, 1970; Haerder &amp; Reuter, 1983).</p>
-        <div class="pbox reveal d7" style="font-size:clamp(8px,.85vw,10.5px)">users    (id, name, avatar_url)
+        <div class="eye step-anim" data-group="1">Command Side</div>
+        <h3 class="step-anim" data-group="1" style="color:var(--red);margin-bottom:10px">Modelo de Escrita · ACID</h3>
+        <p class="step-anim" data-group="2" style="margin-bottom:12px">Normalizado, consistente, voltado para <strong style="color:var(--tx)">integridade</strong>. Cada fato em um único lugar — anomalias de atualização impossíveis (Codd, 1970; Haerder &amp; Reuter, 1983).</p>
+        <div class="pbox step-anim" data-group="3" style="font-size:clamp(8px,.85vw,10.5px)">users    (id, name, avatar_url)
 posts    (id, author_id, content)
 likes    (id, user_id, post_id)
 follows  (id, follower_id, followed_id)
 comments (id, post_id, author_id, content)</div>
-        <p class="reveal d8" style="margin-top:10px;font-size:.78rem">Se o nome de um usuário muda, só <code>users</code> precisa ser atualizada.</p>
+        <p class="step-anim" data-group="4" style="margin-top:10px;font-size:.78rem">Se o nome de um usuário muda, só <code>users</code> precisa ser atualizada.</p>
       </div>
       <div class="mbox a">
-        <div class="eye reveal d4">Query Side</div>
-        <h3 class="reveal d5" style="color:var(--blue);margin-bottom:10px">Modelo de Leitura · BASE</h3>
-        <p class="reveal d6" style="margin-bottom:12px">Desnormalizado, otimizado para <strong style="color:var(--tx)">velocidade</strong>. BASE — Basically Available, Soft State, Eventual Consistency (Pritchett, 2008). Sem JOINs em runtime.</p>
-        <div class="pbox reveal d7" style="font-size:clamp(8px,.85vw,10.5px)">feed_items (
+        <div class="eye step-anim" data-group="1">Query Side</div>
+        <h3 class="step-anim" data-group="1" style="color:var(--blue);margin-bottom:10px">Modelo de Leitura · BASE</h3>
+        <p class="step-anim" data-group="2" style="margin-bottom:12px">Desnormalizado, otimizado para <strong style="color:var(--tx)">velocidade</strong>. BASE — Basically Available, Soft State, Eventual Consistency (Pritchett, 2008). Sem JOINs em runtime.</p>
+        <div class="pbox step-anim" data-group="3" style="font-size:clamp(8px,.85vw,10.5px)">feed_items (
   user_id,
   post_id, content, created_at,
   author_name,    -- ← de users
@@ -490,7 +488,7 @@ comments (id, post_id, author_id, content)</div>
   likes_count,    -- ← pré-computado
   comments_count  -- ← pré-computado
 )</div>
-        <p class="reveal d8" style="margin-top:10px;font-size:.78rem">Custo deslocado da leitura para a escrita (Kleppmann, 2017).</p>
+        <p class="step-anim" data-group="4" style="margin-top:10px;font-size:.78rem">Custo deslocado da leitura para a escrita (Kleppmann, 2017).</p>
       </div>
     </div>
   </div>
@@ -506,9 +504,9 @@ comments (id, post_id, author_id, content)</div>
     </div>
     <div class="g2" style="align-items:start">
       <div>
-        <div class="eye reveal d4" style="color:var(--neg)">Antes — normalizado</div>
-        <h3 class="reveal d5" style="color:var(--neg);margin-bottom:12px">Query com JOINs</h3>
-        <div class="pbox reveal d6" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content,
+        <div class="eye step-anim" data-group="1" style="color:var(--neg)">Antes — normalizado</div>
+        <h3 class="step-anim" data-group="1" style="color:var(--neg);margin-bottom:12px">Query com JOINs</h3>
+        <div class="pbox step-anim" data-group="2" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content,
        u.name, u.avatar_url,
        COUNT(DISTINCT l.id) AS likes_count,
        COUNT(DISTINCT c.id) AS comments_count
@@ -521,21 +519,21 @@ WHERE p.author_id IN (
   WHERE follower_id = :user_id
 )
 ORDER BY p.created_at DESC LIMIT 20;</div>
-        <div class="reveal d7" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <div class="step-anim" data-group="3" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <span class="pill pr">4 JOINs</span><span class="pill pr">2 COUNTs</span><span class="pill pr">Subquery</span>
         </div>
       </div>
       <div>
-        <div class="eye reveal d4" style="color:var(--pos)">Depois — desnormalizado</div>
-        <h3 class="reveal d5" style="color:var(--pos);margin-bottom:12px">Query Simples</h3>
-        <div class="pbox reveal d6">SELECT * FROM feed_items
+        <div class="eye step-anim" data-group="1" style="color:var(--pos)">Depois — desnormalizado</div>
+        <h3 class="step-anim" data-group="1" style="color:var(--pos);margin-bottom:12px">Query Simples</h3>
+        <div class="pbox step-anim" data-group="2">SELECT * FROM feed_items
 WHERE user_id = :user_id
 ORDER BY created_at DESC
 LIMIT 20;</div>
-        <div class="reveal d7" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <div class="step-anim" data-group="3" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <span class="pill pg">0 JOINs</span><span class="pill pg">dados pré-computados</span><span class="pill pg">index scan</span>
         </div>
-        <div class="card green reveal d8" style="margin-top:14px">
+        <div class="card green step-anim" data-group="4" style="margin-top:14px">
           <p>O custo foi deslocado do momento da <strong style="color:var(--neg)">leitura</strong> para o momento da <strong style="color:var(--pos)">escrita</strong> — que ocorre muito menos vezes em sistemas de feed (Stonebraker et al., 2007).</p>
         </div>
       </div>
@@ -552,15 +550,14 @@ LIMIT 20;</div>
       <div class="rule reveal d3"></div>
       <p class="reveal d3" style="margin-bottom:14px"><strong style="color:var(--primary)">Domain events</strong> representam algo que aconteceu no domínio (Evans, 2003). Cada mudança de estado gera um evento publicado no broker que atualiza o modelo de leitura de forma assíncrona.</p>
       <div class="steps">
-        <div class="step reveal d4"><div class="sn">1</div><div class="sb"><h4>Comando chega</h4><p>Usuário curte → <code>CurtirPost</code> chega ao serviço de escrita</p></div></div>
-        <div class="step reveal d5"><div class="sn">2</div><div class="sb"><h4>Escrita atômica</h4><p>Persiste em <code>likes</code> + grava evento em <code>outbox</code> — mesma transação</p></div></div>
-        <div class="step reveal d6"><div class="sn">3</div><div class="sb"><h4>Publicação confiável</h4><p>Relay lê <code>outbox</code> e publica <code>PostCurtido</code> no Kafka</p></div></div>
-        <div class="step reveal d7"><div class="sn g">4</div><div class="sb"><h4>Consumidor atualiza</h4><p>Consumer incrementa <code>likes_count</code> no modelo de leitura</p></div></div>
-        <div class="step reveal d8"><div class="sn g">5</div><div class="sb"><h4>Feed reflete</h4><p>Próxima leitura retorna o valor atualizado</p></div></div>
+        <div class="step step-anim"><div class="sn">1</div><div class="sb"><h4>Comando chega</h4><p>Usuário curte → <code>CurtirPost</code> chega ao serviço de escrita</p></div></div>
+        <div class="step step-anim"><div class="sn">2</div><div class="sb"><h4>Escrita atômica</h4><p>Persiste em <code>likes</code> + grava evento em <code>outbox</code> — mesma transação</p></div></div>
+        <div class="step step-anim"><div class="sn">3</div><div class="sb"><h4>Publicação confiável</h4><p>Relay lê <code>outbox</code> e publica <code>PostCurtido</code> no Kafka</p></div></div>
+        <div class="step step-anim"><div class="sn g">4</div><div class="sb"><h4>Consumidor atualiza</h4><p>Consumer incrementa <code>likes_count</code> no modelo de leitura</p></div></div>
+        <div class="step step-anim"><div class="sn g">5</div><div class="sb"><h4>Feed reflete</h4><p>Próxima leitura retorna o valor atualizado</p></div></div>
       </div>
     </div>
     <div>
-      <!-- Kafka flow animation -->
       <div class="kflow reveal d4">
         <p class="eye" style="margin-bottom:10px">Fluxo de sincronização — ao curtir um post</p>
         <div class="kflow-header">
@@ -586,7 +583,6 @@ LIMIT 20;</div>
           <div class="kflow-dot"></div>
         </div>
       </div>
-      <!-- Dual write + outbox compact -->
       <div class="card red reveal d5" style="margin-bottom:10px">
         <h4>⚠ Dual write</h4>
         <p>Crash entre os passos 2 e 3 → modelo de leitura nunca atualizado — divergência silenciosa.</p>
@@ -606,21 +602,21 @@ LIMIT 20;</div>
       <div class="eye reveal d1">Infraestrutura de Eventos</div>
       <h2 class="reveal d2">Apache Kafka</h2>
       <div class="rule reveal d3"></div>
-      <p class="reveal d3" style="margin-bottom:14px">Plataforma de streaming distribuído baseada em <strong style="color:var(--primary)">log imutável e particionado</strong>. Mensagens persistidas em disco — não deletadas após consumo (Kreps et al., 2011).</p>
-      <ul class="lst reveal d4">
+      <p class="step-anim" data-group="1" style="margin-bottom:14px">Plataforma de streaming distribuído baseada em <strong style="color:var(--primary)">log imutável e particionado</strong>. Mensagens persistidas em disco — não deletadas após consumo (Kreps et al., 2011).</p>
+      <ul class="lst step-anim" data-group="2">
         <li><strong style="color:var(--tx)">Múltiplos consumidores independentes:</strong> <code>PostCurtido</code> consumido simultaneamente por feed, notificações e analytics — sem coordenação</li>
         <li><strong style="color:var(--tx)">Reprocessamento:</strong> consumidores releem eventos de qualquer offset — rebuild do modelo de leitura sem perda</li>
         <li><strong style="color:var(--tx)">Ordenação por partição:</strong> eventos do mesmo <code>post_id</code> roteados para a mesma partição garantem ordem correta do <code>likes_count</code> (Narkhede et al., 2017)</li>
       </ul>
     </div>
     <div>
-      <p class="eye reveal d3" style="margin-top:2px">Garantias de entrega</p>
-      <div class="mbox a reveal d4" style="margin-bottom:12px">
+      <p class="eye step-anim" data-group="1" style="margin-top:2px">Garantias de entrega</p>
+      <div class="mbox a step-anim" data-group="2" style="margin-bottom:12px">
         <h4 style="color:var(--blue);margin-bottom:8px">At-least-once delivery</h4>
         <p style="font-size:.8rem">O evento é entregue, mas pode ser entregue mais de uma vez em caso de falha. O consumidor deve ser <strong style="color:var(--tx)">idempotente</strong> — processar o mesmo evento duas vezes não deve alterar o resultado.</p>
         <p style="font-size:.75rem;color:var(--dm);margin-top:8px">Implementação: registrar IDs de eventos processados antes de aplicar o UPDATE.</p>
       </div>
-      <div class="mbox b reveal d5">
+      <div class="mbox b step-anim" data-group="3">
         <h4 style="color:var(--red);margin-bottom:8px">Exactly-once delivery</h4>
         <p style="font-size:.8rem">Garantia mais forte, custo de performance maior. Suportado via transações e <em>idempotent producers</em> desde Kafka 0.11 (Narkhede et al., 2017).</p>
       </div>
@@ -635,16 +631,16 @@ LIMIT 20;</div>
       <div class="eye reveal d1">Teoria</div>
       <h2 class="reveal d2">Consistência Eventual</h2>
       <div class="rule reveal d3"></div>
-      <p class="reveal d3" style="margin-bottom:12px">O Teorema CAP (Brewer, 2012; Gilbert &amp; Lynch, 2002) estabelece que sistemas distribuídos não podem garantir simultaneamente <strong style="color:var(--primary)">C</strong>onsistência, <strong style="color:var(--primary)">D</strong>isponibilidade e tolerância a <strong style="color:var(--primary)">P</strong>artições. Brewer revisitou o teorema em 2012 reconhecendo que a escolha raramente é binária.</p>
-      <p class="reveal d4" style="margin-bottom:14px">A sincronização assíncrona do CQRS implica uma escolha <strong style="color:var(--blue)">AP</strong>: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).</p>
-      <div class="card blue reveal d5">
+      <p class="step-anim" data-group="1" style="margin-bottom:12px">O Teorema CAP (Brewer, 2012; Gilbert &amp; Lynch, 2002) estabelece que sistemas distribuídos não podem garantir simultaneamente <strong style="color:var(--primary)">C</strong>onsistência, <strong style="color:var(--primary)">D</strong>isponibilidade e tolerância a <strong style="color:var(--primary)">P</strong>artições. Brewer revisitou o teorema em 2012 reconhecendo que a escolha raramente é binária.</p>
+      <p class="step-anim" data-group="2" style="margin-bottom:14px">A sincronização assíncrona do CQRS implica uma escolha <strong style="color:var(--blue)">AP</strong>: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).</p>
+      <div class="card blue step-anim" data-group="3">
         <h4>Analogia cotidiana</h4>
         <p>Quando você posta uma foto no Instagram, seus seguidores não a veem no mesmo milissegundo — o feed converge em segundos. Isso é consistência eventual — aceitável para interações humanas (Vogels, 2009).</p>
       </div>
     </div>
     <div>
-      <p class="eye reveal d3" style="margin-top:2px">ACID vs BASE</p>
-      <table class="tbl reveal d4">
+      <p class="eye step-anim" data-group="1" style="margin-top:2px">ACID vs BASE</p>
+      <table class="tbl step-anim" data-group="2">
         <thead><tr><th>Propriedade</th><th style="color:var(--red)">ACID — Escrita</th><th style="color:var(--blue)">BASE — Leitura</th></tr></thead>
         <tbody>
           <tr><td>Consistência</td><td class="win">Forte, imediata</td><td style="color:var(--mt)">Eventual</td></tr>
@@ -653,7 +649,7 @@ LIMIT 20;</div>
           <tr><td>Prioridade</td><td style="color:var(--red);font-weight:600">Integridade</td><td style="color:var(--blue);font-weight:600">Velocidade</td></tr>
         </tbody>
       </table>
-      <p class="reveal d5" style="margin-top:10px;font-size:.72rem;color:var(--dm)">Haerder &amp; Reuter (1983) · Pritchett (2008) · Vogels (2009)</p>
+      <p class="step-anim" data-group="3" style="margin-top:10px;font-size:.72rem;color:var(--dm)">Haerder &amp; Reuter (1983) · Pritchett (2008) · Vogels (2009)</p>
     </div>
   </div>
 </div>
@@ -665,20 +661,20 @@ LIMIT 20;</div>
       <div class="eye reveal d1">Padrão Complementar</div>
       <h2 class="reveal d2">Event Sourcing</h2>
       <div class="rule reveal d3"></div>
-      <p class="reveal d3" style="margin-bottom:14px">Em vez de armazenar o <strong style="color:var(--tx)">estado atual</strong>, armazena a <strong style="color:var(--primary)">sequência de eventos</strong> que o produziu. O estado é derivado reproduzindo os eventos em ordem (Young, 2010; Fowler, 2005).</p>
-      <ul class="lst reveal d4" style="margin-bottom:14px">
+      <p class="step-anim" data-group="1" style="margin-bottom:14px">Em vez de armazenar o <strong style="color:var(--tx)">estado atual</strong>, armazena a <strong style="color:var(--primary)">sequência de eventos</strong> que o produziu. O estado é derivado reproduzindo os eventos em ordem (Young, 2010; Fowler, 2005).</p>
+      <ul class="lst step-anim" data-group="2" style="margin-bottom:14px">
         <li><strong style="color:var(--tx)">Auditoria completa:</strong> cada mudança é um fato histórico imutável</li>
         <li><strong style="color:var(--tx)">Replay:</strong> modelo de leitura corrompido? Reproduz eventos desde o início</li>
         <li><strong style="color:var(--tx)">Projeções múltiplas:</strong> diferentes modelos de leitura do mesmo log</li>
       </ul>
-      <div class="card navy reveal d5">
+      <div class="card navy step-anim" data-group="3">
         <h4>CQRS + Event Sourcing</h4>
         <p>Os eventos do <em>event store</em> são os mesmos domain events que alimentam o Kafka e atualizam o modelo de leitura — combinação natural. Replay tem custo operacional significativo em históricos longos.</p>
       </div>
     </div>
     <div>
-      <p class="eye reveal d3" style="margin-top:2px">Event Store (append-only) — feed do Jorge</p>
-      <div class="pbox reveal d4">001 · UsuarioCriado
+      <p class="eye step-anim" data-group="1" style="margin-top:2px">Event Store (append-only) — feed do Jorge</p>
+      <div class="pbox step-anim" data-group="2">001 · UsuarioCriado
      { id: 42, nome: "Jorge" }
 
 002 · ComunidadeCriada
@@ -692,7 +688,7 @@ LIMIT 20;</div>
 
 005 · PostCurtido
      { postId: 101, userId: 99 }</div>
-      <p class="reveal d5" style="margin-top:12px;font-size:.78rem">O modelo de leitura é uma <strong style="color:var(--primary)">projeção</strong> derivada deste log. Qualquer visão pode ser reconstruída a partir dos eventos.</p>
+      <p class="step-anim" data-group="3" style="margin-top:12px;font-size:.78rem">O modelo de leitura é uma <strong style="color:var(--primary)">projeção</strong> derivada deste log. Qualquer visão pode ser reconstruída a partir dos eventos.</p>
     </div>
   </div>
 </div>
@@ -703,23 +699,23 @@ LIMIT 20;</div>
     <div class="eye reveal d1">Evidência Empírica</div>
     <h2 class="reveal d2">Princípios Relacionados na Indústria</h2>
     <div class="rule reveal d3"></div>
-    <p class="reveal d3" style="margin-bottom:16px;font-size:.8rem;color:var(--dm)">Estas empresas não descrevem suas soluções formalmente como CQRS — representam, no entanto, a aplicação dos mesmos princípios: separação de responsabilidades, consistência eventual, logs e modelos otimizados para leitura.</p>
+    <p class="step-anim" data-group="1" style="margin-bottom:16px;font-size:.8rem;color:var(--dm)">Estas empresas não descrevem suas soluções formalmente como CQRS — representam, no entanto, a aplicação dos mesmos princípios: separação de responsabilidades, consistência eventual, logs e modelos otimizados para leitura.</p>
     <div class="g3">
-      <div class="card reveal d4">
+      <div class="card step-anim" data-group="2">
         <span class="pill pb" style="margin-bottom:12px">Amazon · 2004–2007</span>
         <h3 style="margin-bottom:8px">Dynamo</h3>
         <p style="margin-bottom:8px"><strong style="color:var(--neg)">Problema:</strong> banco Oracle com locks severos no sistema de carrinho durante picos como Black Friday.</p>
         <p style="margin-bottom:10px"><strong style="color:var(--pos)">Solução:</strong> Dynamo — chave-valor interno com leitura/escrita separadas e consistência eventual. Princípios que inspiraram o DynamoDB (2012).</p>
         <p style="font-size:.72rem;color:var(--dm)">DeCandia et al., SOSP '07</p>
       </div>
-      <div class="card reveal d5">
+      <div class="card step-anim" data-group="3">
         <span class="pill pb" style="margin-bottom:12px">Netflix · 2009–2016</span>
         <h3 style="margin-bottom:8px">Microserviços + CQRS</h3>
         <p style="margin-bottom:8px"><strong style="color:var(--neg)">Problema:</strong> monólito Oracle não escalava globalmente. ACID gerava latência incompatível.</p>
         <p style="margin-bottom:10px"><strong style="color:var(--pos)">Solução:</strong> Cassandra + Elasticsearch para leitura; MySQL particionado para escrita.</p>
         <p style="font-size:.72rem;color:var(--dm)">Izrailevsky &amp; Meshenberg, Netflix Tech Blog, 2016</p>
       </div>
-      <div class="card reveal d6">
+      <div class="card step-anim" data-group="4">
         <span class="pill pb" style="margin-bottom:12px">Uber · 2014–2016</span>
         <h3 style="margin-bottom:8px">Schemaless + Cassandra</h3>
         <p style="margin-bottom:8px"><strong style="color:var(--neg)">Problema:</strong> contenção entre escritas (corridas) e leituras (ETA, tarifas) gerava timeouts.</p>
@@ -770,14 +766,14 @@ LIMIT 20;</div>
 </div><!-- #deck -->
 
 <nav id="nav">
-  <button class="nb" id="bp" onclick="go(-1)" disabled>&#8249;</button>
+  <button class="nb" id="bp" onclick="goBackward()" disabled>&#8249;</button>
   <div id="dots"></div>
-  <span id="ctr">1 / 15</span>
+  <span id="ctr">1 / 17</span>
   <button class="nb" id="bn" onclick="goForward()">&#8250;</button>
 </nav>
 
 <script>
-const N=16;let cur=0,busy=false;
+const N=17;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<N;i++){
   const d=document.createElement('div');
@@ -807,85 +803,84 @@ function goTo(idx){
       from.classList.remove('on');from.style.cssText='';
       to.classList.add('on');to.style.cssText='';
       if(cur===KAFKA_IDX)resetKafka();
-      if(cur===JOURNEY_IDX)resetJourney();
-      if(cur===METRICS_IDX)resetMetrics();
+      resetSteps(cur);
       cur=idx;syncUI();busy=false;
     },470);
   }));
 }
 function go(d){goTo(cur+d);}
 
-// Kafka step animation — slide 11 is index 10 (0-based)
-const KAFKA_IDX=10;
+// ── GENERIC STEP ANIMATION ───────────────────────────────────
+function buildSteps(id){
+  const map={};
+  document.querySelectorAll('#'+id+' [data-group]').forEach(el=>{
+    const g=el.dataset.group;
+    (map[g]=map[g]||[]).push(el);
+  });
+  return{groups:Object.keys(map).sort((a,b)=>+a-+b).map(k=>map[k]),step:0};
+}
+const STEP_IDS={1:'s2',2:'s3',3:'smono',4:'s4',5:'s5',6:'s6',
+  7:'s7',8:'s8',9:'s9',10:'s10',12:'s12',13:'s13',14:'s14',15:'s15'};
+const SS={};
+Object.entries(STEP_IDS).forEach(([idx,id])=>{SS[+idx]=buildSteps(id);});
+
+function canFwd(i){return SS[i]&&SS[i].step<SS[i].groups.length;}
+function canBk(i){return SS[i]&&SS[i].step>0;}
+function doFwd(i){const s=SS[i];s.groups[s.step].forEach(el=>el.classList.add('visible'));s.step++;}
+function doBk(i){const s=SS[i];s.step--;s.groups[s.step].forEach(el=>el.classList.remove('visible'));}
+function resetSteps(i){if(!SS[i])return;SS[i].step=0;SS[i].groups.flat().forEach(el=>el.classList.remove('visible'));}
+
+// ── KAFKA STEP ANIMATION (slide 12 = index 11) ───────────────
+const KAFKA_IDX=11;
 const kflowEl=document.getElementById('s11').querySelector('.kflow');
 const kDot=kflowEl.querySelector('.kflow-dot');
 const kN42=kflowEl.querySelector('.kflow-n42');
 const kN43=kflowEl.querySelector('.kflow-n43');
-const kPositions=['0%','33%','66%','100%']; // WS → Kafka → Consumer → ReadDB
+const kPositions=['0%','33%','66%','100%'];
+const kLeftSteps=Array.from(document.querySelectorAll('#s11 .step-anim'));
 let kafkaStep=0;
+
 function stepKafka(){
   kafkaStep++;
   if(kafkaStep===1){kDot.style.opacity='1';kDot.style.left='0%';}
   else if(kafkaStep<=4){kDot.style.left=kPositions[kafkaStep-1];}
   else if(kafkaStep===5){kN42.style.opacity='0';kN43.style.opacity='1';}
+  if(kLeftSteps[kafkaStep-1])kLeftSteps[kafkaStep-1].classList.add('visible');
+}
+function stepKafkaBack(){
+  if(kLeftSteps[kafkaStep-1])kLeftSteps[kafkaStep-1].classList.remove('visible');
+  kafkaStep--;
+  if(kafkaStep===0){kDot.style.opacity='0';}
+  else if(kafkaStep<4){kDot.style.left=kPositions[kafkaStep-1];}
+  else if(kafkaStep===4){kN42.style.opacity='1';kN43.style.opacity='0';}
 }
 function resetKafka(){
   kafkaStep=0;
   kDot.style.transition='none';kDot.style.opacity='0';kDot.style.left='0%';
   kN42.style.opacity='1';kN43.style.opacity='0';
+  kLeftSteps.forEach(s=>s.classList.remove('visible'));
   requestAnimationFrame(()=>kDot.style.transition='');
 }
 
-// Journey step animation — slide 4 is index 3 (0-based)
-const JOURNEY_IDX=3;
-const journeySteps=Array.from(document.querySelectorAll('#s4 .step-anim'));
-let journeyStep=0;
-function stepJourney(){
-  if(journeyStep<journeySteps.length){
-    journeySteps[journeyStep].classList.add('visible');
-    journeyStep++;
-  }
-}
-function resetJourney(){
-  journeyStep=0;
-  journeySteps.forEach(s=>s.classList.remove('visible'));
-}
-
-// Metrics step animation — slide 6 is index 5 (0-based)
-const METRICS_IDX=5;
-const metricsGroups=[
-  Array.from(document.querySelectorAll('#s6 .s6g1')),
-  Array.from(document.querySelectorAll('#s6 .s6g2')),
-  Array.from(document.querySelectorAll('#s6 .s6g3')),
-  Array.from(document.querySelectorAll('#s6 .s6g4')),
-  [document.querySelector('#s6 .s6card')],
-];
-let metricsStep=0;
-function stepMetrics(){
-  if(metricsStep<metricsGroups.length){
-    metricsGroups[metricsStep].forEach(el=>el.classList.add('visible'));
-    metricsStep++;
-  }
-}
-function resetMetrics(){
-  metricsStep=0;
-  metricsGroups.flat().forEach(el=>el.classList.remove('visible'));
-}
-
+// ── NAVIGATION ───────────────────────────────────────────────
 function goForward(){
-  if(cur===KAFKA_IDX&&kafkaStep<5){stepKafka();}
-  else if(cur===JOURNEY_IDX&&journeyStep<journeySteps.length){stepJourney();}
-  else if(cur===METRICS_IDX&&metricsStep<metricsGroups.length){stepMetrics();}
-  else{go(1);}
+  if(cur===KAFKA_IDX&&kafkaStep<5)stepKafka();
+  else if(canFwd(cur))doFwd(cur);
+  else go(1);
+}
+function goBackward(){
+  if(cur===KAFKA_IDX&&kafkaStep>0)stepKafkaBack();
+  else if(canBk(cur))doBk(cur);
+  else go(-1);
 }
 
 document.addEventListener('keydown',e=>{
   if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goForward();}
-  else if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();go(-1);}
+  else if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();goBackward();}
 });
 let tx=0;
 document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0)goForward();else go(-1);}});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0)goForward();else goBackward();}});
 syncUI();
 </script>
 </body>
