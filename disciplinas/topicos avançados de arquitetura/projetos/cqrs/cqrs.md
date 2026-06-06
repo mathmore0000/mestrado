@@ -9,7 +9,7 @@
 
 ## Contexto e Motivação
 
-### Ato I — O Sonho
+### O Sonho
 
 Jorge é um desenvolvedor que usa IA generativa para acelerar sua produtividade. Em um fim de semana, ele decide tirar do papel uma ideia: criar uma rede social focada em comunidades de nicho — um espaço autêntico para o público jovem.
 
@@ -19,7 +19,7 @@ A estratégia é simples: construir rápido, publicar cedo, validar com usuário
 
 Frontend em React, backend em Node.js, PostgreSQL em terceira forma normal. Roda na máquina local. Funciona.
 
-### Ato II — A Realidade
+### A Realidade
 
 Jorge publica o MVP. Compartilha com amigos, grupos de tecnologia e comunidades de desenvolvedores. O feedback inicial valida o conceito.
 
@@ -30,7 +30,7 @@ Duas semanas depois, os primeiros 100 usuários aparecem. No primeiro mês, o bo
 
 O backend escala sem dificuldade — é só adicionar containers. Jorge respira aliviado.
 
-### Ato III — A Crise
+### A Crise
 
 Três meses depois. O app tem 10.000 usuários ativos. Os primeiros sinais de instabilidade aparecem. Notificações de erro acordam Jorge de madrugada.
 
@@ -86,7 +86,7 @@ Mayer, M. (2006). *Improving User Experience Through Browser Responsiveness*. Ap
 
 ## O Que é CQRS
 
-### Ato IV — A Solução
+### A Solução
 
 Jorge propõe reprojetar a arquitetura separando os caminhos de leitura e escrita. O padrão que formaliza essa separação é o CQRS.
 
