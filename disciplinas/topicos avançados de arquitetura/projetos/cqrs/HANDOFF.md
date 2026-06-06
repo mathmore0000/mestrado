@@ -43,11 +43,6 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 
 ## O que ainda falta
 
-### 1. Animação CSS do fluxo Kafka (slide 11)
-Upgrade da lista estática para keyframe CSS auto-play ao entrar no slide, executa uma vez.
-
-**Spec:** `[Write Service] → [Kafka] → [Consumer] → [Read DB]`, pacote viaja com atraso de 0.8s entre nós, `likes_count: 42 → 43` aparece no Read DB.
-
 ### 2. Verificações manuais antes da apresentação
 
 > ⚠ **VERIFICAÇÃO MANUAL NECESSÁRIA @lucas**
@@ -69,11 +64,16 @@ Upgrade da lista estática para keyframe CSS auto-play ao entrar no slide, execu
 ## O que foi feito nesta sessão (2026-06-06)
 
 - ✓ **TV Full HD layout** — `html { font-size: clamp(15px,1.3vw,22px) }` + todas as caps de clamp() tipográficos aumentadas
-- ✓ **Diagramas de arquitetura** — 3 imagens em `assets/`; slide 2 com imagem real do MVP; slide 6 com diagrama SEM CQRS; novo slide 8 com diagrama COM CQRS (total: 16 slides)
+- ✓ **Diagramas de arquitetura** — 3 imagens em `assets/`; slide 2 MVP; slide 3 SEM CQRS; novo slide 8 COM CQRS (total: 16 slides)
+- ✓ **Slide reorder** — "Como construiriam?" movido para S3 (entre Conheçam Jorge e A Jornada)
+- ✓ **Métricas impacto financeiro** — Gartner $5,6k/min + ratio 89%/11% leituras/escritas adicionados
+- ✓ **Animações reveal** — todas auditadas; S6 métricas em stagger individual
+- ✓ **Animação Kafka step-by-step** — S11: cada → avança um nó, 5º → troca contador 42→43, 6º → navega
 - ✓ **Disclaimer de IA** — slide 16 (Obrigado)
 - ✓ **Remove "Atos"** — cqrs.md e presentation.html
 - ✓ **Dynamo/DynamoDB** — corrigido em cqrs.md e slide 15
 - ✓ **Brewer (2000) órfão** — removido das Referências
+- ✓ **Stonebraker** — substituído por Kleppmann (2017, cap. 3); "réplicas de leitura" recebeu citação
 
 ---
 
@@ -91,6 +91,7 @@ Upgrade da lista estática para keyframe CSS auto-play ao entrar no slide, execu
   - Indústria: qualificado como "princípios relacionados, não CQRS formal"
 - **Dual write + transactional outbox:** incluído explicitamente
 - **Animações:** `.reveal` com delays `.d1`–`.d9`, disparam ao entrar no slide
+- **Step animation (S11 Kafka):** JS step counter + CSS transitions; `goForward()` intercepta navegação; padrão reutilizável — ver SESSION_NOTES.md
 
 ---
 
