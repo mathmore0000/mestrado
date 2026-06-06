@@ -181,15 +181,15 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
   box-shadow:0 0 8px rgba(218,41,28,.55);opacity:0}
 .kflow-n43{opacity:0;color:var(--pos);font-weight:700}
 
-.slide.on .kflow-dot{
+.kflow.kflow-play .kflow-dot{
   animation:kfdot 4s ease-in-out forwards;
-  animation-delay:.9s}
-.slide.on .kflow-n42{
+  animation-delay:.1s}
+.kflow.kflow-play .kflow-n42{
   animation:kfold .25s forwards;
-  animation-delay:5.2s}
-.slide.on .kflow-n43{
+  animation-delay:4.4s}
+.kflow.kflow-play .kflow-n43{
   animation:kfnew .25s forwards;
-  animation-delay:5.2s}
+  animation-delay:4.4s}
 
 @keyframes kfdot{
   0%  {left:0%;  opacity:0}
@@ -773,7 +773,7 @@ LIMIT 20;</div>
   <button class="nb" id="bp" onclick="go(-1)" disabled>&#8249;</button>
   <div id="dots"></div>
   <span id="ctr">1 / 15</span>
-  <button class="nb" id="bn" onclick="go(1)">&#8250;</button>
+  <button class="nb" id="bn" onclick="goForward()">&#8250;</button>
 </nav>
 
 <script>
@@ -811,13 +811,32 @@ function goTo(idx){
   }));
 }
 function go(d){goTo(cur+d);}
+
+// Kafka animation — slide 11 is index 10 (0-based)
+const KAFKA_IDX=10;
+const kflowEl=document.getElementById('s11').querySelector('.kflow');
+let kafkaPlayed=false;
+function playKafka(){kafkaPlayed=true;kflowEl.classList.add('kflow-play');}
+function resetKafka(){kafkaPlayed=false;kflowEl.classList.remove('kflow-play');}
+
+// Reset animation when leaving slide 11
+const _origGoTo=goTo;
+function goTo(idx){
+  if(!busy&&idx!==cur&&cur===KAFKA_IDX)resetKafka();
+  _origGoTo(idx);
+}
+
+function goForward(){
+  if(cur===KAFKA_IDX&&!kafkaPlayed){playKafka();}else{go(1);}
+}
+
 document.addEventListener('keydown',e=>{
-  if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();go(1);}
+  if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();goForward();}
   else if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();go(-1);}
 });
 let tx=0;
 document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
-document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0)goForward();else go(-1);}});
 syncUI();
 </script>
 </body>
