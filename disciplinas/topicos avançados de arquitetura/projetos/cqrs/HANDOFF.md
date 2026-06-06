@@ -104,6 +104,7 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 - ✓ **N=17**, KAFKA_IDX=11; todos os índices JS atualizados
 - ✓ **Slide srefs** — 24 referências com ✅/❌; 21 verificadas, 3 pendentes (@lucas): Crunkilton, Izrailevsky & Meshenberg, Lerner
 - ✓ **check-doc 4ª rodada** — sem novos blockers; mesmo estado das pendências manuais
+- ✓ **Mouse navigation** — clique esquerdo no slide → goForward(); clique direito → goBackward() (context menu suprimido)
 
 ---
 
@@ -121,6 +122,7 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
   - Indústria: qualificado como "princípios relacionados, não CQRS formal"
 - **Dual write + transactional outbox:** incluído explicitamente
 - **Animações:** `.reveal` com delays `.d1`–`.d9`, disparam ao entrar no slide
+- **Mouse navigation:** clique esquerdo = goForward(), clique direito = goBackward() — #deck-level, não interfere em #nav
 - **Step animation:** sistema genérico `data-group` + `buildSteps()`; `goForward()` / `goBackward()` despacham para slide correto; Kafka (S11) permanece handler especial sincronizando dot + left steps — ver SESSION_NOTES.md
 - **Slide smono:** slide dedicado ao monolito (id="smono"), entre s3 e s4
 - **Slide srefs:** referências verificadas (id="srefs"), entre s15 e s16; N=18, KAFKA_IDX=11

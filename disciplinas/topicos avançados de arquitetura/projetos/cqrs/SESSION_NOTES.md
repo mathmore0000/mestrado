@@ -177,6 +177,18 @@ function resetKafka() {
 | 16 | srefs | Referências |
 | 17 | s16 | Obrigado |
 
+## Mouse navigation (✓ implemented)
+
+```javascript
+// Left click anywhere on slide → forward; right click → backward
+document.getElementById('deck').addEventListener('click', () => goForward());
+document.getElementById('deck').addEventListener('contextmenu', e => { e.preventDefault(); goBackward(); });
+```
+
+`#nav` is outside `#deck` in the DOM — clicks on buttons/dots don't bubble through and are unaffected.
+
+---
+
 ## How to resume
 
 1. Read `HANDOFF.md` for current state and todo list.

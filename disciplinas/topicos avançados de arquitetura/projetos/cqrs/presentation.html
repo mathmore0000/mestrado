@@ -921,6 +921,8 @@ document.addEventListener('keydown',e=>{
 let tx=0;
 document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
 document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50){if(dx<0)goForward();else goBackward();}});
+document.getElementById('deck').addEventListener('click',()=>goForward());
+document.getElementById('deck').addEventListener('contextmenu',e=>{e.preventDefault();goBackward();});
 syncUI();
 </script>
 </body>
