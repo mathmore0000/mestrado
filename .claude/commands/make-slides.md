@@ -53,14 +53,14 @@ The vibe changes **only** the CSS palette, spacing scale, and content tone. The 
 ```
 - Light background — projector-safe, prints cleanly
 - Fonts: Outfit (headings), Inter (body), JetBrains Mono (code) via Google Fonts
-- Fixed 1920×1080 stage scaled to viewport via JS (no responsive reflow)
+- Responsive layout using `clamp()` and `vw`/`vh` — no fixed stage, no JS scaling
 - Headings and nav in `--primary` (navy); accent rule in `--acc1` (red)
 - Code blocks use a dark terminal bg (`#0f1724`) for contrast against the light slide
 - Dense layouts, 2-column grids preferred, `.tbl` used freely
 - No decorative emoji in slide body
 - Eyebrow tags are noun phrases in light gray uppercase
-- Cover: white card centered on a subtle navy-to-paper gradient
-- Stage scaling JS must be included: scales `.deck-stage` (1920×1080) to fit viewport
+- Cover and thank-you slides: subtle navy-to-paper gradient background
+- Nav bar: white/translucent with navy text and red+blue progress gradient
 
 ### acadêmico
 ```css

@@ -8,203 +8,261 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* ── TOKENS ─────────────────────────────────────────────────── */
-:root {
-  --bg:       #f7f8fa;
-  --slide-bg: #fcfcfd;
-  --primary:  #0f2d59;
-  --red:      #da291c;
-  --blue:     #2563eb;
-  --text:     #0f172a;
-  --muted:    #334155;
-  --light:    #64748b;
-  --border:   rgba(15,32,66,.12);
-  --card:     rgba(255,255,255,.94);
-  --shadow:   0 2px 16px rgba(15,32,66,.08);
-  --pos:      #16a34a;
-  --neg:      #dc2626;
-  --ff-head:  'Outfit', sans-serif;
-  --ff-body:  'Inter', sans-serif;
-  --ff-code:  'JetBrains Mono', monospace;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f7f8fa;--sur:rgba(255,255,255,.95);--bdr:rgba(15,32,66,.11);
+  --primary:#0f2d59;--red:#da291c;--blue:#2563eb;
+  --tx:#0f172a;--mt:#334155;--dm:#64748b;
+  --pos:#16a34a;--neg:#dc2626;
+  --shadow:0 2px 14px rgba(15,32,66,.07);
+  --ff-head:'Outfit',sans-serif;--ff-body:'Inter',sans-serif;--ff-code:'JetBrains Mono',monospace;
 }
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);
+  font-family:var(--ff-body);color:var(--tx);-webkit-font-smoothing:antialiased}
+#deck{position:relative;width:100%;height:100%;overflow:hidden}
 
-/* ── RESET + STAGE ──────────────────────────────────────────── */
-*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
-html,body { width:100%; height:100%; overflow:hidden; background:var(--bg); font-family:var(--ff-body); color:var(--text); -webkit-font-smoothing:antialiased; }
+/* ── SLIDES ─────────────────────────────────────────────────── */
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;padding:48px 68px 80px;
+  opacity:0;pointer-events:none;will-change:transform,opacity;background:var(--bg)}
+.slide.on{opacity:1;pointer-events:auto}
 
-.deck-viewport { position:fixed; inset:0; overflow:hidden; background:var(--bg); }
-.deck-stage    { position:absolute; left:0; top:0; width:1920px; height:1080px; overflow:hidden; transform-origin:0 0; }
+/* ── REVEAL ANIMATIONS ──────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(18px);
+  transition:opacity .5s ease,transform .5s ease}
+.slide.on .reveal{opacity:1;transform:translateY(0)}
+.slide.on .d1{transition-delay:.07s}
+.slide.on .d2{transition-delay:.16s}
+.slide.on .d3{transition-delay:.25s}
+.slide.on .d4{transition-delay:.34s}
+.slide.on .d5{transition-delay:.43s}
+.slide.on .d6{transition-delay:.52s}
+.slide.on .d7{transition-delay:.61s}
+.slide.on .d8{transition-delay:.70s}
+.slide.on .d9{transition-delay:.79s}
 
-.slide {
-  position:absolute; inset:0; width:1920px; height:1080px;
-  overflow:hidden; display:block;
-  visibility:hidden; opacity:0; pointer-events:none;
-  background:var(--slide-bg);
-  transition: opacity .38s ease;
-}
-.slide.active { visibility:visible; opacity:1; pointer-events:auto; z-index:1; }
+/* ── PROGRESS + NAV ─────────────────────────────────────────── */
+#prog{position:fixed;top:0;left:0;right:0;height:3px;background:rgba(15,32,66,.08);z-index:999}
+#progf{height:100%;background:linear-gradient(90deg,var(--red),var(--blue));
+  border-radius:0 2px 2px 0;transition:width .4s ease}
+#nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:13px;z-index:999;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--bdr);border-radius:100px;padding:7px 16px;
+  box-shadow:0 4px 20px rgba(15,32,66,.1)}
+.nb{width:30px;height:30px;border-radius:50%;border:1px solid var(--bdr);
+  background:var(--sur);color:var(--primary);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:17px;line-height:1;
+  transition:background .2s,border-color .2s,transform .1s;user-select:none}
+.nb:hover:not(:disabled){background:var(--primary);border-color:var(--primary);color:#fff;transform:scale(1.06)}
+.nb:active:not(:disabled){transform:scale(.94)}
+.nb:disabled{opacity:.22;cursor:default}
+#dots{display:flex;gap:5px;align-items:center}
+.dot{width:6px;height:6px;border-radius:3px;background:rgba(15,32,66,.2);cursor:pointer;transition:all .28s}
+.dot.on{background:var(--primary);width:17px}
+#ctr{font-size:11px;color:var(--dm);font-variant-numeric:tabular-nums;min-width:34px;font-family:var(--ff-code)}
+#hint{position:fixed;top:14px;right:18px;font-size:11px;color:var(--dm);
+  display:flex;gap:5px;align-items:center;pointer-events:none}
+.key{border:1px solid rgba(15,32,66,.2);border-radius:4px;padding:1px 5px;font-size:10px;color:var(--dm)}
 
-/* ── REVEAL ANIMATION ───────────────────────────────────────── */
-.reveal { opacity:0; transform:translateY(14px); transition:opacity .4s ease, transform .4s ease; }
-.slide.active .reveal                 { opacity:1; transform:translateY(0); }
-.slide.active .reveal.d1 { transition-delay:.06s; }
-.slide.active .reveal.d2 { transition-delay:.14s; }
-.slide.active .reveal.d3 { transition-delay:.22s; }
-.slide.active .reveal.d4 { transition-delay:.30s; }
-.slide.active .reveal.d5 { transition-delay:.38s; }
-.slide.active .reveal.d6 { transition-delay:.46s; }
-.slide.active .reveal.d7 { transition-delay:.54s; }
-.slide.active .reveal.d8 { transition-delay:.62s; }
-.slide.active .reveal.d9 { transition-delay:.70s; }
-
-@media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.2s !important; } }
-
-/* ── LAYOUT HELPERS ─────────────────────────────────────────── */
-.si          { position:absolute; inset:0; display:flex; flex-direction:column; padding:60px 76px 90px; }
-.si.center   { align-items:center; justify-content:center; text-align:center; }
-.g2          { display:grid; grid-template-columns:1fr 1fr; gap:44px; flex:1; align-items:start; margin-top:32px; }
-.g3          { display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px; flex:1; align-items:start; margin-top:32px; }
-.col         { display:flex; flex-direction:column; gap:20px; }
-.footer      { margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; }
-.slide-no    { font-family:var(--ff-code); font-size:22px; color:var(--light); letter-spacing:.04em; }
-
-/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
-.eye         { font-family:var(--ff-head); font-size:13px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--light); margin-bottom:10px; }
-h1           { font-family:var(--ff-head); font-size:64px; font-weight:800; line-height:1.06; color:var(--primary); letter-spacing:-.02em; }
-h2           { font-family:var(--ff-head); font-size:40px; font-weight:700; line-height:1.1;  color:var(--primary); }
-h3           { font-family:var(--ff-head); font-size:24px; font-weight:600; line-height:1.2;  color:var(--primary); }
-h4           { font-family:var(--ff-head); font-size:18px; font-weight:600; color:var(--primary); margin-bottom:6px; }
-p,li         { font-family:var(--ff-body); font-size:17px; line-height:1.6; color:var(--muted); }
-small        { font-size:14px; color:var(--light); }
-.tiny        { font-size:13px; color:var(--light); }
-code         { font-family:var(--ff-code); font-size:.88em; color:var(--blue); background:rgba(37,99,235,.08); padding:1px 6px; border-radius:4px; }
+/* ── TYPE ───────────────────────────────────────────────────── */
+.eye{font-family:var(--ff-head);font-size:clamp(.65rem,.75vw,.72rem);font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--dm);margin-bottom:9px}
+h1{font-family:var(--ff-head);font-size:clamp(2.2rem,3.8vw,3.4rem);font-weight:800;
+  line-height:1.08;color:var(--primary);letter-spacing:-.02em}
+h2{font-family:var(--ff-head);font-size:clamp(1.4rem,2.4vw,2.1rem);font-weight:700;
+  line-height:1.15;color:var(--primary)}
+h3{font-family:var(--ff-head);font-size:clamp(1rem,1.55vw,1.25rem);font-weight:600;
+  line-height:1.25;color:var(--primary)}
+h4{font-family:var(--ff-head);font-size:clamp(.85rem,1.1vw,1rem);font-weight:600;
+  color:var(--primary);margin-bottom:5px}
+p{font-size:clamp(.78rem,1vw,.9rem);line-height:1.7;color:var(--mt)}
+code{font-family:var(--ff-code);font-size:.85em;color:var(--blue);
+  background:rgba(37,99,235,.09);padding:1px 5px;border-radius:4px}
 
 /* ── RULE ───────────────────────────────────────────────────── */
-.rule        { width:56px; height:4px; background:var(--red); border-radius:2px; margin:14px 0 24px; flex-shrink:0; }
-.rule.center { margin-left:auto; margin-right:auto; }
+.rule{width:48px;height:3px;background:var(--red);border-radius:2px;margin:10px 0 18px;flex-shrink:0}
+
+/* ── LAYOUT ─────────────────────────────────────────────────── */
+.w{width:100%;max-width:1060px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%}
 
 /* ── CARDS ──────────────────────────────────────────────────── */
-.card        { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px 32px; box-shadow:var(--shadow); }
-.card.blue   { border-left:4px solid var(--blue);  background:rgba(37,99,235,.04); }
-.card.red    { border-left:4px solid var(--red);   background:rgba(218,41,28,.04); }
-.card.green  { border-left:4px solid var(--pos);   background:rgba(22,163,74,.04); }
-.card.navy   { border-left:4px solid var(--primary); background:rgba(15,45,89,.04); }
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:13px;padding:22px;box-shadow:var(--shadow)}
+.card.blue{border-left:3px solid var(--blue);background:rgba(37,99,235,.04)}
+.card.red{border-left:3px solid var(--red);background:rgba(218,41,28,.04)}
+.card.green{border-left:3px solid var(--pos);background:rgba(22,163,74,.04)}
+.card.navy{border-left:3px solid var(--primary);background:rgba(15,45,89,.04)}
+.card.warn{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.25)}
 
 /* ── PILLS ──────────────────────────────────────────────────── */
-.pill        { display:inline-flex; align-items:center; padding:4px 12px; border-radius:999px; font-size:13px; font-weight:600; font-family:var(--ff-head); }
-.pill.blue   { background:rgba(37,99,235,.1);   color:var(--blue);    border:1px solid rgba(37,99,235,.25); }
-.pill.green  { background:rgba(22,163,74,.1);   color:var(--pos);     border:1px solid rgba(22,163,74,.25); }
-.pill.red    { background:rgba(218,41,28,.1);   color:var(--red);     border:1px solid rgba(218,41,28,.25); }
-.pill.navy   { background:rgba(15,45,89,.08);   color:var(--primary); border:1px solid rgba(15,45,89,.18); }
+.pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--ff-head)}
+.pb{background:rgba(15,45,89,.08);color:var(--primary);border:1px solid rgba(15,45,89,.18)}
+.pg{background:rgba(22,163,74,.1);color:var(--pos);border:1px solid rgba(22,163,74,.25)}
+.pr{background:rgba(218,41,28,.1);color:var(--red);border:1px solid rgba(218,41,28,.25)}
+.pbl{background:rgba(37,99,235,.1);color:var(--blue);border:1px solid rgba(37,99,235,.25)}
 
-/* ── CODE BLOCKS ────────────────────────────────────────────── */
-.code        { background:#0f1724; border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:22px 26px; font-family:var(--ff-code); font-size:14px; color:#7dd3fc; line-height:1.72; white-space:pre; overflow-x:auto; }
-.code.sm     { font-size:12px; }
+/* ── CODE ───────────────────────────────────────────────────── */
+.pbox{background:#0f1724;border:1px solid rgba(255,255,255,.06);border-radius:9px;
+  padding:16px;font-family:var(--ff-code);font-size:clamp(9px,.92vw,11px);
+  color:#7dd3fc;line-height:1.75;white-space:pre;overflow-x:auto}
 
 /* ── STEPS ──────────────────────────────────────────────────── */
-.steps       { display:flex; flex-direction:column; gap:16px; }
-.step        { display:flex; gap:16px; align-items:flex-start; }
-.sn          { width:28px; height:28px; border-radius:50%; background:var(--primary); color:#fff; font-family:var(--ff-head); font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
-.sn.g        { background:var(--pos); }
-.sn.r        { background:var(--red); }
-.sb h4       { margin-bottom:4px; }
+.steps{display:flex;flex-direction:column;gap:13px;width:100%}
+.step{display:flex;gap:13px;align-items:flex-start}
+.sn{width:25px;height:25px;border-radius:50%;background:var(--primary);color:#fff;
+  font-family:var(--ff-head);font-size:11px;font-weight:700;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:2px}
+.sn.g{background:var(--pos)}.sn.r{background:var(--red)}
+.sb h4{font-size:clamp(.8rem,1.05vw,.9rem);margin-bottom:2px}
+.sb p{font-size:clamp(.72rem,.92vw,.82rem)}
 
 /* ── TABLE ──────────────────────────────────────────────────── */
-.tbl         { width:100%; border-collapse:collapse; }
-.tbl th      { padding:10px 16px; text-align:left; font-size:12px; font-family:var(--ff-head); font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--light); border-bottom:2px solid var(--border); }
-.tbl td      { padding:13px 16px; font-size:15px; border-bottom:1px solid var(--border); color:var(--muted); }
-.tbl tr:last-child td { border-bottom:none; }
-.win         { color:var(--pos); font-weight:700; }
-.lose        { color:var(--neg); }
-.num         { color:var(--primary); font-weight:700; }
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{padding:9px 14px;text-align:left;font-family:var(--ff-head);font-size:11px;
+  text-transform:uppercase;letter-spacing:.07em;color:var(--dm);border-bottom:1px solid var(--bdr)}
+.tbl td{padding:11px 14px;font-size:13px;border-bottom:1px solid rgba(15,32,66,.06);color:var(--mt)}
+.tbl tr:last-child td{border-bottom:none}
+.win{color:var(--pos);font-weight:700}.lose{color:var(--neg)}.num{color:var(--primary);font-weight:700}
 
-/* ── METRIC STRIP ───────────────────────────────────────────── */
-.mstrip      { display:flex; gap:48px; align-items:center; justify-content:center; flex-wrap:wrap; }
-.mitem       { text-align:center; }
-.mval        { font-family:var(--ff-head); font-size:52px; font-weight:800; line-height:1; color:var(--primary); margin-bottom:6px; }
-.mval.red    { color:var(--red); }
-.mlbl        { font-size:14px; color:var(--muted); }
-.msrc        { font-size:12px; color:var(--light); margin-top:4px; }
-.msep        { width:1px; height:56px; background:var(--border); }
+/* ── METRICS ────────────────────────────────────────────────── */
+.mstrip{display:flex;gap:28px;align-items:center;justify-content:center;flex-wrap:wrap}
+.mitem{text-align:center}
+.mval{font-family:var(--ff-head);font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:800;
+  line-height:1;margin-bottom:2px;color:var(--primary)}
+.mval.red{color:var(--red)}
+.mlbl{font-size:10px;color:var(--mt);text-transform:uppercase;letter-spacing:.07em}
+.msrc{font-size:10px;color:var(--dm);margin-top:3px}
+.msep{width:1px;height:48px;background:var(--bdr)}
 
-/* ── LIST ───────────────────────────────────────────────────── */
-ul.lst       { list-style:none; display:flex; flex-direction:column; gap:12px; }
-ul.lst li    { display:flex; gap:10px; font-size:17px; color:var(--muted); line-height:1.55; }
-ul.lst li::before { content:'→'; color:var(--blue); font-weight:700; flex-shrink:0; font-family:var(--ff-head); }
+/* ── LISTS ──────────────────────────────────────────────────── */
+ul.lst{list-style:none;display:flex;flex-direction:column;gap:9px}
+ul.lst li{display:flex;gap:8px;font-size:clamp(.76rem,.98vw,.86rem);color:var(--mt);line-height:1.55}
+ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;font-family:var(--ff-head)}
 
-/* ── PROGRESS BAR ───────────────────────────────────────────── */
-#prog        { position:fixed; top:0; left:0; right:0; height:3px; background:rgba(15,32,66,.08); z-index:999; }
-#progf       { height:100%; background:linear-gradient(90deg,var(--red),var(--blue)); border-radius:0 2px 2px 0; transition:width .4s ease; }
+/* ── MBOX ───────────────────────────────────────────────────── */
+.mbox{border-radius:13px;padding:18px;border:1px solid var(--bdr)}
+.mbox.a{background:rgba(37,99,235,.05);border-color:rgba(37,99,235,.22)}
+.mbox.b{background:rgba(218,41,28,.05);border-color:rgba(218,41,28,.22)}
 
-/* ── NAV ────────────────────────────────────────────────────── */
-#nav         { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:12px; z-index:1000; background:rgba(255,255,255,.95); backdrop-filter:blur(12px); border:1px solid var(--border); border-radius:999px; padding:7px 16px; box-shadow:0 4px 20px rgba(15,32,66,.12); }
-.nb          { width:32px; height:32px; border-radius:50%; border:1px solid var(--border); background:transparent; color:var(--primary); cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:18px; transition:background .18s, transform .1s; }
-.nb:hover:not(:disabled) { background:var(--primary); color:#fff; transform:scale(1.06); }
-.nb:active:not(:disabled){ transform:scale(.93); }
-.nb:disabled { opacity:.25; cursor:default; }
-#dots        { display:flex; gap:6px; align-items:center; }
-.dot         { width:7px; height:7px; border-radius:4px; background:rgba(15,32,66,.18); cursor:pointer; transition:all .26s; }
-.dot.on      { background:var(--primary); width:20px; }
-#ctr         { font-family:var(--ff-code); font-size:12px; color:var(--light); min-width:38px; text-align:center; }
+/* ── CMETA ──────────────────────────────────────────────────── */
+.cmeta{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap}
+.cm{font-size:13px;color:var(--mt);font-family:var(--ff-head)}
+.cdot{width:3px;height:3px;border-radius:50%;background:var(--bdr)}
 
-/* ── COVER SPECIFIC ─────────────────────────────────────────── */
-.cover-card  { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:56px 72px; box-shadow:0 8px 40px rgba(15,32,66,.12); max-width:960px; }
+/* ── STACK LAYERS (slide Como vocês) ────────────────────────── */
+.stack{display:flex;flex-direction:column;gap:8px}
+.layer{background:var(--sur);border:1px solid var(--bdr);border-radius:10px;
+  padding:12px 16px;display:flex;align-items:center;gap:12px}
+.badge{font-family:var(--ff-head);font-size:11px;font-weight:700;
+  background:var(--primary);color:#fff;border-radius:6px;padding:3px 8px;flex-shrink:0}
 </style>
 </head>
 <body>
 <div id="prog"><div id="progf"></div></div>
-
-<div class="deck-viewport">
-<div class="deck-stage">
+<div id="hint"><span class="key">←</span><span class="key">→</span>&nbsp;← → navegar · Space avançar</div>
+<div id="deck">
 
 <!-- ══ S1 · CAPA ══════════════════════════════════════════════ -->
-<div class="slide active" id="s1" style="background:linear-gradient(160deg,#f0f4fa 0%,#f7f8fa 60%,#eef2f8 100%)">
-  <div class="si center">
-    <div class="cover-card">
-      <p class="eye reveal d1">Universidade Presbiteriana Mackenzie</p>
-      <p class="reveal d2" style="font-family:var(--ff-head);font-size:15px;color:var(--light);margin-bottom:20px">Programa de Pós-Graduação em Computação Aplicada</p>
-      <h1 class="reveal d3" style="font-size:72px;margin-bottom:14px">CQRS</h1>
-      <div class="rule center reveal d4"></div>
-      <h2 class="reveal d5" style="font-size:26px;font-weight:500;color:var(--muted);margin-bottom:8px">Separando Leituras e Escritas para Escalar sem Quebrar o Banco</h2>
-      <p class="reveal d6" style="font-size:16px;color:var(--light);margin-bottom:32px">Sincronização de dados desnormalizados em sistemas distribuídos orientados a eventos</p>
-      <div class="reveal d7" style="display:flex;gap:20px;justify-content:center;align-items:center;border-top:1px solid var(--border);padding-top:24px">
-        <span style="font-size:16px;color:var(--muted);font-family:var(--ff-head)">Matheus Moreira</span>
-        <span style="color:var(--border);font-size:20px">·</span>
-        <span style="font-size:16px;color:var(--muted);font-family:var(--ff-head)">Lucas Aguiar</span>
-        <span style="color:var(--border);font-size:20px">·</span>
-        <span style="font-size:16px;color:var(--light);font-family:var(--ff-head)">Tópicos Avançados de Arquitetura · 2026</span>
+<div class="slide on" id="s1" style="text-align:center;
+  background:linear-gradient(150deg,#f0f4fa 0%,#f7f8fa 55%,#edf1f9 100%)">
+  <div class="w">
+    <p class="eye reveal d1">Universidade Presbiteriana Mackenzie</p>
+    <p class="reveal d2" style="font-family:var(--ff-head);font-size:clamp(.75rem,.9vw,.85rem);color:var(--dm);margin-bottom:18px">Programa de Pós-Graduação em Computação Aplicada</p>
+    <h1 class="reveal d3" style="font-size:clamp(3rem,5.5vw,5rem);margin-bottom:10px">CQRS</h1>
+    <div class="rule reveal d4" style="margin:16px auto 20px"></div>
+    <h2 class="reveal d5" style="font-weight:500;color:var(--mt);font-size:clamp(1rem,1.8vw,1.4rem);margin-bottom:6px">
+      Separando Leituras e Escritas para Escalar sem Quebrar o Banco
+    </h2>
+    <p class="reveal d6" style="font-size:clamp(.72rem,.9vw,.82rem);color:var(--dm);margin-bottom:28px">
+      Sincronização de dados desnormalizados em sistemas distribuídos orientados a eventos
+    </p>
+    <div class="cmeta reveal d7" style="border-top:1px solid var(--bdr);padding-top:22px">
+      <span class="cm">Matheus Moreira</span>
+      <div class="cdot"></div>
+      <span class="cm">Lucas Aguiar</span>
+      <div class="cdot"></div>
+      <span class="cm" style="color:var(--dm)">Tópicos Avançados de Arquitetura · 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S2 · CONHEÇAM JORGE ═════════════════════════════════════ -->
+<div class="slide" id="s2">
+  <div class="w g2" style="align-items:center">
+    <div>
+      <div class="eye reveal d1">Estudo de Caso Simulado</div>
+      <h2 class="reveal d2">Conheçam Jorge</h2>
+      <div class="rule reveal d3"></div>
+      <div class="card reveal d4" style="margin-bottom:14px">
+        <p>Jorge é um desenvolvedor que usa inteligência artificial todos os dias para ser mais produtivo. Em um fim de semana, ele decide transformar uma ideia ambiciosa em realidade: criar uma <strong style="color:var(--primary)">rede social centrada em comunidades de nicho</strong>, pensada para o público jovem.</p>
+      </div>
+      <div class="card navy reveal d5" style="margin-bottom:14px">
+        <p>A estratégia de Jorge é simples: construir rápido, publicar cedo e validar a ideia com usuários reais antes de investir em infraestrutura robusta. Esse comportamento é típico de startups e MVPs — e amplificado pelo Vibe Coding.</p>
+      </div>
+      <blockquote class="reveal d6" style="border-left:3px solid var(--red);padding:12px 16px;
+        background:rgba(218,41,28,.04);border-radius:0 10px 10px 0;
+        font-style:italic;font-size:clamp(.8rem,1vw,.9rem);color:var(--mt)">
+        "Com vibe coding, devo montar ainda neste fim de semana uma versão testável para alguns usuários e validar minha ideia."
+      </blockquote>
+    </div>
+    <div class="reveal d4" style="display:flex;flex-direction:column;gap:12px">
+      <!-- TODO: substituir pelo arquivo assets/Sistema vibe coded do George.png do projeto do Lucas -->
+      <div style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
+        padding:20px;box-shadow:var(--shadow);text-align:center">
+        <p class="eye" style="margin-bottom:12px">Figura 1 — MVP funcional</p>
+        <div style="background:var(--bg);border:1px solid var(--bdr);border-radius:10px;
+          padding:32px 20px;display:flex;flex-direction:column;gap:10px">
+          <div style="height:12px;background:rgba(15,45,89,.12);border-radius:6px;width:60%;margin:0 auto"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+            <div style="height:60px;background:rgba(15,45,89,.07);border-radius:8px;
+              display:flex;align-items:center;justify-content:center;
+              font-family:var(--ff-head);font-size:11px;color:var(--dm)">Comunidades</div>
+            <div style="height:60px;background:rgba(218,41,28,.07);border-radius:8px;
+              display:flex;align-items:center;justify-content:center;
+              font-family:var(--ff-head);font-size:11px;color:var(--dm)">Feed</div>
+            <div style="height:60px;background:rgba(37,99,235,.07);border-radius:8px;
+              display:flex;align-items:center;justify-content:center;
+              font-family:var(--ff-head);font-size:11px;color:var(--dm)">Perfil</div>
+            <div style="height:60px;background:rgba(22,163,74,.07);border-radius:8px;
+              display:flex;align-items:center;justify-content:center;
+              font-family:var(--ff-head);font-size:11px;color:var(--dm)">Explore</div>
+          </div>
+          <div style="height:8px;background:rgba(15,45,89,.06);border-radius:4px;margin-top:4px"></div>
+          <div style="height:8px;background:rgba(15,45,89,.04);border-radius:4px;width:70%"></div>
+        </div>
+        <p style="margin-top:10px;font-size:.72rem;color:var(--dm)">Construído em um fim de semana com IA generativa</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ S2 · A JORNADA DE JORGE ════════════════════════════════ -->
-<div class="slide" id="s2">
-  <div class="si">
-    <div>
-      <p class="eye reveal d1">Estudo de Caso</p>
-      <h2 class="reveal d2">A Jornada de Jorge</h2>
-      <div class="rule reveal d3"></div>
-    </div>
-    <div class="steps" style="flex:1">
+<!-- ══ S3 · A JORNADA DE JORGE ════════════════════════════════ -->
+<div class="slide" id="s3">
+  <div class="w">
+    <div class="eye reveal d1">Da Ideia ao Produto em Escala</div>
+    <h2 class="reveal d2">A Jornada de Jorge</h2>
+    <div class="rule reveal d3"></div>
+    <div class="steps">
       <div class="step reveal d3">
         <div class="sn">1</div>
         <div class="sb">
           <h4>Fim de semana — O MVP</h4>
-          <p>Jorge usa IA generativa e codifica uma rede social de comunidades de nicho em um fim de semana. React, Node.js, PostgreSQL normalizado. <em>"Se funcionar neste fim de semana, publico na segunda."</em></p>
+          <p>Jorge usa IA generativa e codifica uma rede social de comunidades de nicho. React, Node.js, PostgreSQL normalizado. <em>"Se funcionar neste fim de semana, publico na segunda."</em></p>
         </div>
       </div>
       <div class="step reveal d4">
         <div class="sn g">2</div>
         <div class="sb">
           <h4>Primeiro mês — Validação orgânica</h4>
-          <p>Os primeiros 100 usuários aparecem organicamente. Feedback positivo valida o conceito. <em>"Que app incrível! As comunidades de nicho foram uma sacada genial."</em></p>
+          <p>Os primeiros 100 usuários aparecem. Feedback positivo valida o conceito. <em>"Que app incrível! As comunidades de nicho foram uma sacada genial."</em></p>
         </div>
       </div>
       <div class="step reveal d5">
         <div class="sn g">3</div>
         <div class="sb">
-          <h4>Dois meses — Tração</h4>
+          <h4>Dois meses — Tração orgânica</h4>
           <p>Tráfego cresce 500%. O backend acompanha sem dificuldade — é só adicionar containers. Jorge respira aliviado.</p>
         </div>
       </div>
@@ -216,35 +274,31 @@ ul.lst li::before { content:'→'; color:var(--blue); font-weight:700; flex-shri
         </div>
       </div>
     </div>
-    <div class="footer"><small class="tiny">A escalada do sucesso expõe a fragilidade da arquitetura inicial.</small><div class="slide-no">02</div></div>
   </div>
 </div>
 
-<!-- ══ S3 · A CRISE ════════════════════════════════════════════ -->
-<div class="slide" id="s3">
-  <div class="si">
+<!-- ══ S4 · A CRISE ════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+  <div class="w g2" style="align-items:start">
     <div>
-      <p class="eye reveal d1">Diagnóstico</p>
+      <div class="eye reveal d1">Diagnóstico</div>
       <h2 class="reveal d2">A Crise</h2>
       <div class="rule reveal d3"></div>
-    </div>
-    <div class="g2">
-      <div class="col">
-        <p class="reveal d3" style="margin-bottom:4px">Jorge analisa os logs do PostgreSQL <span class="tiny">(cenário ilustrativo)</span>:</p>
-        <div class="code reveal d4">$ top -p $(pgrep postgres)
+      <p class="reveal d3" style="margin-bottom:10px">Jorge analisa os logs do PostgreSQL <span style="font-size:.72rem;color:var(--dm)">(cenário ilustrativo)</span>:</p>
+      <div class="pbox reveal d4">$ top -p $(pgrep postgres)
 → CPU: 98.7% · I/O Wait: 64%
 
 SELECT count(*) FROM pg_stat_activity
   WHERE wait_event_type = 'Lock';
 → 342 conexões aguardando locks</div>
-        <div class="card red reveal d5">
-          <h4>Diagnóstico final</h4>
-          <p>O backend foi escalado horizontalmente — o banco não. <strong style="color:var(--neg)">O problema não é de código. É arquitetural.</strong> Operações de leitura e escrita competem pelo mesmo recurso físico.</p>
-        </div>
+      <div class="card red reveal d5" style="margin-top:14px">
+        <h4>Diagnóstico final</h4>
+        <p>O backend foi escalado horizontalmente — o banco não. <strong style="color:var(--neg)">O problema não é de código. É arquitetural.</strong> Leituras e escritas competem pelo mesmo recurso físico.</p>
       </div>
-      <div class="col">
-        <p class="eye reveal d3" style="margin-top:0">A query culpada — executada a cada abertura do feed</p>
-        <div class="code sm reveal d4">SELECT p.id, p.content, p.created_at,
+    </div>
+    <div>
+      <p class="eye reveal d3" style="margin-top:2px">A query culpada — executada a cada abertura do feed</p>
+      <div class="pbox reveal d4" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content, p.created_at,
        u.name, u.avatar_url,
        COUNT(DISTINCT l.id) AS likes_count,
        COUNT(DISTINCT c.id) AS comments_count
@@ -258,29 +312,25 @@ WHERE p.author_id IN (
 )
 ORDER BY p.created_at DESC
 LIMIT 20;</div>
-        <div class="reveal d5" style="display:flex;gap:10px;flex-wrap:wrap">
-          <span class="pill red">4 JOINs</span>
-          <span class="pill red">2 COUNTs em runtime</span>
-          <span class="pill red">Subquery correlacionada</span>
-        </div>
+      <div class="reveal d5" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="pill pr">4 JOINs</span>
+        <span class="pill pr">2 COUNTs em runtime</span>
+        <span class="pill pr">Subquery correlacionada</span>
       </div>
     </div>
-    <div class="footer"><div></div><div class="slide-no">03</div></div>
   </div>
 </div>
 
-<!-- ══ S4 · CUSTO DA LATÊNCIA ══════════════════════════════════ -->
-<div class="slide" id="s4">
-  <div class="si">
-    <div>
-      <p class="eye reveal d1">Impacto Financeiro</p>
-      <h2 class="reveal d2">Arquitetura Vira Prejuízo</h2>
-      <div class="rule reveal d3"></div>
-    </div>
-    <div class="mstrip reveal d4" style="margin:40px 0">
+<!-- ══ S5 · CUSTO DA LATÊNCIA ══════════════════════════════════ -->
+<div class="slide" id="s5">
+  <div class="w">
+    <div class="eye reveal d1">Impacto Financeiro</div>
+    <h2 class="reveal d2">Arquitetura Vira Prejuízo</h2>
+    <div class="rule reveal d3"></div>
+    <div class="mstrip reveal d4" style="margin:24px 0 20px">
       <div class="mitem">
         <div class="mval red">−1%</div>
-        <div class="mlbl">receita por 100ms adicionais de latência</div>
+        <div class="mlbl">receita por 100ms adicionais</div>
         <div class="msrc">Linden, Amazon (2006)</div>
       </div>
       <div class="msep"></div>
@@ -292,76 +342,104 @@ LIMIT 20;</div>
       <div class="msep"></div>
       <div class="mitem">
         <div class="mval red">$72–99M</div>
-        <div class="mlbl">estimativa de perdas no Prime Day 2018</div>
+        <div class="mlbl">estimativa Prime Day 2018</div>
         <div class="msrc">Digital Commerce 360 (2018)</div>
       </div>
     </div>
-    <div class="card blue reveal d5" style="max-width:1100px;margin:0 auto">
+    <div class="card blue reveal d5">
       <p>Brutlag (2009) confirmou em estudo controlado que atrasos adicionais reduzem engajamento de forma mensurável. Latência não é só uma métrica de engenharia — é um risco direto de receita. <strong style="color:var(--primary)">Quando a arquitetura vira gargalo, o banco de dados vira prejuízo financeiro.</strong></p>
     </div>
-    <div class="footer"><div></div><div class="slide-no">04</div></div>
   </div>
 </div>
 
-<!-- ══ S5 · O PADRÃO CQRS ══════════════════════════════════════ -->
-<div class="slide" id="s5">
-  <div class="si">
+<!-- ══ S6 · COMO VOCÊS CONSTRUIRIAM? ══════════════════════════ -->
+<div class="slide" id="s6">
+  <div class="w g2" style="align-items:start">
     <div>
-      <p class="eye reveal d1">Padrão Arquitetural</p>
-      <h2 class="reveal d2">CQRS — Command Query Responsibility Segregation</h2>
+      <div class="eye reveal d1">Momento de Reflexão</div>
+      <h2 class="reveal d2">Como vocês construiriam a arquitetura desse sistema?</h2>
       <div class="rule reveal d3"></div>
+      <div class="card reveal d4" style="margin-bottom:12px">
+        <h4>Pausa para discussão</h4>
+        <p>Antes de revelar a escolha de Jorge, reflitam: quais tecnologias, padrões e decisões de banco de dados vocês adotariam para um MVP que precisa sair rápido?</p>
+      </div>
+      <div class="card warn reveal d5">
+        <p><strong style="color:var(--primary)">Software não nasce robusto — e isso é aceitável.</strong> A engenharia precisa projetar para o cenário atual e evoluir conforme o sistema cresce. Um MVP superengenheirado pode comprometer a validação do produto.</p>
+      </div>
     </div>
-    <div class="g2">
-      <div class="col">
-        <p class="reveal d3"><strong style="color:var(--primary)">CQRS</strong> separa operações de <span style="color:var(--red);font-weight:600">escrita</span> (Commands) das de <span style="color:var(--blue);font-weight:600">leitura</span> (Queries) em modelos, armazenamentos e pipelines distintos (Young, 2010; Fowler, 2011).</p>
-        <p class="reveal d4">Extensão arquitetural do CQS de Meyer (1988): um método é ou um <em>command</em> (muda estado, não retorna) ou uma <em>query</em> (retorna valor, não muda estado) — nunca os dois.</p>
-        <div class="card navy reveal d5">
-          <h4>Ato IV — A proposta de Jorge</h4>
-          <p>Separar fisicamente os caminhos de leitura e escrita. A latência do feed cai de <strong style="color:var(--neg)">1.200ms</strong> para menos de <strong style="color:var(--pos)">50ms</strong>. Os bloqueios desaparecem.</p>
+    <div>
+      <div class="eye reveal d6" style="margin-top:2px">A escolha de Jorge</div>
+      <h3 class="reveal d6" style="margin-bottom:16px">Arquitetura Monolítica Clássica</h3>
+      <div class="stack reveal d7">
+        <div class="layer">
+          <span class="badge">Frontend</span>
+          <p style="font-size:.82rem">React (CSR) — consome APIs REST do backend</p>
+        </div>
+        <div class="layer">
+          <span class="badge">Backend</span>
+          <p style="font-size:.82rem">Node.js · Controller → Service → Repository</p>
+        </div>
+        <div class="layer">
+          <span class="badge">Banco</span>
+          <p style="font-size:.82rem">PostgreSQL em 3FN — normalizado, transações ACID</p>
         </div>
       </div>
-      <div class="col">
-        <p class="eye reveal d3" style="margin-top:0">Linha do tempo</p>
-        <table class="tbl reveal d4">
-          <thead><tr><th>Ano</th><th>Marco</th></tr></thead>
-          <tbody>
-            <tr><td class="num">1988</td><td>Bertrand Meyer — CQS em <em>Object-Oriented Software Construction</em></td></tr>
-            <tr><td class="num">2009</td><td>Udi Dahan — <em>Clarified CQRS</em>, aplicação em sistemas distribuídos</td></tr>
-            <tr><td class="num">2010</td><td>Greg Young — formaliza CQRS e integra ao Domain-Driven Design</td></tr>
-            <tr><td class="num">2011</td><td>Martin Fowler — análise definitiva em martinfowler.com</td></tr>
-          </tbody>
-        </table>
+      <div class="reveal d8" style="margin-top:14px;padding:12px 16px;
+        background:rgba(15,45,89,.04);border-left:3px solid var(--primary);border-radius:0 8px 8px 0">
+        <p style="font-size:.78rem">Escolha correta para um MVP. O problema aparece quando leituras e escritas começam a competir pelo mesmo banco — o que veremos a seguir.</p>
       </div>
     </div>
-    <div class="footer"><div></div><div class="slide-no">05</div></div>
   </div>
 </div>
 
-<!-- ══ S6 · WRITE vs READ MODEL ════════════════════════════════ -->
-<div class="slide" id="s6">
-  <div class="si">
+<!-- ══ S7 · O PADRÃO CQRS ══════════════════════════════════════ -->
+<div class="slide" id="s7">
+  <div class="w g2" style="align-items:start">
     <div>
-      <p class="eye reveal d1">Separação de Modelos</p>
-      <h2 class="reveal d2">Command Side vs Query Side</h2>
+      <div class="eye reveal d1">Padrão Arquitetural</div>
+      <h2 class="reveal d2">CQRS</h2>
       <div class="rule reveal d3"></div>
+      <p class="reveal d3" style="margin-bottom:12px"><strong style="color:var(--primary)">Command Query Responsibility Segregation</strong> — separa operações de <span style="color:var(--red);font-weight:600">escrita</span> (Commands) das de <span style="color:var(--blue);font-weight:600">leitura</span> (Queries) em modelos, armazenamentos e pipelines distintos (Young, 2010; Fowler, 2011).</p>
+      <p class="reveal d4" style="margin-bottom:14px">Extensão arquitetural do CQS de Meyer (1988): um método é ou um <em>command</em> (muda estado, não retorna) ou uma <em>query</em> (retorna valor, não muda estado) — nunca os dois.</p>
+      <div class="card navy reveal d5">
+        <h4>Ato IV — A proposta de Jorge</h4>
+        <p>Separar fisicamente os caminhos de leitura e escrita. A latência do feed cai de <strong style="color:var(--neg)">1.200ms</strong> para menos de <strong style="color:var(--pos)">50ms</strong>. Os bloqueios desaparecem.</p>
+      </div>
     </div>
-    <div class="g2" style="align-items:stretch">
-      <div class="card reveal d3" style="border-top:4px solid var(--red)">
-        <p class="eye" style="color:var(--red)">Command Side — Escrita</p>
-        <h3 style="margin-bottom:12px">Modelo Normalizado · ACID</h3>
-        <p style="margin-bottom:16px">Consistente, voltado para <strong style="color:var(--primary)">integridade</strong>. Cada fato armazenado em um único lugar — anomalias de atualização impossíveis (Codd, 1970; Haerder &amp; Reuter, 1983).</p>
-        <div class="code sm">users    (id, name, avatar_url)
+    <div>
+      <p class="eye reveal d3" style="margin-top:2px">Linha do tempo</p>
+      <table class="tbl reveal d4">
+        <thead><tr><th>Ano</th><th>Marco</th></tr></thead>
+        <tbody>
+          <tr><td class="num">1988</td><td>Bertrand Meyer — CQS em <em>Object-Oriented Software Construction</em></td></tr>
+          <tr><td class="num">2009</td><td>Udi Dahan — <em>Clarified CQRS</em>, aplicação em sistemas distribuídos</td></tr>
+          <tr><td class="num">2010</td><td>Greg Young — formaliza CQRS e integra ao Domain-Driven Design</td></tr>
+          <tr><td class="num">2011</td><td>Martin Fowler — análise definitiva em martinfowler.com</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S8 · WRITE vs READ MODEL ════════════════════════════════ -->
+<div class="slide" id="s8">
+  <div class="w g2" style="align-items:start">
+    <div class="mbox b">
+      <div class="eye reveal d1">Command Side</div>
+      <h3 class="reveal d2" style="color:var(--red);margin-bottom:10px">Modelo de Escrita · ACID</h3>
+      <p class="reveal d3" style="margin-bottom:12px">Normalizado, consistente, voltado para <strong style="color:var(--tx)">integridade</strong>. Cada fato em um único lugar — anomalias de atualização impossíveis (Codd, 1970; Haerder &amp; Reuter, 1983).</p>
+      <div class="pbox reveal d4" style="font-size:clamp(8px,.85vw,10.5px)">users    (id, name, avatar_url)
 posts    (id, author_id, content)
 likes    (id, user_id, post_id)
 follows  (id, follower_id, followed_id)
 comments (id, post_id, author_id, content)</div>
-        <p style="margin-top:12px;font-size:14px">Se o nome de um usuário muda, só <code>users</code> precisa ser atualizada.</p>
-      </div>
-      <div class="card reveal d4" style="border-top:4px solid var(--blue)">
-        <p class="eye" style="color:var(--blue)">Query Side — Leitura</p>
-        <h3 style="margin-bottom:12px">Modelo Desnormalizado · BASE</h3>
-        <p style="margin-bottom:16px">Otimizado para <strong style="color:var(--primary)">velocidade</strong>. BASE — Basically Available, Soft State, Eventual Consistency (Pritchett, 2008). Sem JOINs em runtime.</p>
-        <div class="code sm">feed_items (
+      <p class="reveal d5" style="margin-top:10px;font-size:.78rem">Se o nome de um usuário muda, só <code>users</code> precisa ser atualizada.</p>
+    </div>
+    <div class="mbox a">
+      <div class="eye reveal d1">Query Side</div>
+      <h3 class="reveal d2" style="color:var(--blue);margin-bottom:10px">Modelo de Leitura · BASE</h3>
+      <p class="reveal d3" style="margin-bottom:12px">Desnormalizado, otimizado para <strong style="color:var(--tx)">velocidade</strong>. BASE — Basically Available, Soft State, Eventual Consistency (Pritchett, 2008). Sem JOINs em runtime.</p>
+      <div class="pbox reveal d4" style="font-size:clamp(8px,.85vw,10.5px)">feed_items (
   user_id,
   post_id, content, created_at,
   author_name,    -- ← de users
@@ -369,25 +447,18 @@ comments (id, post_id, author_id, content)</div>
   likes_count,    -- ← pré-computado
   comments_count  -- ← pré-computado
 )</div>
-        <p style="margin-top:12px;font-size:14px">Custo deslocado da leitura para a escrita (Kleppmann, 2017).</p>
-      </div>
+      <p class="reveal d5" style="margin-top:10px;font-size:.78rem">Custo deslocado da leitura para a escrita (Kleppmann, 2017).</p>
     </div>
-    <div class="footer"><div></div><div class="slide-no">06</div></div>
   </div>
 </div>
 
-<!-- ══ S7 · ANTES E DEPOIS ═════════════════════════════════════ -->
-<div class="slide" id="s7">
-  <div class="si">
+<!-- ══ S9 · ANTES E DEPOIS ═════════════════════════════════════ -->
+<div class="slide" id="s9">
+  <div class="w g2" style="align-items:start">
     <div>
-      <p class="eye reveal d1">Resultado Prático</p>
-      <h2 class="reveal d2">A Query Antes e Depois do CQRS</h2>
-      <div class="rule reveal d3"></div>
-    </div>
-    <div class="g2">
-      <div class="col">
-        <p class="eye reveal d3" style="color:var(--neg);letter-spacing:.1em">Antes — normalizado</p>
-        <div class="code sm reveal d4">SELECT p.id, p.content,
+      <div class="eye reveal d1" style="color:var(--neg)">Antes — normalizado</div>
+      <h3 class="reveal d2" style="color:var(--neg);margin-bottom:12px">Query com JOINs</h3>
+      <div class="pbox reveal d3" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content,
        u.name, u.avatar_url,
        COUNT(DISTINCT l.id) AS likes_count,
        COUNT(DISTINCT c.id) AS comments_count
@@ -400,156 +471,137 @@ WHERE p.author_id IN (
   WHERE follower_id = :user_id
 )
 ORDER BY p.created_at DESC LIMIT 20;</div>
-        <div class="reveal d5" style="display:flex;gap:10px;flex-wrap:wrap">
-          <span class="pill red">4 JOINs</span><span class="pill red">2 COUNTs</span><span class="pill red">Subquery</span>
-        </div>
+      <div class="reveal d4" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="pill pr">4 JOINs</span><span class="pill pr">2 COUNTs</span><span class="pill pr">Subquery</span>
       </div>
-      <div class="col">
-        <p class="eye reveal d3" style="color:var(--pos);letter-spacing:.1em">Depois — desnormalizado</p>
-        <div class="code reveal d4">SELECT * FROM feed_items
+    </div>
+    <div>
+      <div class="eye reveal d1" style="color:var(--pos)">Depois — desnormalizado</div>
+      <h3 class="reveal d2" style="color:var(--pos);margin-bottom:12px">Query Simples</h3>
+      <div class="pbox reveal d3">SELECT * FROM feed_items
 WHERE user_id = :user_id
 ORDER BY created_at DESC
 LIMIT 20;</div>
-        <div class="reveal d5" style="display:flex;gap:10px;flex-wrap:wrap">
-          <span class="pill green">0 JOINs</span><span class="pill green">dados pré-computados</span><span class="pill green">index scan</span>
-        </div>
-        <div class="card green reveal d6">
-          <p>O custo de computação foi deslocado do momento da <strong style="color:var(--neg)">leitura</strong> para o momento da <strong style="color:var(--pos)">escrita</strong> — que ocorre muito menos vezes em sistemas de feed (Stonebraker et al., 2007).</p>
-        </div>
+      <div class="reveal d4" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <span class="pill pg">0 JOINs</span><span class="pill pg">dados pré-computados</span><span class="pill pg">index scan</span>
+      </div>
+      <div class="card green reveal d5" style="margin-top:14px">
+        <p>O custo foi deslocado do momento da <strong style="color:var(--neg)">leitura</strong> para o momento da <strong style="color:var(--pos)">escrita</strong> — que ocorre muito menos vezes em sistemas de feed (Stonebraker et al., 2007).</p>
       </div>
     </div>
-    <div class="footer"><div></div><div class="slide-no">07</div></div>
   </div>
 </div>
 
-<!-- ══ S8 · DOMAIN EVENTS + DUAL WRITE ════════════════════════ -->
-<div class="slide" id="s8">
-  <div class="si">
+<!-- ══ S10 · DOMAIN EVENTS + DUAL WRITE ═══════════════════════ -->
+<div class="slide" id="s10">
+  <div class="w g2" style="align-items:start">
     <div>
-      <p class="eye reveal d1">Sincronização</p>
+      <div class="eye reveal d1">Sincronização</div>
       <h2 class="reveal d2">Domain Events + Kafka</h2>
       <div class="rule reveal d3"></div>
-    </div>
-    <div class="g2">
-      <div class="col">
-        <p class="reveal d3"><strong style="color:var(--primary)">Domain events</strong> representam algo que aconteceu no domínio (Evans, 2003). Cada mudança de estado gera um evento publicado no broker que atualiza o modelo de leitura de forma assíncrona.</p>
-        <div class="steps reveal d4">
-          <div class="step"><div class="sn">1</div><div class="sb"><h4>Comando chega</h4><p>Usuário curte → <code>CurtirPost</code> chega ao serviço de escrita</p></div></div>
-          <div class="step"><div class="sn">2</div><div class="sb"><h4>Escrita atômica</h4><p>Persiste em <code>likes</code> + grava evento em <code>outbox</code> — mesma transação</p></div></div>
-          <div class="step"><div class="sn">3</div><div class="sb"><h4>Publicação confiável</h4><p>Relay lê <code>outbox</code> e publica <code>PostCurtido</code> no Kafka</p></div></div>
-          <div class="step"><div class="sn g">4</div><div class="sb"><h4>Consumidor atualiza</h4><p>Consumer incrementa <code>likes_count</code> no modelo de leitura</p></div></div>
-          <div class="step"><div class="sn g">5</div><div class="sb"><h4>Feed reflete</h4><p>Próxima leitura retorna o valor atualizado</p></div></div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card red reveal d4">
-          <h4>⚠ O problema do dual write</h4>
-          <p>Entre os passos 2 e 3 existe uma janela de falha: se o processo crashar após gravar em <code>likes</code> mas antes de publicar o evento, o modelo de leitura nunca é atualizado — divergência silenciosa e permanente.</p>
-        </div>
-        <div class="card green reveal d5">
-          <h4>✓ Transactional Outbox</h4>
-          <p>Gravar o evento na tabela <code>outbox</code> na mesma transação da escrita principal. Um relay separado publica de forma idempotente. A atomicidade garante que escrita e evento ocorrem juntos ou não ocorrem (Richardson, 2018).</p>
-        </div>
-        <p class="reveal d6" style="font-size:14px;color:var(--light)">Mesmo padrão para <code>PostPublicado</code>, <code>PostComentado</code>, <code>UsuárioSeguido</code>.</p>
+      <p class="reveal d3" style="margin-bottom:14px"><strong style="color:var(--primary)">Domain events</strong> representam algo que aconteceu no domínio (Evans, 2003). Cada mudança de estado gera um evento publicado no broker que atualiza o modelo de leitura de forma assíncrona.</p>
+      <div class="steps">
+        <div class="step reveal d4"><div class="sn">1</div><div class="sb"><h4>Comando chega</h4><p>Usuário curte → <code>CurtirPost</code> chega ao serviço de escrita</p></div></div>
+        <div class="step reveal d5"><div class="sn">2</div><div class="sb"><h4>Escrita atômica</h4><p>Persiste em <code>likes</code> + grava evento em <code>outbox</code> — mesma transação</p></div></div>
+        <div class="step reveal d6"><div class="sn">3</div><div class="sb"><h4>Publicação confiável</h4><p>Relay lê <code>outbox</code> e publica <code>PostCurtido</code> no Kafka</p></div></div>
+        <div class="step reveal d7"><div class="sn g">4</div><div class="sb"><h4>Consumidor atualiza</h4><p>Consumer incrementa <code>likes_count</code> no modelo de leitura</p></div></div>
+        <div class="step reveal d8"><div class="sn g">5</div><div class="sb"><h4>Feed reflete</h4><p>Próxima leitura retorna o valor atualizado</p></div></div>
       </div>
     </div>
-    <div class="footer"><div></div><div class="slide-no">08</div></div>
+    <div>
+      <div class="card red reveal d4" style="margin-bottom:14px">
+        <h4>⚠ O problema do dual write</h4>
+        <p>Se o processo crashar entre os passos 2 e 3, o modelo de leitura nunca é atualizado — divergência silenciosa e permanente entre os dois modelos.</p>
+      </div>
+      <div class="card green reveal d5">
+        <h4>✓ Transactional Outbox</h4>
+        <p>Gravar o evento na tabela <code>outbox</code> na mesma transação da escrita principal. Um relay separado publica de forma idempotente. Atomicidade garantida (Richardson, 2018).</p>
+      </div>
+      <p class="reveal d6" style="margin-top:12px;font-size:.75rem;color:var(--dm)">Mesmo padrão para <code>PostPublicado</code>, <code>PostComentado</code>, <code>UsuárioSeguido</code>.</p>
+    </div>
   </div>
 </div>
 
-<!-- ══ S9 · APACHE KAFKA ═══════════════════════════════════════ -->
-<div class="slide" id="s9">
-  <div class="si">
+<!-- ══ S11 · APACHE KAFKA ══════════════════════════════════════ -->
+<div class="slide" id="s11">
+  <div class="w g2" style="align-items:start">
     <div>
-      <p class="eye reveal d1">Infraestrutura de Eventos</p>
+      <div class="eye reveal d1">Infraestrutura de Eventos</div>
       <h2 class="reveal d2">Apache Kafka</h2>
       <div class="rule reveal d3"></div>
+      <p class="reveal d3" style="margin-bottom:14px">Plataforma de streaming distribuído baseada em <strong style="color:var(--primary)">log imutável e particionado</strong>. Mensagens persistidas em disco — não deletadas após consumo (Kreps et al., 2011).</p>
+      <ul class="lst reveal d4">
+        <li><strong style="color:var(--tx)">Múltiplos consumidores independentes:</strong> <code>PostCurtido</code> consumido simultaneamente por feed, notificações e analytics — sem coordenação</li>
+        <li><strong style="color:var(--tx)">Reprocessamento:</strong> consumidores releem eventos de qualquer offset — rebuild do modelo de leitura sem perda</li>
+        <li><strong style="color:var(--tx)">Ordenação por partição:</strong> eventos do mesmo <code>post_id</code> roteados para a mesma partição garantem ordem correta do <code>likes_count</code> (Narkhede et al., 2017)</li>
+      </ul>
     </div>
-    <div class="g2">
-      <div class="col">
-        <p class="reveal d3">Plataforma de streaming distribuído baseada em <strong style="color:var(--primary)">log imutável e particionado</strong>. Mensagens persistidas em disco — não deletadas após consumo (Kreps et al., 2011).</p>
-        <ul class="lst reveal d4">
-          <li><strong style="color:var(--primary)">Múltiplos consumidores independentes:</strong> <code>PostCurtido</code> consumido simultaneamente por feed, notificações e analytics — sem coordenação</li>
-          <li><strong style="color:var(--primary)">Reprocessamento:</strong> consumidores releem eventos de qualquer offset — rebuild do modelo de leitura sem perda</li>
-          <li><strong style="color:var(--primary)">Ordenação por partição:</strong> eventos do mesmo <code>post_id</code> roteados para a mesma partição garantem ordem correta do <code>likes_count</code> (Narkhede et al., 2017)</li>
-        </ul>
+    <div>
+      <p class="eye reveal d3" style="margin-top:2px">Garantias de entrega</p>
+      <div class="mbox a reveal d4" style="margin-bottom:12px">
+        <h4 style="color:var(--blue);margin-bottom:8px">At-least-once delivery</h4>
+        <p style="font-size:.8rem">O evento é entregue, mas pode ser entregue mais de uma vez em caso de falha. O consumidor deve ser <strong style="color:var(--tx)">idempotente</strong> — processar o mesmo evento duas vezes não deve alterar o resultado.</p>
+        <p style="font-size:.75rem;color:var(--dm);margin-top:8px">Implementação: registrar IDs de eventos processados antes de aplicar o UPDATE.</p>
       </div>
-      <div class="col">
-        <p class="eye reveal d3" style="margin-top:0">Garantias de entrega</p>
-        <div class="card blue reveal d4">
-          <h4>At-least-once delivery</h4>
-          <p style="margin-bottom:10px">O evento é entregue, mas pode ser entregue mais de uma vez em caso de falha. O consumidor deve ser <strong style="color:var(--primary)">idempotente</strong> — processar o mesmo evento duas vezes não deve alterar o resultado.</p>
-          <p style="font-size:14px;color:var(--light)">Implementação: registrar IDs de eventos processados antes de aplicar o UPDATE.</p>
-        </div>
-        <div class="card reveal d5" style="border-left:4px solid var(--primary)">
-          <h4>Exactly-once delivery</h4>
-          <p>Garantia mais forte, custo de performance maior. Suportado via transações e <em>idempotent producers</em> desde Kafka 0.11 (Narkhede et al., 2017).</p>
-        </div>
+      <div class="mbox b reveal d5">
+        <h4 style="color:var(--red);margin-bottom:8px">Exactly-once delivery</h4>
+        <p style="font-size:.8rem">Garantia mais forte, custo de performance maior. Suportado via transações e <em>idempotent producers</em> desde Kafka 0.11 (Narkhede et al., 2017).</p>
       </div>
     </div>
-    <div class="footer"><div></div><div class="slide-no">09</div></div>
   </div>
 </div>
 
-<!-- ══ S10 · CONSISTÊNCIA EVENTUAL ════════════════════════════ -->
-<div class="slide" id="s10">
-  <div class="si">
+<!-- ══ S12 · CONSISTÊNCIA EVENTUAL ════════════════════════════ -->
+<div class="slide" id="s12">
+  <div class="w g2" style="align-items:start">
     <div>
-      <p class="eye reveal d1">Teoria</p>
-      <h2 class="reveal d2">Consistência Eventual e o Teorema CAP</h2>
+      <div class="eye reveal d1">Teoria</div>
+      <h2 class="reveal d2">Consistência Eventual</h2>
       <div class="rule reveal d3"></div>
-    </div>
-    <div class="g2">
-      <div class="col">
-        <p class="reveal d3">O Teorema CAP (Brewer, 2012; Gilbert &amp; Lynch, 2002) estabelece que sistemas distribuídos não podem garantir simultaneamente <strong style="color:var(--primary)">C</strong>onsistência, <strong style="color:var(--primary)">D</strong>isponibilidade e tolerância a <strong style="color:var(--primary)">P</strong>artições. Brewer revisitou o teorema em 2012, reconhecendo que a escolha raramente é binária — trata-se de gerenciar partições quando elas ocorrem.</p>
-        <p class="reveal d4">A sincronização assíncrona do CQRS implica uma escolha <strong style="color:var(--blue)">AP</strong>: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).</p>
-        <div class="card blue reveal d5">
-          <h4>Analogia cotidiana</h4>
-          <p>Quando você posta uma foto no Instagram, seus seguidores não a veem no mesmo milissegundo — o feed converge em segundos. Isso é consistência eventual — e é aceitável para interações humanas (Vogels, 2009).</p>
-        </div>
-      </div>
-      <div class="col">
-        <p class="eye reveal d3" style="margin-top:0">ACID vs BASE</p>
-        <table class="tbl reveal d4">
-          <thead><tr><th>Propriedade</th><th style="color:var(--red)">ACID — Escrita</th><th style="color:var(--blue)">BASE — Leitura</th></tr></thead>
-          <tbody>
-            <tr><td>Consistência</td><td class="win">Forte, imediata</td><td style="color:var(--muted)">Eventual</td></tr>
-            <tr><td>Disponibilidade</td><td class="lose">Limitada (locks)</td><td class="win">Alta</td></tr>
-            <tr><td>Estado</td><td class="win">Sempre válido</td><td style="color:var(--muted)">Soft state</td></tr>
-            <tr><td>Prioridade</td><td style="color:var(--red);font-weight:600">Integridade</td><td style="color:var(--blue);font-weight:600">Velocidade</td></tr>
-          </tbody>
-        </table>
-        <p class="tiny reveal d5" style="margin-top:8px">Haerder &amp; Reuter (1983) · Pritchett (2008) · Vogels (2009)</p>
+      <p class="reveal d3" style="margin-bottom:12px">O Teorema CAP (Brewer, 2012; Gilbert &amp; Lynch, 2002) estabelece que sistemas distribuídos não podem garantir simultaneamente <strong style="color:var(--primary)">C</strong>onsistência, <strong style="color:var(--primary)">D</strong>isponibilidade e tolerância a <strong style="color:var(--primary)">P</strong>artições. Brewer revisitou o teorema em 2012 reconhecendo que a escolha raramente é binária.</p>
+      <p class="reveal d4" style="margin-bottom:14px">A sincronização assíncrona do CQRS implica uma escolha <strong style="color:var(--blue)">AP</strong>: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).</p>
+      <div class="card blue reveal d5">
+        <h4>Analogia cotidiana</h4>
+        <p>Quando você posta uma foto no Instagram, seus seguidores não a veem no mesmo milissegundo — o feed converge em segundos. Isso é consistência eventual — aceitável para interações humanas (Vogels, 2009).</p>
       </div>
     </div>
-    <div class="footer"><div></div><div class="slide-no">10</div></div>
+    <div>
+      <p class="eye reveal d3" style="margin-top:2px">ACID vs BASE</p>
+      <table class="tbl reveal d4">
+        <thead><tr><th>Propriedade</th><th style="color:var(--red)">ACID — Escrita</th><th style="color:var(--blue)">BASE — Leitura</th></tr></thead>
+        <tbody>
+          <tr><td>Consistência</td><td class="win">Forte, imediata</td><td style="color:var(--mt)">Eventual</td></tr>
+          <tr><td>Disponibilidade</td><td class="lose">Limitada (locks)</td><td class="win">Alta</td></tr>
+          <tr><td>Estado</td><td class="win">Sempre válido</td><td style="color:var(--mt)">Soft state</td></tr>
+          <tr><td>Prioridade</td><td style="color:var(--red);font-weight:600">Integridade</td><td style="color:var(--blue);font-weight:600">Velocidade</td></tr>
+        </tbody>
+      </table>
+      <p class="reveal d5" style="margin-top:10px;font-size:.72rem;color:var(--dm)">Haerder &amp; Reuter (1983) · Pritchett (2008) · Vogels (2009)</p>
+    </div>
   </div>
 </div>
 
-<!-- ══ S11 · EVENT SOURCING ════════════════════════════════════ -->
-<div class="slide" id="s11">
-  <div class="si">
+<!-- ══ S13 · EVENT SOURCING ════════════════════════════════════ -->
+<div class="slide" id="s13">
+  <div class="w g2" style="align-items:start">
     <div>
-      <p class="eye reveal d1">Padrão Complementar</p>
+      <div class="eye reveal d1">Padrão Complementar</div>
       <h2 class="reveal d2">Event Sourcing</h2>
       <div class="rule reveal d3"></div>
-    </div>
-    <div class="g2">
-      <div class="col">
-        <p class="reveal d3">Em vez de armazenar o <strong style="color:var(--primary)">estado atual</strong>, armazena a <strong style="color:var(--primary)">sequência de eventos</strong> que o produziu. O estado é derivado reproduzindo os eventos em ordem (Young, 2010; Fowler, 2005).</p>
-        <ul class="lst reveal d4">
-          <li><strong style="color:var(--primary)">Auditoria completa:</strong> cada mudança é um fato histórico imutável</li>
-          <li><strong style="color:var(--primary)">Replay:</strong> modelo de leitura corrompido? Reproduz eventos desde o início</li>
-          <li><strong style="color:var(--primary)">Projeções múltiplas:</strong> diferentes modelos de leitura do mesmo log</li>
-        </ul>
-        <div class="card navy reveal d5">
-          <h4>CQRS + Event Sourcing</h4>
-          <p>Os eventos do <em>event store</em> são os mesmos domain events que alimentam o Kafka e atualizam o modelo de leitura — combinação natural. Replay tem custo operacional significativo em históricos longos.</p>
-        </div>
+      <p class="reveal d3" style="margin-bottom:14px">Em vez de armazenar o <strong style="color:var(--tx)">estado atual</strong>, armazena a <strong style="color:var(--primary)">sequência de eventos</strong> que o produziu. O estado é derivado reproduzindo os eventos em ordem (Young, 2010; Fowler, 2005).</p>
+      <ul class="lst reveal d4" style="margin-bottom:14px">
+        <li><strong style="color:var(--tx)">Auditoria completa:</strong> cada mudança é um fato histórico imutável</li>
+        <li><strong style="color:var(--tx)">Replay:</strong> modelo de leitura corrompido? Reproduz eventos desde o início</li>
+        <li><strong style="color:var(--tx)">Projeções múltiplas:</strong> diferentes modelos de leitura do mesmo log</li>
+      </ul>
+      <div class="card navy reveal d5">
+        <h4>CQRS + Event Sourcing</h4>
+        <p>Os eventos do <em>event store</em> são os mesmos domain events que alimentam o Kafka e atualizam o modelo de leitura — combinação natural. Replay tem custo operacional significativo em históricos longos.</p>
       </div>
-      <div class="col">
-        <p class="eye reveal d3" style="margin-top:0">Event Store (append-only) — feed do Jorge</p>
-        <div class="code reveal d4">001 · UsuarioCriado
+    </div>
+    <div>
+      <p class="eye reveal d3" style="margin-top:2px">Event Store (append-only) — feed do Jorge</p>
+      <div class="pbox reveal d4">001 · UsuarioCriado
      { id: 42, nome: "Jorge" }
 
 002 · ComunidadeCriada
@@ -563,139 +615,129 @@ LIMIT 20;</div>
 
 005 · PostCurtido
      { postId: 101, userId: 99 }</div>
-        <p class="reveal d5" style="font-size:15px">O modelo de leitura é uma <strong style="color:var(--primary)">projeção</strong> derivada deste log. Qualquer visão pode ser reconstruída a partir dos eventos.</p>
-      </div>
+      <p class="reveal d5" style="margin-top:12px;font-size:.78rem">O modelo de leitura é uma <strong style="color:var(--primary)">projeção</strong> derivada deste log. Qualquer visão pode ser reconstruída a partir dos eventos.</p>
     </div>
-    <div class="footer"><div></div><div class="slide-no">11</div></div>
   </div>
 </div>
 
-<!-- ══ S12 · ADOÇÃO NA INDÚSTRIA ══════════════════════════════ -->
-<div class="slide" id="s12">
-  <div class="si">
-    <div>
-      <p class="eye reveal d1">Evidência Empírica</p>
-      <h2 class="reveal d2">Princípios Relacionados na Indústria</h2>
-      <div class="rule reveal d3"></div>
-      <p class="reveal d3" style="margin-bottom:0;font-size:15px;color:var(--light)">Estas empresas não descrevem suas soluções formalmente como CQRS. Representam, no entanto, a aplicação dos mesmos princípios: separação de responsabilidades, consistência eventual, logs e modelos otimizados para leitura.</p>
-    </div>
-    <div class="g3" style="margin-top:20px">
+<!-- ══ S14 · ADOÇÃO NA INDÚSTRIA ══════════════════════════════ -->
+<div class="slide" id="s14">
+  <div class="w">
+    <div class="eye reveal d1">Evidência Empírica</div>
+    <h2 class="reveal d2">Princípios Relacionados na Indústria</h2>
+    <div class="rule reveal d3"></div>
+    <p class="reveal d3" style="margin-bottom:16px;font-size:.8rem;color:var(--dm)">Estas empresas não descrevem suas soluções formalmente como CQRS — representam, no entanto, a aplicação dos mesmos princípios: separação de responsabilidades, consistência eventual, logs e modelos otimizados para leitura.</p>
+    <div class="g3">
       <div class="card reveal d4">
-        <span class="pill navy" style="margin-bottom:14px">Amazon · 2004–2007</span>
-        <h3 style="margin-bottom:10px">DynamoDB</h3>
-        <p style="margin-bottom:8px"><strong style="color:var(--neg)">Problema:</strong> banco Oracle centralizado com locks severos durante picos como Black Friday.</p>
-        <p style="margin-bottom:14px"><strong style="color:var(--pos)">Solução:</strong> separação completa de leitura/escrita com consistência eventual como premissa de design.</p>
-        <small>DeCandia et al., SOSP '07</small>
+        <span class="pill pb" style="margin-bottom:12px">Amazon · 2004–2007</span>
+        <h3 style="margin-bottom:8px">DynamoDB</h3>
+        <p style="margin-bottom:8px"><strong style="color:var(--neg)">Problema:</strong> banco Oracle com locks severos durante picos como Black Friday.</p>
+        <p style="margin-bottom:10px"><strong style="color:var(--pos)">Solução:</strong> separação completa de leitura/escrita com consistência eventual como premissa.</p>
+        <p style="font-size:.72rem;color:var(--dm)">DeCandia et al., SOSP '07</p>
       </div>
       <div class="card reveal d5">
-        <span class="pill navy" style="margin-bottom:14px">Netflix · 2009–2016</span>
-        <h3 style="margin-bottom:10px">Microserviços + CQRS</h3>
-        <p style="margin-bottom:8px"><strong style="color:var(--neg)">Problema:</strong> monólito Oracle não escalava globalmente. ACID gerava latência incompatível com novos mercados.</p>
-        <p style="margin-bottom:14px"><strong style="color:var(--pos)">Solução:</strong> Cassandra + Elasticsearch para leitura; MySQL particionado para escrita.</p>
-        <small>Izrailevsky &amp; Meshenberg, Netflix Tech Blog, 2016</small>
+        <span class="pill pb" style="margin-bottom:12px">Netflix · 2009–2016</span>
+        <h3 style="margin-bottom:8px">Microserviços + CQRS</h3>
+        <p style="margin-bottom:8px"><strong style="color:var(--neg)">Problema:</strong> monólito Oracle não escalava globalmente. ACID gerava latência incompatível.</p>
+        <p style="margin-bottom:10px"><strong style="color:var(--pos)">Solução:</strong> Cassandra + Elasticsearch para leitura; MySQL particionado para escrita.</p>
+        <p style="font-size:.72rem;color:var(--dm)">Izrailevsky &amp; Meshenberg, Netflix Tech Blog, 2016</p>
       </div>
       <div class="card reveal d6">
-        <span class="pill navy" style="margin-bottom:14px">Uber · 2014–2016</span>
-        <h3 style="margin-bottom:10px">Schemaless + Cassandra</h3>
+        <span class="pill pb" style="margin-bottom:12px">Uber · 2014–2016</span>
+        <h3 style="margin-bottom:8px">Schemaless + Cassandra</h3>
         <p style="margin-bottom:8px"><strong style="color:var(--neg)">Problema:</strong> contenção entre escritas (corridas) e leituras (ETA, tarifas) gerava timeouts.</p>
-        <p style="margin-bottom:14px"><strong style="color:var(--pos)">Solução:</strong> Schemaless (MySQL) para escritas e Cassandra para leituras, via log de eventos assíncronos.</p>
-        <small>Crunkilton et al., Uber Engineering Blog, 2016</small>
+        <p style="margin-bottom:10px"><strong style="color:var(--pos)">Solução:</strong> Schemaless (MySQL) para escritas e Cassandra para leituras, via log de eventos.</p>
+        <p style="font-size:.72rem;color:var(--dm)">Crunkilton et al., Uber Engineering Blog, 2016</p>
       </div>
-    </div>
-    <div class="footer"><div></div><div class="slide-no">12</div></div>
-  </div>
-</div>
-
-<!-- ══ S13 · OBRIGADO ══════════════════════════════════════════ -->
-<div class="slide" id="s13" style="background:linear-gradient(160deg,#f0f4fa 0%,#f7f8fa 60%,#eef2f8 100%)">
-  <div class="si center">
-    <div class="cover-card" style="max-width:1000px">
-      <p class="eye reveal d1">Encerramento</p>
-      <h1 class="reveal d2" style="font-size:64px;margin-bottom:14px">Obrigado!</h1>
-      <div class="rule center reveal d3"></div>
-      <div class="mstrip reveal d4" style="margin:28px 0;gap:36px">
-        <div class="mitem"><div class="mval" style="font-size:36px;color:var(--primary)">CQRS</div><div class="mlbl">separação de responsabilidades</div></div>
-        <div class="msep"></div>
-        <div class="mitem"><div class="mval" style="font-size:36px;color:var(--red)">Outbox</div><div class="mlbl">dual write resolvido</div></div>
-        <div class="msep"></div>
-        <div class="mitem"><div class="mval" style="font-size:36px;color:var(--blue)">BASE</div><div class="mlbl">consistência eventual</div></div>
-      </div>
-      <div class="reveal d5" style="border-top:1px solid var(--border);padding-top:24px;display:flex;gap:20px;justify-content:center;align-items:center">
-        <span style="font-size:16px;color:var(--muted);font-family:var(--ff-head)">Matheus Moreira</span>
-        <span style="color:var(--border);font-size:20px">·</span>
-        <span style="font-size:16px;color:var(--muted);font-family:var(--ff-head)">Lucas Aguiar</span>
-        <span style="color:var(--border);font-size:20px">·</span>
-        <span style="font-size:16px;color:var(--light);font-family:var(--ff-head)">Mackenzie · 2026</span>
-      </div>
-      <p class="reveal d6" style="font-size:13px;color:var(--light);margin-top:14px">Young (2010) · Fowler (2011) · Kleppmann (2017) · Pritchett (2008) · Gilbert &amp; Lynch (2002) · Brewer (2012) · Richardson (2018)</p>
     </div>
   </div>
 </div>
 
-</div><!-- .deck-stage -->
-</div><!-- .deck-viewport -->
+<!-- ══ S15 · OBRIGADO ══════════════════════════════════════════ -->
+<div class="slide" id="s15" style="text-align:center;
+  background:linear-gradient(150deg,#f0f4fa 0%,#f7f8fa 55%,#edf1f9 100%)">
+  <div class="w">
+    <div class="eye reveal d1">Encerramento</div>
+    <h1 class="reveal d2" style="margin-bottom:10px">Obrigado!</h1>
+    <div class="rule reveal d3" style="margin:16px auto 22px"></div>
+    <div class="mstrip reveal d4" style="margin-bottom:28px">
+      <div class="mitem">
+        <div class="mval" style="font-size:clamp(1.4rem,2.2vw,2rem)">CQRS</div>
+        <div class="mlbl">separação de responsabilidades</div>
+      </div>
+      <div class="msep"></div>
+      <div class="mitem">
+        <div class="mval red" style="font-size:clamp(1.4rem,2.2vw,2rem)">Outbox</div>
+        <div class="mlbl">dual write resolvido</div>
+      </div>
+      <div class="msep"></div>
+      <div class="mitem">
+        <div class="mval" style="font-size:clamp(1.4rem,2.2vw,2rem);color:var(--blue)">BASE</div>
+        <div class="mlbl">consistência eventual</div>
+      </div>
+    </div>
+    <div class="cmeta reveal d5" style="border-top:1px solid var(--bdr);padding-top:22px">
+      <span class="cm">Matheus Moreira</span>
+      <div class="cdot"></div>
+      <span class="cm">Lucas Aguiar</span>
+      <div class="cdot"></div>
+      <span class="cm" style="color:var(--dm)">Mackenzie · Tópicos Avançados de Arquitetura · 2026</span>
+    </div>
+    <p class="reveal d6" style="margin-top:16px;font-size:.72rem;color:var(--dm)">Young (2010) · Fowler (2011) · Kleppmann (2017) · Pritchett (2008) · Gilbert &amp; Lynch (2002) · Brewer (2012) · Richardson (2018)</p>
+  </div>
+</div>
 
-<!-- ══ NAV ═════════════════════════════════════════════════════ -->
-<div id="prog"><div id="progf" style="width:0%"></div></div>
+</div><!-- #deck -->
+
 <nav id="nav">
   <button class="nb" id="bp" onclick="go(-1)" disabled>&#8249;</button>
   <div id="dots"></div>
-  <span id="ctr">1 / 13</span>
+  <span id="ctr">1 / 15</span>
   <button class="nb" id="bn" onclick="go(1)">&#8250;</button>
 </nav>
 
 <script>
-// ── Stage scaling ─────────────────────────────────────────────
-const stage = document.querySelector('.deck-stage');
-function scaleStage() {
-  const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-  const tx = (window.innerWidth  - 1920 * s) / 2;
-  const ty = (window.innerHeight - 1080 * s) / 2;
-  stage.style.transform = `translate(${tx}px,${ty}px) scale(${s})`;
-}
-window.addEventListener('resize', scaleStage);
-scaleStage();
-
-// ── Navigation ────────────────────────────────────────────────
-const slides = Array.from(document.querySelectorAll('.slide'));
-const N = slides.length;
-let cur = 0, busy = false;
-
-const dotsEl = document.getElementById('dots');
-slides.forEach((_, i) => {
-  const d = document.createElement('div');
-  d.className = 'dot' + (i === 0 ? ' on' : '');
-  d.onclick = () => goTo(i);
+const N=15;let cur=0,busy=false;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<N;i++){
+  const d=document.createElement('div');
+  d.className='dot'+(i===0?' on':'');
+  d.onclick=()=>goTo(i);
   dotsEl.appendChild(d);
-});
-
-function goTo(idx) {
-  if (busy || idx === cur || idx < 0 || idx >= N) return;
-  busy = true;
-  slides[cur].classList.remove('active');
-  cur = idx;
-  slides[cur].classList.add('active');
-  syncUI();
-  setTimeout(() => { busy = false; }, 420);
 }
-function go(d) { goTo(cur + d); }
-
-function syncUI() {
-  document.getElementById('ctr').textContent = `${cur+1} / ${N}`;
-  document.getElementById('bp').disabled = cur === 0;
-  document.getElementById('bn').disabled = cur === N - 1;
-  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('on', i === cur));
-  document.getElementById('progf').style.width = (cur / (N - 1) * 100) + '%';
+function syncUI(){
+  document.getElementById('ctr').textContent=`${cur+1} / ${N}`;
+  document.getElementById('bp').disabled=cur===0;
+  document.getElementById('bn').disabled=cur===N-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  document.getElementById('progf').style.width=(cur/(N-1)*100)+'%';
 }
-
-document.addEventListener('keydown', e => {
-  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); go(1); }
-  else if (['ArrowLeft','ArrowUp'].includes(e.key))   { e.preventDefault(); go(-1); }
+function goTo(idx){
+  if(busy||idx===cur||idx<0||idx>=N)return;
+  busy=true;
+  const dir=idx>cur?1:-1;
+  const slides=document.querySelectorAll('.slide');
+  const from=slides[cur],to=slides[idx];
+  to.style.cssText='transition:none;transform:translateX('+dir*100+'%);opacity:1;pointer-events:none';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const T='transform .46s cubic-bezier(.4,0,.2,1),opacity .46s ease';
+    from.style.cssText='transition:'+T+';transform:translateX('+(-dir*100)+'%);opacity:0';
+    to.style.cssText='transition:'+T+';transform:translateX(0);opacity:1;pointer-events:none';
+    setTimeout(()=>{
+      from.classList.remove('on');from.style.cssText='';
+      to.classList.add('on');to.style.cssText='';
+      cur=idx;syncUI();busy=false;
+    },470);
+  }));
+}
+function go(d){goTo(cur+d);}
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();go(1);}
+  else if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();go(-1);}
 });
-let tx0 = 0;
-document.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
-document.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - tx0; if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1); });
-
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)go(dx<0?1:-1);});
 syncUI();
 </script>
 </body>
