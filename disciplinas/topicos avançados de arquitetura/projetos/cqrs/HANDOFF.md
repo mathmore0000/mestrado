@@ -43,35 +43,26 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 
 ## O que ainda falta
 
-### 1. Animações "surgir" nos slides
-Revisar todos os slides e aplicar animações `.reveal` nas partes que ainda não têm. Slide 11 (Kafka) já tem lista com reveals — avaliar upgrade para animação CSS keyframe de pacote viajando.
+### 1. Animação CSS do fluxo Kafka (slide 11)
+Upgrade da lista estática para keyframe CSS auto-play ao entrar no slide, executa uma vez.
 
-**Spec Kafka:** `[Write Service] → [Kafka] → [Consumer] → [Read DB]`, auto-play ao entrar, executa uma vez, `likes_count: 42 → 43`.
+**Spec:** `[Write Service] → [Kafka] → [Consumer] → [Read DB]`, pacote viaja com atraso de 0.8s entre nós, `likes_count: 42 → 43` aparece no Read DB.
 
-### 2. Reordenar slide "Como vocês construiriam?" (slide 6)
-Avaliar se faz mais sentido antes ou depois do slide de crise (slides 4/5). Decisão pendente.
+### 2. Verificações manuais antes da apresentação
 
-### 3. Métrica faltando no slide de impacto financeiro (slide 5)
-Identificar qual métrica está ausente e adicionar com referência acadêmica.
+> ⚠ **VERIFICAÇÃO MANUAL NECESSÁRIA @lucas**
+>
+> **Citação Netflix:** Izrailevsky & Meshenberg (2016) é sobre migração para a nuvem, não sobre arquitetura CQRS/Cassandra. Buscar no Netflix Tech Blog um post mais específico sobre arquitetura de dados (ex: "Scaling Netflix's Event Sourcing") ou substituir a referência por uma mais adequada em cqrs.md e no slide 15.
+>
+> **Autor Uber:** `Crunkilton, B. et al. (2016)` — confirmar nome correto do autor principal no Uber Engineering Blog antes da apresentação. URL: https://www.uber.com/en-BR/blog/engineering/
 
-### 4. Fixes restantes no cqrs.md
+### 3. Divisão da apresentação entre os apresentadores
 
-**WARNING — Citação Netflix imprecisa:**
-Izrailevsky & Meshenberg (2016) é sobre migração para a nuvem, não arquitetura CQRS/Cassandra. Buscar post técnico mais específico ou qualificar a afirmação.
-
-**WARNING — Autor Uber não verificado:**
-`Crunkilton, B. et al. (2016)` — confirmar autoria no Uber Engineering Blog antes da apresentação.
-
-**WARNING — Stonebraker et al. (2007) para JOIN bottlenecks:**
-Paper argumenta pelo fim do RDBMS em geral. Substituir ou complementar com Kleppmann (2017, cap. 3).
-
-**WARNING — "réplicas de leitura" sem citação:**
-Adicionar "(Kleppmann, 2017, cap. 5)" ou qualificar a frase.
-
-### 5. Divisão da apresentação entre os apresentadores
-Ainda não decidida. Agora são 16 slides. Sugestões:
-- **Opção A:** Lucas slides 1–7 (história + problema + discussão + definição), Matheus slides 8–16 (arquitetura + técnico)
-- **Opção B:** Lucas slides 1–6, Matheus slides 7–16
+> ⚠ **DECISÃO PENDENTE @lucas + @matheus**
+>
+> Agora são 16 slides. Sugestões:
+> - **Opção A:** Lucas S1–S7 (contexto + problema + discussão + definição CQRS), Matheus S8–S16 (arquitetura + técnico + indústria)
+> - **Opção B:** Lucas S1–S6, Matheus S7–S16
 
 ---
 
