@@ -266,7 +266,7 @@ Fowler, M. (2005). *Event Sourcing*. martinfowler.com. Disponível em: https://m
 
 O problema de Jorge não é novo. Empresas que operam em escala global enfrentaram o mesmo gargalo e adotaram soluções baseadas nos mesmos princípios — separação de responsabilidades, consistência eventual, logs de eventos e modelos de leitura otimizados. Vale notar que nenhuma delas descreve formalmente suas soluções como "CQRS"; o padrão emerge da análise dos princípios aplicados (DeCandia et al., 2007; Izrailevsky & Meshenberg, 2016; Crunkilton et al., 2016).
 
-**Amazon — DynamoDB (2004–2007):** O catálogo de produtos cresceu exponencialmente. O banco Oracle centralizado sofria com locks severos de leitura/escrita, especialmente durante picos como a Black Friday. A solução foi o DynamoDB — separação completa dos fluxos de leitura e escrita com consistência eventual como premissa de design (DeCandia et al., 2007).
+**Amazon — Dynamo (2004–2007):** O sistema de carrinho de compras crescia sob carga exponencial. O banco Oracle centralizado sofria com locks severos de leitura/escrita, especialmente durante picos como a Black Friday. A solução foi o Dynamo — sistema interno de chave-valor com separação completa dos fluxos de leitura e escrita, consistência eventual como premissa de design e sem ponto único de falha. Seus princípios influenciaram diretamente o DynamoDB, lançado publicamente em 2012 (DeCandia et al., 2007).
 
 **Netflix (2009–2016):** O monólito Oracle não sustentava a escala global de streaming. A migração para microserviços adotou CQRS: Cassandra e Elasticsearch para leitura de catálogo; MySQL particionado para escritas transacionais (Izrailevsky & Meshenberg, 2016).
 
@@ -305,8 +305,6 @@ A adoção de CQRS por Amazon, Netflix e Uber não foi uma escolha ideológica �
 ---
 
 ## Referências
-
-Brewer, E. (2000). Towards robust distributed systems. *Proceedings of the 19th Annual ACM Symposium on Principles of Distributed Computing (PODC)*.
 
 Brutlag, J. (2009). *Speed Matters for Google Web Search*. Google Research.
 
