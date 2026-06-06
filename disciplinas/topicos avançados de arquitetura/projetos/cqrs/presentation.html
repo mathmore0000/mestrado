@@ -159,6 +159,49 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
   padding:12px 16px;display:flex;align-items:center;gap:12px}
 .badge{font-family:var(--ff-head);font-size:clamp(10px,.75vw,13px);font-weight:700;
   background:var(--primary);color:#fff;border-radius:6px;padding:3px 8px;flex-shrink:0}
+
+/* ── KAFKA FLOW ANIMATION (slide 11) ───────────────────────── */
+.kflow{background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
+  padding:16px 14px 12px;box-shadow:var(--shadow);margin-bottom:12px}
+.kflow-header{display:flex;justify-content:space-between;gap:6px}
+.kflow-col{display:flex;flex-direction:column;align-items:center;flex:1;min-width:0}
+.kflow-lbl{font-family:var(--ff-head);font-size:clamp(7px,.6vw,10px);font-weight:700;
+  color:var(--dm);text-transform:uppercase;letter-spacing:.06em;
+  margin-bottom:5px;text-align:center;white-space:nowrap}
+.kflow-box{background:var(--bg);border:1px solid var(--bdr);border-radius:8px;
+  padding:7px 5px;text-align:center;width:100%;
+  font-family:var(--ff-code);font-size:clamp(7px,.58vw,9.5px);
+  line-height:1.6;color:#7dd3fc;background:#0f1724}
+.kflow-track{position:relative;height:18px;margin:8px 6.25% 0}
+.kflow-line{position:absolute;top:50%;left:0;right:0;
+  height:2px;background:rgba(15,45,89,.15);transform:translateY(-50%)}
+.kflow-dot{position:absolute;top:50%;left:0;
+  width:11px;height:11px;border-radius:50%;
+  background:var(--red);transform:translate(-50%,-50%);
+  box-shadow:0 0 8px rgba(218,41,28,.55);opacity:0}
+.kflow-n43{opacity:0;color:var(--pos);font-weight:700}
+
+.slide.on .kflow-dot{
+  animation:kfdot 4s ease-in-out forwards;
+  animation-delay:.9s}
+.slide.on .kflow-n42{
+  animation:kfold .25s forwards;
+  animation-delay:5.2s}
+.slide.on .kflow-n43{
+  animation:kfnew .25s forwards;
+  animation-delay:5.2s}
+
+@keyframes kfdot{
+  0%  {left:0%;  opacity:0}
+  4%  {left:0%;  opacity:1}
+  22% {left:0%;  opacity:1}
+  40% {left:33%; opacity:1}
+  55% {left:33%; opacity:1}
+  73% {left:66%; opacity:1}
+  86% {left:66%; opacity:1}
+  100%{left:100%;opacity:1}}
+@keyframes kfold{to{opacity:0}}
+@keyframes kfnew{to{opacity:1}}
 </style>
 </head>
 <body>
@@ -517,15 +560,41 @@ LIMIT 20;</div>
       </div>
     </div>
     <div>
-      <div class="card red reveal d4" style="margin-bottom:14px">
-        <h4>⚠ O problema do dual write</h4>
-        <p>Se o processo crashar entre os passos 2 e 3, o modelo de leitura nunca é atualizado — divergência silenciosa e permanente entre os dois modelos.</p>
+      <!-- Kafka flow animation -->
+      <div class="kflow reveal d4">
+        <p class="eye" style="margin-bottom:10px">Fluxo de sincronização — ao curtir um post</p>
+        <div class="kflow-header">
+          <div class="kflow-col">
+            <div class="kflow-lbl">Write Service</div>
+            <div class="kflow-box" style="border-color:rgba(218,41,28,.4)">likes ✓<br>outbox ✓</div>
+          </div>
+          <div class="kflow-col">
+            <div class="kflow-lbl">Kafka</div>
+            <div class="kflow-box" style="border-color:rgba(15,45,89,.4)">PostCurtido<br>{ post_id }</div>
+          </div>
+          <div class="kflow-col">
+            <div class="kflow-lbl">Consumer</div>
+            <div class="kflow-box" style="border-color:rgba(37,99,235,.4)">UPDATE<br>feed_items</div>
+          </div>
+          <div class="kflow-col">
+            <div class="kflow-lbl">Read DB</div>
+            <div class="kflow-box" style="border-color:rgba(22,163,74,.4)">likes_count:<br><span class="kflow-n42">42</span><span class="kflow-n43">43</span></div>
+          </div>
+        </div>
+        <div class="kflow-track">
+          <div class="kflow-line"></div>
+          <div class="kflow-dot"></div>
+        </div>
       </div>
-      <div class="card green reveal d5">
+      <!-- Dual write + outbox compact -->
+      <div class="card red reveal d5" style="margin-bottom:10px">
+        <h4>⚠ Dual write</h4>
+        <p>Crash entre os passos 2 e 3 → modelo de leitura nunca atualizado — divergência silenciosa.</p>
+      </div>
+      <div class="card green reveal d6">
         <h4>✓ Transactional Outbox</h4>
-        <p>Gravar o evento na tabela <code>outbox</code> na mesma transação da escrita principal. Um relay separado publica de forma idempotente. Atomicidade garantida (Richardson, 2018).</p>
+        <p>Evento gravado na mesma transação da escrita. Relay publica de forma idempotente (Richardson, 2018).</p>
       </div>
-      <p class="reveal d6" style="margin-top:12px;font-size:.75rem;color:var(--dm)">Mesmo padrão para <code>PostPublicado</code>, <code>PostComentado</code>, <code>UsuárioSeguido</code>.</p>
     </div>
   </div>
 </div>
