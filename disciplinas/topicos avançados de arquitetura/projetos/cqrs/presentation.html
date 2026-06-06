@@ -210,31 +210,12 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
       </blockquote>
     </div>
     <div class="reveal d4" style="display:flex;flex-direction:column;gap:12px">
-      <!-- TODO: substituir pelo arquivo assets/Sistema vibe coded do George.png do projeto do Lucas -->
       <div style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
-        padding:20px;box-shadow:var(--shadow);text-align:center">
-        <p class="eye" style="margin-bottom:12px">Figura 1 — MVP funcional</p>
-        <div style="background:var(--bg);border:1px solid var(--bdr);border-radius:10px;
-          padding:32px 20px;display:flex;flex-direction:column;gap:10px">
-          <div style="height:12px;background:rgba(15,45,89,.12);border-radius:6px;width:60%;margin:0 auto"></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
-            <div style="height:60px;background:rgba(15,45,89,.07);border-radius:8px;
-              display:flex;align-items:center;justify-content:center;
-              font-family:var(--ff-head);font-size:11px;color:var(--dm)">Comunidades</div>
-            <div style="height:60px;background:rgba(218,41,28,.07);border-radius:8px;
-              display:flex;align-items:center;justify-content:center;
-              font-family:var(--ff-head);font-size:11px;color:var(--dm)">Feed</div>
-            <div style="height:60px;background:rgba(37,99,235,.07);border-radius:8px;
-              display:flex;align-items:center;justify-content:center;
-              font-family:var(--ff-head);font-size:11px;color:var(--dm)">Perfil</div>
-            <div style="height:60px;background:rgba(22,163,74,.07);border-radius:8px;
-              display:flex;align-items:center;justify-content:center;
-              font-family:var(--ff-head);font-size:11px;color:var(--dm)">Explore</div>
-          </div>
-          <div style="height:8px;background:rgba(15,45,89,.06);border-radius:4px;margin-top:4px"></div>
-          <div style="height:8px;background:rgba(15,45,89,.04);border-radius:4px;width:70%"></div>
-        </div>
-        <p style="margin-top:10px;font-size:.72rem;color:var(--dm)">Construído em um fim de semana com IA generativa</p>
+        padding:16px;box-shadow:var(--shadow);text-align:center">
+        <p class="eye" style="margin-bottom:10px">Figura 1 — MVP funcional</p>
+        <img src="assets/mvp-jorge.png" alt="MVP vibe coded do Jorge"
+          style="width:100%;max-height:280px;object-fit:contain;border-radius:8px;display:block">
+        <p style="margin-top:8px;font-size:.72rem;color:var(--dm)">Construído em um fim de semana com IA generativa</p>
       </div>
     </div>
   </div>
@@ -371,24 +352,14 @@ LIMIT 20;</div>
     </div>
     <div>
       <div class="eye reveal d6" style="margin-top:2px">A escolha de Jorge</div>
-      <h3 class="reveal d6" style="margin-bottom:16px">Arquitetura Monolítica Clássica</h3>
-      <div class="stack reveal d7">
-        <div class="layer">
-          <span class="badge">Frontend</span>
-          <p style="font-size:.82rem">React (CSR) — consome APIs REST do backend</p>
-        </div>
-        <div class="layer">
-          <span class="badge">Backend</span>
-          <p style="font-size:.82rem">Node.js · Controller → Service → Repository</p>
-        </div>
-        <div class="layer">
-          <span class="badge">Banco</span>
-          <p style="font-size:.82rem">PostgreSQL em 3FN — normalizado, transações ACID</p>
-        </div>
+      <h3 class="reveal d6" style="margin-bottom:12px">Arquitetura Monolítica Clássica</h3>
+      <div class="reveal d7" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;padding:12px;box-shadow:var(--shadow)">
+        <img src="assets/arquitetura-sem-cqrs.png" alt="Arquitetura monolítica sem CQRS"
+          style="width:100%;border-radius:8px;display:block">
       </div>
-      <div class="reveal d8" style="margin-top:14px;padding:12px 16px;
+      <div class="reveal d8" style="margin-top:10px;padding:10px 14px;
         background:rgba(15,45,89,.04);border-left:3px solid var(--primary);border-radius:0 8px 8px 0">
-        <p style="font-size:.78rem">Escolha correta para um MVP. O problema aparece quando leituras e escritas começam a competir pelo mesmo banco — o que veremos a seguir.</p>
+        <p style="font-size:.78rem">Escolha correta para um MVP. O problema aparece quando leituras e escritas começam a competir pelo mesmo banco.</p>
       </div>
     </div>
   </div>
@@ -423,8 +394,27 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ S8 · WRITE vs READ MODEL ════════════════════════════════ -->
+<!-- ══ S8 · ARQUITETURA CQRS ═══════════════════════════════════ -->
 <div class="slide" id="s8">
+  <div class="w">
+    <div class="eye reveal d1">Visão Geral</div>
+    <h2 class="reveal d2">Arquitetura CQRS</h2>
+    <div class="rule reveal d3"></div>
+    <div class="reveal d4" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
+      padding:16px;box-shadow:var(--shadow);margin-top:4px">
+      <img src="assets/arquitetura-com-cqrs.png" alt="Arquitetura com CQRS"
+        style="width:100%;max-height:440px;object-fit:contain;border-radius:8px;display:block">
+    </div>
+    <div class="reveal d5" style="margin-top:12px;display:flex;gap:20px;justify-content:center">
+      <span class="pill pr">Commands → Write Service → Write DB (ACID)</span>
+      <span class="pill pbl">Queries → Read Service → Read DB (BASE)</span>
+      <span class="pill pb">Sincronização via eventos assíncronos</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S9 · WRITE vs READ MODEL ════════════════════════════════ -->
+<div class="slide" id="s9">
   <div class="w g2" style="align-items:start">
     <div class="mbox b">
       <div class="eye reveal d1">Command Side</div>
@@ -454,8 +444,8 @@ comments (id, post_id, author_id, content)</div>
   </div>
 </div>
 
-<!-- ══ S9 · ANTES E DEPOIS ═════════════════════════════════════ -->
-<div class="slide" id="s9">
+<!-- ══ S10 · ANTES E DEPOIS ═════════════════════════════════════ -->
+<div class="slide" id="s10">
   <div class="w g2" style="align-items:start">
     <div>
       <div class="eye reveal d1" style="color:var(--neg)">Antes — normalizado</div>
@@ -494,8 +484,8 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ S10 · DOMAIN EVENTS + DUAL WRITE ═══════════════════════ -->
-<div class="slide" id="s10">
+<!-- ══ S11 · DOMAIN EVENTS + DUAL WRITE ═══════════════════════ -->
+<div class="slide" id="s11">
   <div class="w g2" style="align-items:start">
     <div>
       <div class="eye reveal d1">Sincronização</div>
@@ -524,8 +514,8 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ S11 · APACHE KAFKA ══════════════════════════════════════ -->
-<div class="slide" id="s11">
+<!-- ══ S12 · APACHE KAFKA ══════════════════════════════════════ -->
+<div class="slide" id="s12">
   <div class="w g2" style="align-items:start">
     <div>
       <div class="eye reveal d1">Infraestrutura de Eventos</div>
@@ -553,8 +543,8 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ S12 · CONSISTÊNCIA EVENTUAL ════════════════════════════ -->
-<div class="slide" id="s12">
+<!-- ══ S13 · CONSISTÊNCIA EVENTUAL ════════════════════════════ -->
+<div class="slide" id="s13">
   <div class="w g2" style="align-items:start">
     <div>
       <div class="eye reveal d1">Teoria</div>
@@ -583,8 +573,8 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ S13 · EVENT SOURCING ════════════════════════════════════ -->
-<div class="slide" id="s13">
+<!-- ══ S14 · EVENT SOURCING ════════════════════════════════════ -->
+<div class="slide" id="s14">
   <div class="w g2" style="align-items:start">
     <div>
       <div class="eye reveal d1">Padrão Complementar</div>
@@ -622,8 +612,8 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ S14 · ADOÇÃO NA INDÚSTRIA ══════════════════════════════ -->
-<div class="slide" id="s14">
+<!-- ══ S15 · ADOÇÃO NA INDÚSTRIA ══════════════════════════════ -->
+<div class="slide" id="s15">
   <div class="w">
     <div class="eye reveal d1">Evidência Empírica</div>
     <h2 class="reveal d2">Princípios Relacionados na Indústria</h2>
@@ -655,8 +645,8 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ S15 · OBRIGADO ══════════════════════════════════════════ -->
-<div class="slide" id="s15" style="text-align:center;
+<!-- ══ S16 · OBRIGADO ══════════════════════════════════════════ -->
+<div class="slide" id="s16" style="text-align:center;
   background:linear-gradient(150deg,#f0f4fa 0%,#f7f8fa 55%,#edf1f9 100%)">
   <div class="w">
     <div class="eye reveal d1">Encerramento</div>
@@ -686,6 +676,9 @@ LIMIT 20;</div>
       <span class="cm" style="color:var(--dm)">Mackenzie · Tópicos Avançados de Arquitetura · 2026</span>
     </div>
     <p class="reveal d6" style="margin-top:16px;font-size:.72rem;color:var(--dm)">Young (2010) · Fowler (2011) · Kleppmann (2017) · Pritchett (2008) · Gilbert &amp; Lynch (2002) · Brewer (2012) · Richardson (2018)</p>
+    <p class="reveal d7" style="margin-top:12px;font-size:.65rem;color:var(--dm);opacity:.7">
+      Esta apresentação foi elaborada com o auxílio de ferramentas de IA generativa (Claude, Anthropic). Todos os argumentos, referências e afirmações técnicas foram revisados e verificados pelos autores.
+    </p>
   </div>
 </div>
 
@@ -699,7 +692,7 @@ LIMIT 20;</div>
 </nav>
 
 <script>
-const N=15;let cur=0,busy=false;
+const N=16;let cur=0,busy=false;
 const dotsEl=document.getElementById('dots');
 for(let i=0;i<N;i++){
   const d=document.createElement('div');
