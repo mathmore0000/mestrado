@@ -44,6 +44,64 @@ Storytelling hook: Jorge (a developer who vibecoded an app) builds a social feed
 - Duration: 30 min with Lucas Aguiar + 5 min Q&A
 - Split between presenters: TBD (to decide with Lucas)
 
+## Step animation system (✓ implemented — S4, S6, S11)
+
+Three slides use step-by-step reveal controlled by `→`. The system is extensible.
+
+**CSS:**
+```css
+.step-anim{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
+.step-anim.visible{opacity:1;transform:translateY(0)}
+```
+
+**JS pattern — generic item list (S4 Journey):**
+```javascript
+const JOURNEY_IDX = 3;  // 0-based slide index
+const journeySteps = Array.from(document.querySelectorAll('#s4 .step-anim'));
+let journeyStep = 0;
+function stepJourney() {
+  if (journeyStep < journeySteps.length) {
+    journeySteps[journeyStep].classList.add('visible');
+    journeyStep++;
+  }
+}
+function resetJourney() {
+  journeyStep = 0;
+  journeySteps.forEach(s => s.classList.remove('visible'));
+}
+```
+
+**JS pattern — grouped elements (S6 Metrics):**
+HTML elements get group classes (`s6g1`, `s6g2`, `s6g3`, `s6g4`, `s6card`). JS collects them by group:
+```javascript
+const metricsGroups = [
+  Array.from(document.querySelectorAll('#s6 .s6g1')),
+  ...
+  [document.querySelector('#s6 .s6card')],
+];
+// stepMetrics() reveals metricsGroups[metricsStep] and increments
+// resetMetrics() removes .visible from all groups
+```
+
+**`goForward()` dispatches to the right handler:**
+```javascript
+function goForward() {
+  if (cur === KAFKA_IDX && kafkaStep < 5) stepKafka();
+  else if (cur === JOURNEY_IDX && journeyStep < journeySteps.length) stepJourney();
+  else if (cur === METRICS_IDX && metricsStep < metricsGroups.length) stepMetrics();
+  else go(1);
+}
+```
+
+**Reset on slide exit** — inside `goTo()`'s setTimeout, before `cur = idx`:
+```javascript
+if (cur === KAFKA_IDX) resetKafka();
+if (cur === JOURNEY_IDX) resetJourney();
+if (cur === METRICS_IDX) resetMetrics();
+```
+
+---
+
 ## Animation — Kafka flow slide (✓ implemented)
 
 Slide 11 has a step-by-step animated flow. Each `→` press advances one step; after the last step, `→` navigates to slide 12. Going back resets the animation.

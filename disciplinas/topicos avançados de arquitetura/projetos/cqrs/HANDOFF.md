@@ -2,7 +2,7 @@
 **Disciplina:** Tópicos Avançados de Arquitetura — Universidade Presbiteriana Mackenzie  
 **Apresentadores:** Matheus Moreira · Lucas Aguiar  
 **Formato:** 30 min de apresentação + 5 min de Q&A  
-**Última atualização:** 2026-06-06
+**Última atualização:** 2026-06-06 (sessão 2)
 
 ---
 
@@ -11,7 +11,7 @@
 | Arquivo | Descrição |
 |---------|-----------|
 | `cqrs.md` | Documento-fonte — narrativa completa, referências acadêmicas verificadas |
-| `presentation.html` | 15 slides, tema Mackenzie PPGA (light, navy/red), responsivo com `clamp()` |
+| `presentation.html` | 16 slides, tema Mackenzie PPGA (light, navy/red), responsivo com `clamp()` |
 | `SESSION_NOTES.md` | Notas técnicas para continuação via Claude Code |
 | `HANDOFF.md` | Este arquivo |
 
@@ -23,21 +23,22 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 
 | # | Slide | Status |
 |---|-------|--------|
-| 1 | Capa | ✓ Com animações reveal |
-| 2 | Conheçam Jorge | ✓ Novo — narrativa + mock MVP |
-| 3 | A Jornada de Jorge | ✓ Com animações reveal por step |
-| 4 | A Crise — diagnóstico + query culpada | ✓ |
-| 5 | Arquitetura Vira Prejuízo — latência/receita | ✓ |
-| 6 | Como vocês construiriam? — discussão | ✓ Novo — pausa + revela monolito |
+| 1 | Capa | ✓ Título: "Computação aplicada em Arquitetura de Software" · Subtítulo longo |
+| 2 | Conheçam Jorge | ✓ Narrativa + mock MVP |
+| 3 | Como vocês construiriam? | ✓ Pausa para discussão + revela monolito |
+| 4 | A Jornada de Jorge | ✓ **Step animation** — cada → revela um passo (4 steps) |
+| 5 | A Crise — diagnóstico + query culpada | ✓ |
+| 6 | Arquitetura Vira Prejuízo — latência/receita | ✓ **Step animation** — cada → revela uma métrica (4 grupos + card) |
 | 7 | O Padrão CQRS — definição + timeline | ✓ |
-| 8 | Modelo de Escrita vs Modelo de Leitura | ✓ |
-| 9 | Query Antes e Depois do CQRS | ✓ |
-| 10 | Domain Events + Kafka + Dual Write | ✓ Com animações por step |
-| 11 | Apache Kafka — propriedades + garantias | ✓ |
-| 12 | Consistência Eventual — CAP + ACID/BASE | ✓ |
-| 13 | Event Sourcing | ✓ |
-| 14 | Adoção na Indústria — Amazon/Netflix/Uber | ✓ |
-| 15 | Obrigado | ✓ |
+| 8 | Arquitetura CQRS — diagrama geral | ✓ |
+| 9 | Modelos Especializados · 1/2 | ✓ **Novo título** — "Separação de Modelos · 1 / 2" |
+| 10 | A Query Antes e Depois do CQRS · 2/2 | ✓ **Novo título** — "Separação de Modelos · 2 / 2" |
+| 11 | Domain Events + Kafka + Dual Write | ✓ Step animation Kafka (original) |
+| 12 | Apache Kafka — propriedades + garantias | ✓ |
+| 13 | Consistência Eventual — CAP + ACID/BASE | ✓ |
+| 14 | Event Sourcing | ✓ |
+| 15 | Adoção na Indústria — Amazon/Netflix/Uber | ✓ |
+| 16 | Obrigado | ✓ |
 
 ---
 
@@ -71,19 +72,25 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 
 ---
 
-## O que foi feito nesta sessão (2026-06-06)
+## O que foi feito — sessão 1 (2026-06-06)
 
-- ✓ **TV Full HD layout** — `html { font-size: clamp(15px,1.3vw,22px) }` + todas as caps de clamp() tipográficos aumentadas
-- ✓ **Diagramas de arquitetura** — 3 imagens em `assets/`; slide 2 MVP; slide 3 SEM CQRS; novo slide 8 COM CQRS (total: 16 slides)
-- ✓ **Slide reorder** — "Como construiriam?" movido para S3 (entre Conheçam Jorge e A Jornada)
-- ✓ **Métricas impacto financeiro** — Gartner $5,6k/min + ratio 89%/11% leituras/escritas adicionados
-- ✓ **Animações reveal** — todas auditadas; S6 métricas em stagger individual
-- ✓ **Animação Kafka step-by-step** — S11: cada → avança um nó, 5º → troca contador 42→43, 6º → navega
-- ✓ **Disclaimer de IA** — slide 16 (Obrigado)
-- ✓ **Remove "Atos"** — cqrs.md e presentation.html
-- ✓ **Dynamo/DynamoDB** — corrigido em cqrs.md e slide 15
-- ✓ **Brewer (2000) órfão** — removido das Referências
-- ✓ **Stonebraker** — substituído por Kleppmann (2017, cap. 3); "réplicas de leitura" recebeu citação
+- ✓ **TV Full HD layout** — `html { font-size: clamp(15px,1.3vw,22px) }` + caps tipográficas ajustadas
+- ✓ **Diagramas de arquitetura** — 3 imagens em `assets/`; slides 2, 3, 8 (total: 16 slides)
+- ✓ **Slide reorder** — "Como construiriam?" inserido como S3
+- ✓ **Métricas impacto financeiro** — Gartner $5,6k/min + ratio 89%/11%
+- ✓ **Animações reveal** — todas auditadas
+- ✓ **Animação Kafka step-by-step** — S11: cada → avança um nó, 5º → troca 42→43, 6º → navega
+- ✓ **Disclaimer de IA** — S16
+- ✓ **Remove "Atos"**, corrige Dynamo/DynamoDB, remove Brewer (2000) órfão, substitui Stonebraker
+
+## O que foi feito — sessão 2 (2026-06-06)
+
+- ✓ **Título/subtítulo S1** — "Computação aplicada em Arquitetura de Software" + subtítulo completo; CQRS visível como linha de rodapé
+- ✓ **Step animation S4** — 4 passos da Jornada de Jorge revelados um a um via →; 5º → navega
+- ✓ **Step animation S6** — 4 métricas de impacto financeiro (com separadores) + card revelados em grupo via →; 6º → navega
+- ✓ **Título + breadcrumb S9** — "Separação de Modelos · 1 / 2 · Esquemas Especializados por Responsabilidade"
+- ✓ **Título + breadcrumb S10** — "Separação de Modelos · 2 / 2 · A Query Antes e Depois do CQRS"
+- ✓ **check-doc 3ª rodada** — sem novos blockers; mesmas pendências manuais de antes
 
 ---
 
@@ -101,7 +108,7 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
   - Indústria: qualificado como "princípios relacionados, não CQRS formal"
 - **Dual write + transactional outbox:** incluído explicitamente
 - **Animações:** `.reveal` com delays `.d1`–`.d9`, disparam ao entrar no slide
-- **Step animation (S11 Kafka):** JS step counter + CSS transitions; `goForward()` intercepta navegação; padrão reutilizável — ver SESSION_NOTES.md
+- **Step animation:** JS step counter + CSS `.step-anim` / `.visible`; `goForward()` despacha para o handler do slide atual; padrão usado em S4, S6, S11 — ver SESSION_NOTES.md
 
 ---
 
