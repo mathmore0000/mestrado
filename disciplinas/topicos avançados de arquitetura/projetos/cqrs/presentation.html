@@ -181,27 +181,9 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
   box-shadow:0 0 8px rgba(218,41,28,.55);opacity:0}
 .kflow-n43{opacity:0;color:var(--pos);font-weight:700}
 
-.kflow.kflow-play .kflow-dot{
-  animation:kfdot 4s ease-in-out forwards;
-  animation-delay:.1s}
-.kflow.kflow-play .kflow-n42{
-  animation:kfold .25s forwards;
-  animation-delay:4.4s}
-.kflow.kflow-play .kflow-n43{
-  animation:kfnew .25s forwards;
-  animation-delay:4.4s}
-
-@keyframes kfdot{
-  0%  {left:0%;  opacity:0}
-  4%  {left:0%;  opacity:1}
-  22% {left:0%;  opacity:1}
-  40% {left:33%; opacity:1}
-  55% {left:33%; opacity:1}
-  73% {left:66%; opacity:1}
-  86% {left:66%; opacity:1}
-  100%{left:100%;opacity:1}}
-@keyframes kfold{to{opacity:0}}
-@keyframes kfnew{to{opacity:1}}
+.kflow-dot{transition:left .55s cubic-bezier(.4,0,.2,1),opacity .3s ease}
+.kflow-n42{transition:opacity .3s ease}
+.kflow-n43{transition:opacity .3s ease}
 </style>
 </head>
 <body>
@@ -813,14 +795,29 @@ function goTo(idx){
 }
 function go(d){goTo(cur+d);}
 
-// Kafka animation — slide 11 is index 10 (0-based)
+// Kafka step animation — slide 11 is index 10 (0-based)
 const KAFKA_IDX=10;
 const kflowEl=document.getElementById('s11').querySelector('.kflow');
-let kafkaPlayed=false;
-function playKafka(){kafkaPlayed=true;kflowEl.classList.add('kflow-play');}
-function resetKafka(){kafkaPlayed=false;kflowEl.classList.remove('kflow-play');}
+const kDot=kflowEl.querySelector('.kflow-dot');
+const kN42=kflowEl.querySelector('.kflow-n42');
+const kN43=kflowEl.querySelector('.kflow-n43');
+const kPositions=['0%','33%','66%','100%']; // WS → Kafka → Consumer → ReadDB
+let kafkaStep=0;
+function stepKafka(){
+  kafkaStep++;
+  if(kafkaStep===1){kDot.style.opacity='1';kDot.style.left='0%';}         // appear at WS
+  else if(kafkaStep<=4){kDot.style.left=kPositions[kafkaStep-1];}          // move to next node
+  else if(kafkaStep===5){kN42.style.opacity='0';kN43.style.opacity='1';}   // flip counter
+}
+function resetKafka(){
+  kafkaStep=0;
+  kDot.style.transition='none';kDot.style.opacity='0';kDot.style.left='0%';
+  kN42.style.opacity='1';kN43.style.opacity='0';
+  // re-enable transition after reset
+  requestAnimationFrame(()=>kDot.style.transition='');
+}
 function goForward(){
-  if(cur===KAFKA_IDX&&!kafkaPlayed){playKafka();}else{go(1);}
+  if(cur===KAFKA_IDX&&kafkaStep<5){stepKafka();}else{go(1);}
 }
 
 document.addEventListener('keydown',e=>{
