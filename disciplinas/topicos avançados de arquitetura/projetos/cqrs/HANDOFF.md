@@ -43,20 +43,30 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 
 ## O que ainda falta
 
-### 2. Verificações manuais antes da apresentação
+### 1. Verificações manuais antes da apresentação
 
 > ⚠ **VERIFICAÇÃO MANUAL NECESSÁRIA @lucas**
 >
-> **Citação Netflix:** Izrailevsky & Meshenberg (2016) é sobre migração para a nuvem, não sobre arquitetura CQRS/Cassandra. Buscar no Netflix Tech Blog um post mais específico sobre arquitetura de dados (ex: "Scaling Netflix's Event Sourcing") ou substituir a referência por uma mais adequada em cqrs.md e no slide 15.
+> **Citação Netflix:** Izrailevsky & Meshenberg (2016) é sobre migração para a nuvem, não sobre arquitetura CQRS/Cassandra. Buscar post mais específico no Netflix Tech Blog ou substituir em cqrs.md e slide 15.
 >
-> **Autor Uber:** `Crunkilton, B. et al. (2016)` — confirmar nome correto do autor principal no Uber Engineering Blog antes da apresentação. URL: https://www.uber.com/en-BR/blog/engineering/
+> **Autor Uber:** `Crunkilton, B. et al. (2016)` — confirmar autoria no Uber Engineering Blog. URL: https://www.uber.com/en-BR/blog/engineering/
+
+### 2. Oportunidades opcionais (check-doc 2ª rodada)
+
+> 💡 **SUGESTÕES — baixo risco, podem ficar para outra sessão**
+>
+> **Snapshots em Event Sourcing:** mencionar que replay em históricos longos exige snapshots periódicos (Young, 2010 já cobre isso). Uma frase no slide 14 eliminaria a Q&A mais provável.
+>
+> **SLA da janela de inconsistência:** o exemplo de 200ms para `likes_count` é ilustrativo — uma frase sobre latência de propagação típica do Kafka (single-digit ms a poucos segundos) tornaria o argumento mais defensável.
+>
+> **Fonte Lerner (2014):** Gartner Research Note atrás de paywall. Se questionado, mencionar que o número é amplamente reproduzido por Atlassian e IBM em publicações abertas.
 
 ### 3. Divisão da apresentação entre os apresentadores
 
 > ⚠ **DECISÃO PENDENTE @lucas + @matheus**
 >
 > Agora são 16 slides. Sugestões:
-> - **Opção A:** Lucas S1–S7 (contexto + problema + discussão + definição CQRS), Matheus S8–S16 (arquitetura + técnico + indústria)
+> - **Opção A:** Lucas S1–S7 (contexto + problema + discussão + definição), Matheus S8–S16 (arquitetura + técnico + indústria)
 > - **Opção B:** Lucas S1–S6, Matheus S7–S16
 
 ---
