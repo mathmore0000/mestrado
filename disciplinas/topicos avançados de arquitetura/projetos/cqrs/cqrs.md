@@ -67,7 +67,7 @@ ORDER BY p.created_at DESC
 LIMIT 20;
 ```
 
-Com 10.000 usuários simultâneos, cada um abrindo o feed, cada um disparando JOINs e `COUNT`s sobre as mesmas tabelas — o banco engasga. Adicionar réplicas de leitura adia o problema, mas não o resolve: a query continua cara, e a concorrência continua crescendo.
+Com 10.000 usuários simultâneos, cada um abrindo o feed, cada um disparando JOINs e `COUNT`s sobre as mesmas tabelas — o banco engasga. Adicionar réplicas de leitura adia o problema, mas não o resolve: a query continua cara em cada réplica, e a concorrência continua crescendo (Kleppmann, 2017, cap. 5).
 
 O backend foi escalado horizontalmente (múltiplos containers), mas o banco de dados permaneceu como ponto único de gargalo. O problema não é de código — é arquitetural.
 
@@ -163,11 +163,10 @@ LIMIT 20;
 
 Sem JOINs. Sem `COUNT`s em tempo de execução. O custo de computação foi deslocado do momento da leitura para o momento da escrita — e em sistemas de feed, leituras superam escritas por uma larga margem (Kleppmann, 2017).
 
-A desnormalização reduz latência porque elimina operações de JOIN em tempo de leitura — que em bancos relacionais sob alta carga são um dos principais gargalos de performance (Stonebraker et al., 2007). Este lado opera sob o modelo **BASE** — *Basically Available, Soft State, Eventual Consistency* — priorizando disponibilidade e velocidade de resposta (Pritchett, 2008).
+A desnormalização reduz latência porque elimina operações de JOIN em tempo de leitura — que em sistemas de leitura intensiva são um dos principais gargalos de performance (Kleppmann, 2017, cap. 3). Este lado opera sob o modelo **BASE** — *Basically Available, Soft State, Eventual Consistency* — priorizando disponibilidade e velocidade de resposta (Pritchett, 2008).
 
 Kleppmann, M. (2017). *Designing Data-Intensive Applications*. O'Reilly Media.\
-Pritchett, D. (2008). BASE: An Acid Alternative. *ACM Queue*, 6(3), 48–55.\
-Stonebraker, M., Madden, S., Abadi, D. J., Harizopoulos, S., Hachem, N., & Helland, P. (2007). The end of an architectural era (it's time for a complete rewrite). *Proceedings of the 33rd VLDB Conference*.
+Pritchett, D. (2008). BASE: An Acid Alternative. *ACM Queue*, 6(3), 48–55.
 
 ---
 
@@ -348,8 +347,6 @@ Narkhede, N., Shapira, G., & Palino, T. (2017). *Kafka: The Definitive Guide*. O
 Pritchett, D. (2008). BASE: An Acid Alternative. *ACM Queue*, 6(3), 48–55.
 
 Richardson, C. (2018). *Microservices Patterns*. Manning.
-
-Stonebraker, M., Madden, S., Abadi, D. J., Harizopoulos, S., Hachem, N., & Helland, P. (2007). The end of an architectural era (it's time for a complete rewrite). *Proceedings of the 33rd VLDB Conference*.
 
 Vogels, W. (2009). Eventually consistent. *Communications of the ACM*, 52(1), 40–44.
 
