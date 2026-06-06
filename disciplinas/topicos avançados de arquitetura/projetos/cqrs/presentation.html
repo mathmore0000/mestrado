@@ -806,6 +806,7 @@ function goTo(idx){
     setTimeout(()=>{
       from.classList.remove('on');from.style.cssText='';
       to.classList.add('on');to.style.cssText='';
+      if(cur===KAFKA_IDX)resetKafka();
       cur=idx;syncUI();busy=false;
     },470);
   }));
@@ -818,14 +819,6 @@ const kflowEl=document.getElementById('s11').querySelector('.kflow');
 let kafkaPlayed=false;
 function playKafka(){kafkaPlayed=true;kflowEl.classList.add('kflow-play');}
 function resetKafka(){kafkaPlayed=false;kflowEl.classList.remove('kflow-play');}
-
-// Reset animation when leaving slide 11
-const _origGoTo=goTo;
-function goTo(idx){
-  if(!busy&&idx!==cur&&cur===KAFKA_IDX)resetKafka();
-  _origGoTo(idx);
-}
-
 function goForward(){
   if(cur===KAFKA_IDX&&!kafkaPlayed){playKafka();}else{go(1);}
 }
