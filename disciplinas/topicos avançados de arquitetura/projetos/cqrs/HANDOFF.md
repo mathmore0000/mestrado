@@ -11,7 +11,7 @@
 | Arquivo | Descrição |
 |---------|-----------|
 | `cqrs.md` | Documento-fonte — narrativa completa, referências acadêmicas verificadas |
-| `presentation.html` | 17 slides, tema Mackenzie PPGA (light, navy/red), responsivo com `clamp()` |
+| `presentation.html` | 18 slides, tema Mackenzie PPGA (light, navy/red), responsivo com `clamp()` |
 | `SESSION_NOTES.md` | Notas técnicas para continuação via Claude Code |
 | `HANDOFF.md` | Este arquivo |
 
@@ -39,7 +39,8 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 | 14 | s13 | Consistência Eventual — CAP + ACID/BASE | ✓ **Step** — 3 grupos (L/R sincronizados) |
 | 15 | s14 | Event Sourcing | ✓ **Step** — 3 grupos (L/R sincronizados) |
 | 16 | s15 | Adoção na Indústria — Amazon/Netflix/Uber | ✓ **Step** — disclaimer + 3 cards individualmente |
-| 17 | s16 | Obrigado | ✓ Auto-reveal (closing slide) |
+| 17 | srefs | Referências | ✓ **NOVO** — 24 refs, 21 ✅ verificadas, 3 ❌ pendentes (@lucas) |
+| 18 | s16 | Obrigado | ✓ Auto-reveal (closing slide) |
 
 ---
 
@@ -67,9 +68,9 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 
 > ⚠ **DECISÃO PENDENTE @lucas + @matheus**
 >
-> Agora são 16 slides. Sugestões:
-> - **Opção A:** Lucas S1–S7 (contexto + problema + discussão + definição), Matheus S8–S16 (arquitetura + técnico + indústria)
-> - **Opção B:** Lucas S1–S6, Matheus S7–S16
+> Agora são 18 slides (srefs e Obrigado são passivos — não precisam de narração). Sugestões:
+> - **Opção A:** Lucas S1–S8 (contexto + crise + discussão + CQRS), Matheus S9–S18 (arquitetura + técnico + indústria + refs)
+> - **Opção B:** Lucas S1–S7, Matheus S8–S18
 
 ---
 
@@ -101,6 +102,8 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 - ✓ **Kafka sync** — 5 left steps de S11 agora revelam em sincronia com o dot; ← reverte dot + left step
 - ✓ **CSS fix S12** — `ul.lst li code{background:none;padding:0}` remove o fundo azul de PostCurtido, post_id, likes_count
 - ✓ **N=17**, KAFKA_IDX=11; todos os índices JS atualizados
+- ✓ **Slide srefs** — 24 referências com ✅/❌; 21 verificadas, 3 pendentes (@lucas): Crunkilton, Izrailevsky & Meshenberg, Lerner
+- ✓ **check-doc 4ª rodada** — sem novos blockers; mesmo estado das pendências manuais
 
 ---
 
@@ -119,7 +122,8 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 - **Dual write + transactional outbox:** incluído explicitamente
 - **Animações:** `.reveal` com delays `.d1`–`.d9`, disparam ao entrar no slide
 - **Step animation:** sistema genérico `data-group` + `buildSteps()`; `goForward()` / `goBackward()` despacham para slide correto; Kafka (S11) permanece handler especial sincronizando dot + left steps — ver SESSION_NOTES.md
-- **Slide smono:** slide dedicado ao monolito (id="smono"), entre s3 e s4, N=17, KAFKA_IDX=11
+- **Slide smono:** slide dedicado ao monolito (id="smono"), entre s3 e s4
+- **Slide srefs:** referências verificadas (id="srefs"), entre s15 e s16; N=18, KAFKA_IDX=11
 
 ---
 
@@ -143,13 +147,13 @@ Depois: reimplementar as animações reveal e os slides novos (2 e 6) manualment
 
 | Pergunta provável | Onde está a resposta |
 |-------------------|----------------------|
-| "E se o processo cair entre a escrita e a publicação no Kafka?" | Slide 10 — Transactional Outbox |
-| "Como garantir que o consumidor não processe o mesmo evento duas vezes?" | Slide 11 — idempotência + at-least-once |
-| "O modelo de leitura pode ficar para sempre desatualizado?" | Slide 12 — consistência eventual |
-| "CQRS não adiciona muita complexidade?" | Slide 7 (Fowler 2011 alerta) |
+| "E se o processo cair entre a escrita e a publicação no Kafka?" | Slide 12 (s11) — Transactional Outbox |
+| "Como garantir que o consumidor não processe o mesmo evento duas vezes?" | Slide 13 (s12) — idempotência + at-least-once |
+| "O modelo de leitura pode ficar para sempre desatualizado?" | Slide 14 (s13) — consistência eventual |
+| "CQRS não adiciona muita complexidade?" | Slide 8 (s7) — Fowler 2011 alerta |
 | "Por que Kafka e não RabbitMQ?" | Não está nos slides — Kafka é log persistente (reprocessamento), RabbitMQ é fila descartável |
-| "Event Sourcing é obrigatório com CQRS?" | Slide 13 — não, são complementares |
-| "Essas empresas realmente usam CQRS?" | Slide 14 — qualificado: princípios relacionados, não adoção formal |
+| "Event Sourcing é obrigatório com CQRS?" | Slide 15 (s14) — não, são complementares |
+| "Essas empresas realmente usam CQRS?" | Slide 16 (s15) — qualificado: princípios relacionados, não adoção formal |
 
 ---
 
