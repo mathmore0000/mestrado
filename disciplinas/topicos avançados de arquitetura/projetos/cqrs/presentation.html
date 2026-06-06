@@ -221,8 +221,38 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
   </div>
 </div>
 
-<!-- ══ S3 · A JORNADA DE JORGE ════════════════════════════════ -->
+<!-- ══ S3 · COMO VOCÊS CONSTRUIRIAM? ══════════════════════════ -->
 <div class="slide" id="s3">
+  <div class="w g2" style="align-items:start">
+    <div>
+      <div class="eye reveal d1">Momento de Reflexão</div>
+      <h2 class="reveal d2">Como vocês construiriam a arquitetura desse sistema?</h2>
+      <div class="rule reveal d3"></div>
+      <div class="card reveal d4" style="margin-bottom:12px">
+        <h4>Pausa para discussão</h4>
+        <p>Antes de revelar a escolha de Jorge, reflitam: quais tecnologias, padrões e decisões de banco de dados vocês adotariam para um MVP que precisa sair rápido?</p>
+      </div>
+      <div class="card warn reveal d5">
+        <p><strong style="color:var(--primary)">Software não nasce robusto — e isso é aceitável.</strong> A engenharia precisa projetar para o cenário atual e evoluir conforme o sistema cresce. Um MVP superengenheirado pode comprometer a validação do produto.</p>
+      </div>
+    </div>
+    <div>
+      <div class="eye reveal d6" style="margin-top:2px">A escolha de Jorge</div>
+      <h3 class="reveal d6" style="margin-bottom:12px">Arquitetura Monolítica Clássica</h3>
+      <div class="reveal d7" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;padding:12px;box-shadow:var(--shadow)">
+        <img src="assets/arquitetura-sem-cqrs.png" alt="Arquitetura monolítica sem CQRS"
+          style="width:100%;border-radius:8px;display:block">
+      </div>
+      <div class="reveal d8" style="margin-top:10px;padding:10px 14px;
+        background:rgba(15,45,89,.04);border-left:3px solid var(--primary);border-radius:0 8px 8px 0">
+        <p style="font-size:.78rem">Escolha correta para um MVP. O problema aparece quando leituras e escritas começam a competir pelo mesmo banco.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S4 · A JORNADA DE JORGE ════════════════════════════════ -->
+<div class="slide" id="s4">
   <div class="w">
     <div class="eye reveal d1">Da Ideia ao Produto em Escala</div>
     <h2 class="reveal d2">A Jornada de Jorge</h2>
@@ -260,8 +290,8 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
   </div>
 </div>
 
-<!-- ══ S4 · A CRISE ════════════════════════════════════════════ -->
-<div class="slide" id="s4">
+<!-- ══ S5 · A CRISE ════════════════════════════════════════════ -->
+<div class="slide" id="s5">
   <div class="w g2" style="align-items:start">
     <div>
       <div class="eye reveal d1">Diagnóstico</div>
@@ -274,9 +304,19 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
 SELECT count(*) FROM pg_stat_activity
   WHERE wait_event_type = 'Lock';
 → 342 conexões aguardando locks</div>
-      <div class="card red reveal d5" style="margin-top:14px">
+      <div class="reveal d5" style="margin-top:14px;display:flex;gap:10px">
+        <div style="flex:1;background:rgba(218,41,28,.05);border:1px solid rgba(218,41,28,.2);border-radius:10px;padding:14px;text-align:center">
+          <div class="mval red" style="font-size:clamp(1.4rem,2.2vw,2.6rem)">89%</div>
+          <div class="mlbl">consultas de leitura</div>
+        </div>
+        <div style="flex:1;background:rgba(15,45,89,.04);border:1px solid rgba(15,45,89,.15);border-radius:10px;padding:14px;text-align:center">
+          <div class="mval" style="font-size:clamp(1.4rem,2.2vw,2.6rem)">11%</div>
+          <div class="mlbl">operações de escrita</div>
+        </div>
+      </div>
+      <div class="card red reveal d6" style="margin-top:10px">
         <h4>Diagnóstico final</h4>
-        <p>O backend foi escalado horizontalmente — o banco não. <strong style="color:var(--neg)">O problema não é de código. É arquitetural.</strong> Leituras e escritas competem pelo mesmo recurso físico.</p>
+        <p>O backend foi escalado horizontalmente — o banco não. <strong style="color:var(--neg)">O problema não é de código. É arquitetural.</strong> 89% das operações são leituras disputando o mesmo recurso das escritas.</p>
       </div>
     </div>
     <div>
@@ -304,8 +344,8 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ S5 · CUSTO DA LATÊNCIA ══════════════════════════════════ -->
-<div class="slide" id="s5">
+<!-- ══ S6 · CUSTO DA LATÊNCIA ══════════════════════════════════ -->
+<div class="slide" id="s6">
   <div class="w">
     <div class="eye reveal d1">Impacto Financeiro</div>
     <h2 class="reveal d2">Arquitetura Vira Prejuízo</h2>
@@ -328,39 +368,15 @@ LIMIT 20;</div>
         <div class="mlbl">estimativa Prime Day 2018</div>
         <div class="msrc">Digital Commerce 360 (2018)</div>
       </div>
+      <div class="msep"></div>
+      <div class="mitem">
+        <div class="mval red">$5,6k</div>
+        <div class="mlbl">custo médio por minuto fora do ar</div>
+        <div class="msrc">Gartner (2014)</div>
+      </div>
     </div>
     <div class="card blue reveal d5">
       <p>Brutlag (2009) confirmou em estudo controlado que atrasos adicionais reduzem engajamento de forma mensurável. Latência não é só uma métrica de engenharia — é um risco direto de receita. <strong style="color:var(--primary)">Quando a arquitetura vira gargalo, o banco de dados vira prejuízo financeiro.</strong></p>
-    </div>
-  </div>
-</div>
-
-<!-- ══ S6 · COMO VOCÊS CONSTRUIRIAM? ══════════════════════════ -->
-<div class="slide" id="s6">
-  <div class="w g2" style="align-items:start">
-    <div>
-      <div class="eye reveal d1">Momento de Reflexão</div>
-      <h2 class="reveal d2">Como vocês construiriam a arquitetura desse sistema?</h2>
-      <div class="rule reveal d3"></div>
-      <div class="card reveal d4" style="margin-bottom:12px">
-        <h4>Pausa para discussão</h4>
-        <p>Antes de revelar a escolha de Jorge, reflitam: quais tecnologias, padrões e decisões de banco de dados vocês adotariam para um MVP que precisa sair rápido?</p>
-      </div>
-      <div class="card warn reveal d5">
-        <p><strong style="color:var(--primary)">Software não nasce robusto — e isso é aceitável.</strong> A engenharia precisa projetar para o cenário atual e evoluir conforme o sistema cresce. Um MVP superengenheirado pode comprometer a validação do produto.</p>
-      </div>
-    </div>
-    <div>
-      <div class="eye reveal d6" style="margin-top:2px">A escolha de Jorge</div>
-      <h3 class="reveal d6" style="margin-bottom:12px">Arquitetura Monolítica Clássica</h3>
-      <div class="reveal d7" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;padding:12px;box-shadow:var(--shadow)">
-        <img src="assets/arquitetura-sem-cqrs.png" alt="Arquitetura monolítica sem CQRS"
-          style="width:100%;border-radius:8px;display:block">
-      </div>
-      <div class="reveal d8" style="margin-top:10px;padding:10px 14px;
-        background:rgba(15,45,89,.04);border-left:3px solid var(--primary);border-radius:0 8px 8px 0">
-        <p style="font-size:.78rem">Escolha correta para um MVP. O problema aparece quando leituras e escritas começam a competir pelo mesmo banco.</p>
-      </div>
     </div>
   </div>
 </div>

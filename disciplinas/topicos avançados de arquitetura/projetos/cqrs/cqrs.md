@@ -75,10 +75,11 @@ O backend foi escalado horizontalmente (múltiplos containers), mas o banco de d
 
 Latência não é só uma métrica técnica — tem impacto direto em receita. Marissa Mayer, então vice-presidente de Produtos de Busca do Google, relatou em 2006 que um atraso de 500ms nas buscas resultou em 20% menos pesquisas realizadas (Mayer, 2006). Em um estudo controlado posterior, Brutlag (2009) confirmou a relação: atrasos adicionais de 400ms levaram a reduções mensuráveis no número de buscas por usuário. Na Amazon, Greg Linden documentou que cada 100ms adicionais de latência correspondiam a uma queda de 1% nas vendas (Linden, 2006).
 
-Interrupções de serviço causadas por gargalos de infraestrutura têm consequências financeiras diretas e documentadas. Durante o Amazon Prime Day de 2018, falhas de escalonamento de infraestrutura travaram o site por aproximadamente duas horas; estimativas independentes apontaram perdas entre US$ 72 e US$ 99 milhões em vendas não realizadas (Digital Commerce 360, 2018).
+Interrupções de serviço causadas por gargalos de infraestrutura têm consequências financeiras diretas e documentadas. Durante o Amazon Prime Day de 2018, falhas de escalonamento de infraestrutura travaram o site por aproximadamente duas horas; estimativas independentes apontaram perdas entre US$ 72 e US$ 99 milhões em vendas não realizadas (Digital Commerce 360, 2018). O Gartner estima que o custo médio de indisponibilidade de sistemas de TI é de US$ 5.600 por minuto — valor que pode ser substancialmente maior em plataformas de e-commerce e streaming sob alta carga (Lerner, 2014).
 
 Brutlag, J. (2009). *Speed Matters for Google Web Search*. Google Research.\
 Digital Commerce 360. (2018). *Amazon Prime Day 2018 outage cost*. digitalcommerce360.com.\
+Lerner, A. (2014). *The Cost of Downtime*. Gartner Research.\
 Linden, G. (2006). *Make Data Useful*. Apresentação na Stanford University.\
 Mayer, M. (2006). *Improving User Experience Through Browser Responsiveness*. Apresentação na O'Reilly Web 2.0 Expo.
 
@@ -333,6 +334,8 @@ Izrailevsky, Y., & Meshenberg, R. (2016). *Completing the Netflix Cloud Migratio
 Kleppmann, M. (2017). *Designing Data-Intensive Applications*. O'Reilly Media.
 
 Kreps, J., Narkhede, N., & Rao, J. (2011). *Kafka: A distributed messaging system for log processing*. Proceedings of NetDB.
+
+Lerner, A. (2014). *The Cost of Downtime*. Gartner Research.
 
 Linden, G. (2006). *Make Data Useful*. Apresentação na Stanford University.
 
