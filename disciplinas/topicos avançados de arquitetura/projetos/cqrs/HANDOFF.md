@@ -43,64 +43,46 @@ Abra `presentation.html` no browser. Navegação: ← → / Space / clique nos d
 
 ## O que ainda falta
 
-### 1. Diagramas de arquitetura (slide 2 + novo slide)
-Três imagens disponíveis em `/Users/math/Downloads/taeca-arquitetura-software-seminario-main/assets/`:
-- `Sistema vibe coded do George.png` → substituir placeholder CSS no slide 2 ("Conheçam Jorge")
-- `Arquitetura do sistema SEM CQRS.png` → slide de problema/monolito
-- `Arquitetura do sistema COM CQRS.png` → slide de solução CQRS
+### 1. Animações "surgir" nos slides
+Revisar todos os slides e aplicar animações `.reveal` nas partes que ainda não têm. Slide 11 (Kafka) já tem lista com reveals — avaliar upgrade para animação CSS keyframe de pacote viajando.
 
-Copiar para `assets/` dentro do projeto e referenciar como `<img>`.
+**Spec Kafka:** `[Write Service] → [Kafka] → [Consumer] → [Read DB]`, auto-play ao entrar, executa uma vez, `likes_count: 42 → 43`.
 
-### 2. Animações "surgir" nos slides
-Revisar todos os slides e aplicar animações `.reveal` nas partes que ainda não têm (listas, diagramas, blockquotes que aparecem em sequência lógica). O slide 10 (Kafka) já tem lista com reveals — avaliar se vale upgrade para animação CSS keyframe de pacote viajando.
+### 2. Reordenar slide "Como vocês construiriam?" (slide 6)
+Avaliar se faz mais sentido antes ou depois do slide de crise (slides 4/5). Decisão pendente.
 
-**Spec Kafka (SESSION_NOTES.md):** `[Write Service] → [Kafka] → [Consumer] → [Read DB]`, auto-play ao entrar, executa uma vez, `likes_count: 42 → 43`.
+### 3. Métrica faltando no slide de impacto financeiro (slide 5)
+Identificar qual métrica está ausente e adicionar com referência acadêmica.
 
-### 3. Reordenar slide "Como vocês construiriam?"
-Slide 6 atualmente — avaliar se faz mais sentido antes ou depois do slide de crise (slide 4/5).
-
-### 4. Métrica faltando no slide de impacto financeiro (slide 5)
-Verificar qual métrica está ausente e adicionar com referência acadêmica.
-
-### 5. Disclaimer de uso de IA
-Adicionar em algum slide (provavelmente capa ou obrigado) menção ao uso de IA generativa na construção do MVP do Jorge e/ou na preparação da apresentação.
-
-### 6. Remover referências a "Atos"
-Os slides de jornada do Jorge usam "Ato I", "Ato II" etc. — remover ou substituir por linguagem mais direta.
-
-### 7. Layout para TV Full HD (visualização à distância)
-Aumentar fontes base, espaçamentos e elementos visuais para legibilidade em TV 1920×1080 vista de longe numa sala de aula.
-
-### 9. Fixes no cqrs.md (saídos do check-doc)
-
-**BLOCKER — Dynamo vs DynamoDB (seção Adoção na Indústria, Amazon):**
-O texto diz "a solução foi o DynamoDB (DeCandia et al., 2007)" mas o paper descreve o *Dynamo* (sistema interno, carrinho de compras), não o DynamoDB (serviço público, 2012). São sistemas distintos.
-Fix: trocar por "Dynamo (sistema interno)" e adicionar nota que seus princípios influenciaram o DynamoDB em 2012.
-
-**WARNING — Referência órfã Brewer (2000):**
-`Brewer, E. (2000). Towards robust distributed systems. PODC.` está nas Referências mas nunca é citado no corpo. O body só cita Brewer (2012).
-Fix: remover da seção de Referências.
+### 4. Fixes restantes no cqrs.md
 
 **WARNING — Citação Netflix imprecisa:**
-Izrailevsky & Meshenberg (2016) é sobre a migração para a nuvem, não sobre arquitetura CQRS com Cassandra/Elasticsearch. Os detalhes técnicos precisam de um post mais específico do Netflix Tech Blog.
-Fix: buscar post técnico adequado ou qualificar o nível de detalhe da afirmação.
+Izrailevsky & Meshenberg (2016) é sobre migração para a nuvem, não arquitetura CQRS/Cassandra. Buscar post técnico mais específico ou qualificar a afirmação.
 
 **WARNING — Autor Uber não verificado:**
-`Crunkilton, B. et al. (2016)` — nome do autor não verificado no Uber Engineering Blog.
-Fix: confirmar autoria antes da apresentação.
+`Crunkilton, B. et al. (2016)` — confirmar autoria no Uber Engineering Blog antes da apresentação.
 
-**WARNING — Stonebraker et al. (2007) usado para JOIN bottlenecks:**
-O paper argumenta pelo fim do RDBMS monolítico em geral, não especificamente que JOINs são gargalo em feeds. Kleppmann (2017, cap. 3) cobre isso diretamente.
-Fix: substituir ou complementar com Kleppmann (2017).
+**WARNING — Stonebraker et al. (2007) para JOIN bottlenecks:**
+Paper argumenta pelo fim do RDBMS em geral. Substituir ou complementar com Kleppmann (2017, cap. 3).
 
 **WARNING — "réplicas de leitura" sem citação:**
-"Adicionar réplicas de leitura adia o problema, mas não o resolve" — afirmação técnica sem referência.
-Fix: adicionar "(Kleppmann, 2017, cap. 5)" ou qualificar a frase.
+Adicionar "(Kleppmann, 2017, cap. 5)" ou qualificar a frase.
 
-### 8. Divisão da apresentação entre os apresentadores
-Ainda não decidida. Sugestões:
-- **Opção A:** Lucas slides 1–6 (história + problema + discussão), Matheus slides 7–15 (solução técnica)
-- **Opção B:** Lucas slides 1–5 (contexto), Matheus slides 6–15
+### 5. Divisão da apresentação entre os apresentadores
+Ainda não decidida. Agora são 16 slides. Sugestões:
+- **Opção A:** Lucas slides 1–7 (história + problema + discussão + definição), Matheus slides 8–16 (arquitetura + técnico)
+- **Opção B:** Lucas slides 1–6, Matheus slides 7–16
+
+---
+
+## O que foi feito nesta sessão (2026-06-06)
+
+- ✓ **TV Full HD layout** — `html { font-size: clamp(15px,1.3vw,22px) }` + todas as caps de clamp() tipográficos aumentadas
+- ✓ **Diagramas de arquitetura** — 3 imagens em `assets/`; slide 2 com imagem real do MVP; slide 6 com diagrama SEM CQRS; novo slide 8 com diagrama COM CQRS (total: 16 slides)
+- ✓ **Disclaimer de IA** — slide 16 (Obrigado)
+- ✓ **Remove "Atos"** — cqrs.md e presentation.html
+- ✓ **Dynamo/DynamoDB** — corrigido em cqrs.md e slide 15
+- ✓ **Brewer (2000) órfão** — removido das Referências
 
 ---
 
