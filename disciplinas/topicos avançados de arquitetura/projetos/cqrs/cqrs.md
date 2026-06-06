@@ -124,10 +124,10 @@ follows  (id, follower_id, followed_id)
 comments (id, post_id, author_id, content, created_at)
 ```
 
-A normalização aqui é intencional: cada fato é armazenado em um único lugar, o que evita anomalias de atualização e mantém a consistência de dados (Codd, 1970). Se o nome de um usuário muda, só a tabela `users` precisa ser atualizada. Este lado opera sob garantias **ACID** — Atomicidade, Consistência, Isolamento e Durabilidade — que protegem a integridade do estado canônico (Gray & Reuter, 1992).
+A normalização aqui é intencional: cada fato é armazenado em um único lugar, o que evita anomalias de atualização e mantém a consistência de dados (Codd, 1970). Se o nome de um usuário muda, só a tabela `users` precisa ser atualizada. Este lado opera sob garantias **ACID** — Atomicidade, Consistência, Isolamento e Durabilidade — que protegem a integridade do estado canônico (Haerder & Reuter, 1983).
 
 Codd, E. F. (1970). A relational model of data for large shared data banks. *Communications of the ACM*, 13(6), 377–387.\
-Gray, J., & Reuter, A. (1992). *Transaction Processing: Concepts and Techniques*. Morgan Kaufmann.
+Haerder, T., & Reuter, A. (1983). Principles of transaction-oriented database recovery. *ACM Computing Surveys*, 15(4), 287–317. https://doi.org/10.1145/289.291
 
 ---
 
@@ -226,16 +226,16 @@ Narkhede, N., Shapira, G., & Palino, T. (2017). *Kafka: The Definitive Guide*. O
 
 Adotar CQRS com sincronização assíncrona implica aceitar **consistência eventual**: o modelo de leitura pode estar momentaneamente desatualizado em relação ao modelo de escrita (Vogels, 2009).
 
-Isso não é um defeito do padrão — é um tradeoff explícito. O Teorema CAP (provado formalmente por Gilbert e Lynch em 2002 a partir da conjectura de Brewer de 2000) estabelece que sistemas distribuídos não podem garantir simultaneamente Consistência, Disponibilidade e Tolerância a Partições. A sincronização assíncrona adotada pelo CQRS implica uma escolha AP: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).
+Isso não é um defeito do padrão — é um tradeoff explícito. O Teorema CAP (provado formalmente por Gilbert e Lynch em 2002 a partir da conjectura de Brewer) estabelece que sistemas distribuídos não podem garantir simultaneamente Consistência, Disponibilidade e Tolerância a Partições. O próprio Brewer revisitou e refinou o teorema em 2012, reconhecendo que a escolha raramente é binária — na prática, trata-se de gerenciar partições quando elas ocorrem (Brewer, 2012). A sincronização assíncrona adotada pelo CQRS implica uma escolha AP: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).
 
 Uma analogia cotidiana: quando alguém posta uma foto no Instagram, seus seguidores não a veem no mesmo milissegundo. O feed de cada um converge para o estado correto em poucos segundos. Isso é consistência eventual — e é aceitável para interações humanas. O mesmo vale para o feed do Jorge: se o `likes_count` de um post levar 200ms para refletir a última curtida, nenhum usuário perceberá.
 
 | Modelo | Garantia | Propriedades |
 |--------|----------|--------------|
-| Escrita | Consistência forte | ACID (Gray & Reuter, 1992) |
+| Escrita | Consistência forte | ACID (Haerder & Reuter, 1983) |
 | Leitura | Consistência eventual | BASE (Pritchett, 2008) |
 
-Brewer, E. (2000). Towards robust distributed systems. *Proceedings of the 19th Annual ACM Symposium on Principles of Distributed Computing (PODC)*.\
+Brewer, E. (2012). CAP twelve years later: How the 'rules' have changed. *IEEE Computer*, 45(2), 23–29. https://doi.org/10.1109/MC.2012.37\
 Gilbert, S., & Lynch, N. (2002). Brewer's conjecture and the feasibility of consistent, available, partition-tolerant web services. *ACM SIGACT News*, 33(2), 51–59.\
 Vogels, W. (2009). Eventually consistent. *Communications of the ACM*, 52(1), 40–44.
 
@@ -264,7 +264,7 @@ Fowler, M. (2005). *Event Sourcing*. martinfowler.com. Disponível em: https://m
 
 ## Adoção na Indústria
 
-O problema de Jorge não é novo. Empresas que operam em escala global enfrentaram o mesmo gargalo e resolveram com variações do CQRS.
+O problema de Jorge não é novo. Empresas que operam em escala global enfrentaram o mesmo gargalo e adotaram soluções baseadas nos mesmos princípios — separação de responsabilidades, consistência eventual, logs de eventos e modelos de leitura otimizados. Vale notar que nenhuma delas descreve formalmente suas soluções como "CQRS"; o padrão emerge da análise dos princípios aplicados (DeCandia et al., 2007; Izrailevsky & Meshenberg, 2016; Crunkilton et al., 2016).
 
 **Amazon — DynamoDB (2004–2007):** O catálogo de produtos cresceu exponencialmente. O banco Oracle centralizado sofria com locks severos de leitura/escrita, especialmente durante picos como a Black Friday. A solução foi o DynamoDB — separação completa dos fluxos de leitura e escrita com consistência eventual como premissa de design (DeCandia et al., 2007).
 
@@ -328,7 +328,7 @@ Fowler, M. (2011). *CQRS*. martinfowler.com.
 
 Gilbert, S., & Lynch, N. (2002). Brewer's conjecture and the feasibility of consistent, available, partition-tolerant web services. *ACM SIGACT News*, 33(2), 51–59.
 
-Gray, J., & Reuter, A. (1992). *Transaction Processing: Concepts and Techniques*. Morgan Kaufmann.
+Haerder, T., & Reuter, A. (1983). Principles of transaction-oriented database recovery. *ACM Computing Surveys*, 15(4), 287–317. https://doi.org/10.1145/289.291
 
 Izrailevsky, Y., & Meshenberg, R. (2016). *Completing the Netflix Cloud Migration*. Netflix Technology Blog.
 

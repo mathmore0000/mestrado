@@ -1,7 +1,7 @@
 Read the document at the path provided in $ARGUMENTS.
 
 Parse $ARGUMENTS for optional flags:
-- `--vibe <name>` — one of: acadêmico, profissional, pitch, casual
+- `--vibe <name>` — one of: acadêmico, light-acadêmico, profissional, pitch, casual
 - `--lang <code>` — one of: pt, en, mirror (mirror = match the document's language)
 
 If either flag is missing, ask the user ONE single message with BOTH questions before doing anything else. Do not start reading or planning until you have both answers. Example ask:
@@ -37,6 +37,30 @@ Read the full document. Identify:
 ## Step 2 — Apply the vibe
 
 The vibe changes **only** the CSS palette, spacing scale, and content tone. The layout system, all component class names, and the JS block are identical across all vibes.
+
+### light-acadêmico
+```css
+--bg: #f7f8fa;      /* paper background              */
+--slide-bg: #fcfcfd;
+--sur: rgba(255,255,255,.92);
+--bdr: rgba(15,32,66,.12);
+--primary: #0f2d59; --primaryl: #1e4080;  /* deep navy — headings, nav    */
+--acc1: #da291c; --acc1l: #e8473c;        /* Mackenzie red — rules, alerts */
+--acc2: #2563eb; --acc2l: #3b82f6;        /* blue — secondary accents      */
+--pos:  #16a34a; --posl:  #22c55e;
+--neg:  #dc2626; --negl:  #ef4444;
+--tx: #0f172a; --mt: #334155; --dm: #64748b;
+```
+- Light background — projector-safe, prints cleanly
+- Fonts: Outfit (headings), Inter (body), JetBrains Mono (code) via Google Fonts
+- Fixed 1920×1080 stage scaled to viewport via JS (no responsive reflow)
+- Headings and nav in `--primary` (navy); accent rule in `--acc1` (red)
+- Code blocks use a dark terminal bg (`#0f1724`) for contrast against the light slide
+- Dense layouts, 2-column grids preferred, `.tbl` used freely
+- No decorative emoji in slide body
+- Eyebrow tags are noun phrases in light gray uppercase
+- Cover: white card centered on a subtle navy-to-paper gradient
+- Stage scaling JS must be included: scales `.deck-stage` (1920×1080) to fit viewport
 
 ### acadêmico
 ```css
