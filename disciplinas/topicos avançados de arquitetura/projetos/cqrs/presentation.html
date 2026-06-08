@@ -19,7 +19,7 @@
 }
 html{font-size:clamp(15px,1.3vw,22px)}
 html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);
-  font-family:var(--ff-body);color:var(--tx);-webkit-font-smoothing:antialiased}
+  font-family:var(--ff-body);color:var(--tx);-webkit-font-smoothing:antialiased;}
 #deck{position:relative;width:100%;height:100%;overflow:hidden}
 
 /* ── SLIDES ─────────────────────────────────────────────────── */
@@ -194,15 +194,12 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
   <div class="w">
     <p class="eye reveal d1">Universidade Presbiteriana Mackenzie</p>
     <p class="reveal d2" style="font-family:var(--ff-head);font-size:clamp(.75rem,.9vw,.85rem);color:var(--dm);margin-bottom:18px">Programa de Pós-Graduação em Computação Aplicada</p>
-    <h1 class="reveal d3" style="font-size:clamp(1.6rem,2.6vw,2.8rem);margin-bottom:10px;font-weight:800;line-height:1.15">Computação aplicada em Arquitetura de Software</h1>
+    <h1 class="reveal d3" style="font-size:clamp(1.6rem,2.6vw,2.8rem);margin-bottom:10px;font-weight:800;line-height:1.15">Computação Aplicada em Arquitetura de Software</h1>
     <div class="rule reveal d4" style="margin:16px auto 20px"></div>
     <h2 class="reveal d5" style="font-weight:500;color:var(--mt);font-size:clamp(.9rem,1.35vw,1.18rem);margin-bottom:10px;line-height:1.55">
       Sincronização de dados desnormalizados em sistemas distribuídos orientado a eventos e de alta concorrência
     </h2>
-    <p class="reveal d6" style="font-size:clamp(.72rem,.88vw,.84rem);color:var(--dm);margin-bottom:28px">
-      <span style="font-family:var(--ff-head);font-weight:700;color:var(--primary)">CQRS</span> — Command Query Responsibility Segregation
-    </p>
-    <div class="cmeta reveal d7" style="border-top:1px solid var(--bdr);padding-top:22px">
+    <div class="cmeta reveal d6" style="margin-top:100px;border-top:1px solid var(--bdr);padding-top:22px">
       <span class="cm">Matheus Moreira</span>
       <div class="cdot"></div>
       <span class="cm">Lucas Aguiar</span>
@@ -219,19 +216,19 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
       <div class="eye reveal d1">Estudo de Caso Simulado</div>
       <h2 class="reveal d2">Conheçam Jorge</h2>
       <div class="rule reveal d3"></div>
-      <div class="card step-anim" data-group="1" style="margin-bottom:14px">
+      <div class="card reveal d4" style="margin-bottom:14px">
         <p>Jorge é um desenvolvedor que usa inteligência artificial todos os dias para ser mais produtivo. Em um fim de semana, ele decide transformar uma ideia ambiciosa em realidade: criar uma <strong style="color:var(--primary)">rede social centrada em comunidades de nicho</strong>, pensada para o público jovem.</p>
       </div>
-      <div class="card navy step-anim" data-group="2" style="margin-bottom:14px">
+      <div class="card navy reveal d5" style="margin-bottom:14px">
         <p>A estratégia de Jorge é simples: construir rápido, publicar cedo e validar a ideia com usuários reais antes de investir em infraestrutura robusta. Esse comportamento é típico de startups e MVPs — e amplificado pelo Vibe Coding.</p>
       </div>
-      <blockquote class="step-anim" data-group="3" style="border-left:3px solid var(--red);padding:12px 16px;
+      <blockquote class="reveal d5" style="border-left:3px solid var(--red);padding:12px 16px;
         background:rgba(218,41,28,.04);border-radius:0 10px 10px 0;
         font-style:italic;font-size:clamp(.8rem,1vw,.9rem);color:var(--mt)">
         "Com vibe coding, devo montar ainda neste fim de semana uma versão testável para alguns usuários e validar minha ideia."
       </blockquote>
     </div>
-    <div class="step-anim" data-group="1" style="display:flex;flex-direction:column;gap:12px">
+    <div class="reveal d4" style="display:flex;flex-direction:column;gap:12px">
       <div style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
         padding:16px;box-shadow:var(--shadow);text-align:center">
         <p class="eye" style="margin-bottom:10px">Figura 1 — MVP funcional</p>
@@ -249,12 +246,8 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
     <div class="eye reveal d1">Momento de Reflexão</div>
     <h2 class="reveal d2">Como vocês construiriam a arquitetura desse sistema?</h2>
     <div class="rule reveal d3"></div>
-    <div class="card step-anim" data-group="1" style="margin-bottom:12px">
-      <h4>Pausa para discussão</h4>
-      <p>Antes de revelar a escolha de Jorge, reflitam: quais tecnologias, padrões e decisões de banco de dados vocês adotariam para um MVP que precisa sair rápido?</p>
-    </div>
-    <div class="card warn step-anim" data-group="2">
-      <p><strong style="color:var(--primary)">Software não nasce robusto — e isso é aceitável.</strong> A engenharia precisa projetar para o cenário atual e evoluir conforme o sistema cresce. Um MVP superengenheirado pode comprometer a validação do produto.</p>
+    <div class="card warn step-anim" data-group="1">
+      <p><strong style="color:var(--primary)">Software não nasce robusto.</strong> A engenharia deve resolver o problema do momento e evoluir junto com o sistema à medida que ele cresce. Um MVP com arquitetura excessiva pode prejudicar a validação do produto.</p>
     </div>
   </div>
 </div>
@@ -265,12 +258,12 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
     <div class="eye reveal d1">A Escolha de Jorge</div>
     <h2 class="reveal d2">Arquitetura Monolítica Clássica</h2>
     <div class="rule reveal d3"></div>
-    <div class="step-anim" data-group="1" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
+    <div class="reveal d4" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
       padding:16px;box-shadow:var(--shadow);margin-top:4px">
       <img src="assets/arquitetura-sem-cqrs.png" alt="Arquitetura monolítica sem CQRS"
         style="width:100%;max-height:440px;object-fit:contain;border-radius:8px;display:block">
     </div>
-    <div class="step-anim" data-group="2" style="margin-top:12px;display:flex;gap:20px;justify-content:center">
+    <div class="reveal d5" style="margin-top:12px;display:flex;gap:20px;justify-content:center">
       <span class="pill pb">Banco único para leituras e escritas</span>
       <span class="pill pr">JOINs em tempo de execução</span>
       <span class="pill pg">Correto para um MVP</span>
@@ -325,13 +318,13 @@ ul.lst li::before{content:'→';color:var(--blue);font-weight:700;flex-shrink:0;
       <h2 class="reveal d2">A Crise</h2>
       <div class="rule reveal d3"></div>
       <p class="step-anim" data-group="1" style="margin-bottom:10px">Jorge analisa os logs do PostgreSQL <span style="font-size:.72rem;color:var(--dm)">(cenário ilustrativo)</span>:</p>
-      <div class="pbox step-anim" data-group="2">$ top -p $(pgrep postgres)
+      <div class="pbox step-anim" data-group="1">$ top -p $(pgrep postgres)
 → CPU: 98.7% · I/O Wait: 64%
 
 SELECT count(*) FROM pg_stat_activity
   WHERE wait_event_type = 'Lock';
 → 342 conexões aguardando locks</div>
-      <div class="step-anim" data-group="3" style="margin-top:14px;display:flex;gap:10px">
+      <div class="step-anim" data-group="2" style="margin-top:14px;display:flex;gap:10px">
         <div style="flex:1;background:rgba(218,41,28,.05);border:1px solid rgba(218,41,28,.2);border-radius:10px;padding:14px;text-align:center">
           <div class="mval red" style="font-size:clamp(1.4rem,2.2vw,2.6rem)">89%</div>
           <div class="mlbl">consultas de leitura</div>
@@ -347,8 +340,8 @@ SELECT count(*) FROM pg_stat_activity
       </div>
     </div>
     <div>
-      <p class="eye step-anim" data-group="1" style="margin-top:2px">A query culpada — executada a cada abertura do feed</p>
-      <div class="pbox step-anim" data-group="2" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content, p.created_at,
+      <p class="eye step-anim" data-group="3" style="margin-top:2px">A query culpada — executada a cada abertura do feed</p>
+      <div class="pbox step-anim" data-group="3" style="font-size:clamp(8px,.8vw,10px)">SELECT p.id, p.content, p.created_at,
        u.name, u.avatar_url,
        COUNT(DISTINCT l.id) AS likes_count,
        COUNT(DISTINCT c.id) AS comments_count
@@ -362,7 +355,7 @@ WHERE p.author_id IN (
 )
 ORDER BY p.created_at DESC
 LIMIT 20;</div>
-      <div class="step-anim" data-group="4" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+      <div class="step-anim" data-group="3" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
         <span class="pill pr">4 JOINs</span>
         <span class="pill pr">2 COUNTs em runtime</span>
         <span class="pill pr">Subquery correlacionada</span>
@@ -416,15 +409,15 @@ LIMIT 20;</div>
       <h2 class="reveal d2">CQRS</h2>
       <div class="rule reveal d3"></div>
       <p class="step-anim" data-group="1" style="margin-bottom:12px"><strong style="color:var(--primary)">Command Query Responsibility Segregation</strong> — separa operações de <span style="color:var(--red);font-weight:600">escrita</span> (Commands) das de <span style="color:var(--blue);font-weight:600">leitura</span> (Queries) em modelos, armazenamentos e pipelines distintos (Young, 2010; Fowler, 2011).</p>
-      <p class="step-anim" data-group="2" style="margin-bottom:14px">Extensão arquitetural do CQS de Meyer (1988): um método é ou um <em>command</em> (muda estado, não retorna) ou uma <em>query</em> (retorna valor, não muda estado) — nunca os dois.</p>
-      <div class="card navy step-anim" data-group="3">
+      <p class="step-anim" data-group="1" style="margin-bottom:14px">Extensão arquitetural do CQS de Meyer (1988): um método é ou um <em>command</em> (muda estado, não retorna) ou uma <em>query</em> (retorna valor, não muda estado) — nunca os dois.</p>
+      <div class="card navy step-anim" data-group="2">
         <h4>A proposta de Jorge</h4>
         <p>Separar fisicamente os caminhos de leitura e escrita. A latência do feed cai de <strong style="color:var(--neg)">1.200ms</strong> para menos de <strong style="color:var(--pos)">50ms</strong>. Os bloqueios desaparecem.</p>
       </div>
     </div>
     <div>
       <p class="eye step-anim" data-group="1" style="margin-top:2px">Linha do tempo</p>
-      <table class="tbl step-anim" data-group="2">
+      <table class="tbl step-anim" data-group="1">
         <thead><tr><th>Ano</th><th>Marco</th></tr></thead>
         <tbody>
           <tr><td class="num">1988</td><td>Bertrand Meyer — CQS em <em>Object-Oriented Software Construction</em></td></tr>
@@ -443,12 +436,12 @@ LIMIT 20;</div>
     <div class="eye reveal d1">Visão Geral</div>
     <h2 class="reveal d2">Arquitetura CQRS</h2>
     <div class="rule reveal d3"></div>
-    <div class="step-anim" data-group="1" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
+    <div class="reveal d4" style="background:var(--sur);border:1px solid var(--bdr);border-radius:13px;
       padding:16px;box-shadow:var(--shadow);margin-top:4px">
       <img src="assets/arquitetura-com-cqrs.png" alt="Arquitetura com CQRS"
         style="width:100%;max-height:440px;object-fit:contain;border-radius:8px;display:block">
     </div>
-    <div class="step-anim" data-group="2" style="margin-top:12px;display:flex;gap:20px;justify-content:center">
+    <div class="reveal d5" style="margin-top:12px;display:flex;gap:20px;justify-content:center">
       <span class="pill pr">Commands → Write Service → Write DB (ACID)</span>
       <span class="pill pbl">Queries → Read Service → Read DB (BASE)</span>
       <span class="pill pb">Sincronização via eventos assíncronos</span>
@@ -465,7 +458,7 @@ LIMIT 20;</div>
       <div class="rule reveal d3" style="margin-bottom:2px"></div>
     </div>
     <div class="g2" style="align-items:start">
-      <div class="mbox b">
+      <div class="mbox b step-anim" data-group="1">
         <div class="eye step-anim" data-group="1">Command Side</div>
         <h3 class="step-anim" data-group="1" style="color:var(--red);margin-bottom:10px">Modelo de Escrita · ACID</h3>
         <p class="step-anim" data-group="2" style="margin-bottom:12px">Normalizado, consistente, voltado para <strong style="color:var(--tx)">integridade</strong>. Cada fato em um único lugar — anomalias de atualização impossíveis (Codd, 1970; Haerder &amp; Reuter, 1983).</p>
@@ -476,7 +469,7 @@ follows  (id, follower_id, followed_id)
 comments (id, post_id, author_id, content)</div>
         <p class="step-anim" data-group="4" style="margin-top:10px;font-size:.78rem">Se o nome de um usuário muda, só <code>users</code> precisa ser atualizada.</p>
       </div>
-      <div class="mbox a">
+      <div class="mbox a step-anim" data-group="1">
         <div class="eye step-anim" data-group="1">Query Side</div>
         <h3 class="step-anim" data-group="1" style="color:var(--blue);margin-bottom:10px">Modelo de Leitura · BASE</h3>
         <p class="step-anim" data-group="2" style="margin-bottom:12px">Desnormalizado, otimizado para <strong style="color:var(--tx)">velocidade</strong>. BASE — Basically Available, Soft State, Eventual Consistency (Pritchett, 2008). Sem JOINs em runtime.</p>
@@ -519,7 +512,7 @@ WHERE p.author_id IN (
   WHERE follower_id = :user_id
 )
 ORDER BY p.created_at DESC LIMIT 20;</div>
-        <div class="step-anim" data-group="3" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <div class="step-anim" data-group="2" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <span class="pill pr">4 JOINs</span><span class="pill pr">2 COUNTs</span><span class="pill pr">Subquery</span>
         </div>
       </div>
@@ -530,10 +523,10 @@ ORDER BY p.created_at DESC LIMIT 20;</div>
 WHERE user_id = :user_id
 ORDER BY created_at DESC
 LIMIT 20;</div>
-        <div class="step-anim" data-group="3" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        <div class="step-anim" data-group="2" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
           <span class="pill pg">0 JOINs</span><span class="pill pg">dados pré-computados</span><span class="pill pg">index scan</span>
         </div>
-        <div class="card green step-anim" data-group="4" style="margin-top:14px">
+        <div class="card green step-anim" data-group="3" style="margin-top:14px">
           <p>O custo foi deslocado do momento da <strong style="color:var(--neg)">leitura</strong> para o momento da <strong style="color:var(--pos)">escrita</strong> — que ocorre muito menos vezes em sistemas de feed (Stonebraker et al., 2007).</p>
         </div>
       </div>
@@ -585,11 +578,11 @@ LIMIT 20;</div>
       </div>
       <div class="card red reveal d5" style="margin-bottom:10px">
         <h4>⚠ Dual write</h4>
-        <p>Crash entre os passos 2 e 3 → modelo de leitura nunca atualizado — divergência silenciosa.</p>
+        <p>Qualquer problema entre os passos 2 e 3 pode impedir a atualização do modelo de leitura, causando uma divergência de dados silenciosa.</p>
       </div>
       <div class="card green reveal d6">
         <h4>✓ Transactional Outbox</h4>
-        <p>Evento gravado na mesma transação da escrita. Relay publica de forma idempotente (Richardson, 2018).</p>
+        <p>O evento é persistido na mesma transação da escrita. Um relay publica o evento de forma idempotente (Richardson, 2018).</p>
       </div>
     </div>
   </div>
@@ -604,19 +597,19 @@ LIMIT 20;</div>
       <div class="rule reveal d3"></div>
       <p class="step-anim" data-group="1" style="margin-bottom:14px">Plataforma de streaming distribuído baseada em <strong style="color:var(--primary)">log imutável e particionado</strong>. Mensagens persistidas em disco — não deletadas após consumo (Kreps et al., 2011).</p>
       <ul class="lst step-anim" data-group="2">
-        <li><strong style="color:var(--tx)">Múltiplos consumidores independentes:</strong> <code>PostCurtido</code> consumido simultaneamente por feed, notificações e analytics — sem coordenação</li>
-        <li><strong style="color:var(--tx)">Reprocessamento:</strong> consumidores releem eventos de qualquer offset — rebuild do modelo de leitura sem perda</li>
-        <li><strong style="color:var(--tx)">Ordenação por partição:</strong> eventos do mesmo <code>post_id</code> roteados para a mesma partição garantem ordem correta do <code>likes_count</code> (Narkhede et al., 2017)</li>
+        <li style="display:list-item;"><strong style="color:var(--tx)">Múltiplos consumidores independentes:</strong> <code>PostCurtido</code> consumido simultaneamente por feed, notificações e analytics — sem coordenação</li>
+        <li style="display:list-item;"><strong style="color:var(--tx)">Reprocessamento:</strong> consumidores releem eventos de qualquer offset — rebuild do modelo de leitura sem perda</li>
+        <li style="display:list-item;"><strong style="color:var(--tx)">Ordenação por partição:</strong> eventos do mesmo <code>post_id</code> roteados para a mesma partição garantem ordem correta do <code>likes_count</code> (Narkhede et al., 2017)</li>
       </ul>
     </div>
     <div>
-      <p class="eye step-anim" data-group="1" style="margin-top:2px">Garantias de entrega</p>
-      <div class="mbox a step-anim" data-group="2" style="margin-bottom:12px">
+      <p class="eye step-anim" data-group="3" style="margin-top:2px">Garantias de entrega</p>
+      <div class="mbox a step-anim" data-group="3" style="margin-bottom:12px">
         <h4 style="color:var(--blue);margin-bottom:8px">At-least-once delivery</h4>
         <p style="font-size:.8rem">O evento é entregue, mas pode ser entregue mais de uma vez em caso de falha. O consumidor deve ser <strong style="color:var(--tx)">idempotente</strong> — processar o mesmo evento duas vezes não deve alterar o resultado.</p>
         <p style="font-size:.75rem;color:var(--dm);margin-top:8px">Implementação: registrar IDs de eventos processados antes de aplicar o UPDATE.</p>
       </div>
-      <div class="mbox b step-anim" data-group="3">
+      <div class="mbox b step-anim" data-group="4">
         <h4 style="color:var(--red);margin-bottom:8px">Exactly-once delivery</h4>
         <p style="font-size:.8rem">Garantia mais forte, custo de performance maior. Suportado via transações e <em>idempotent producers</em> desde Kafka 0.11 (Narkhede et al., 2017).</p>
       </div>
@@ -632,14 +625,14 @@ LIMIT 20;</div>
       <h2 class="reveal d2">Consistência Eventual</h2>
       <div class="rule reveal d3"></div>
       <p class="step-anim" data-group="1" style="margin-bottom:12px">O Teorema CAP (Brewer, 2012; Gilbert &amp; Lynch, 2002) estabelece que sistemas distribuídos não podem garantir simultaneamente <strong style="color:var(--primary)">C</strong>onsistência, <strong style="color:var(--primary)">D</strong>isponibilidade e tolerância a <strong style="color:var(--primary)">P</strong>artições. Brewer revisitou o teorema em 2012 reconhecendo que a escolha raramente é binária.</p>
-      <p class="step-anim" data-group="2" style="margin-bottom:14px">A sincronização assíncrona do CQRS implica uma escolha <strong style="color:var(--blue)">AP</strong>: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).</p>
+      <p class="step-anim" data-group="1" style="margin-bottom:14px">A sincronização assíncrona do CQRS implica uma escolha <strong style="color:var(--blue)">AP</strong>: prioriza disponibilidade e tolerância a partições, aceitando consistência eventual no modelo de leitura (Kleppmann, 2017).</p>
       <div class="card blue step-anim" data-group="3">
         <h4>Analogia cotidiana</h4>
         <p>Quando você posta uma foto no Instagram, seus seguidores não a veem no mesmo milissegundo — o feed converge em segundos. Isso é consistência eventual — aceitável para interações humanas (Vogels, 2009).</p>
       </div>
     </div>
     <div>
-      <p class="eye step-anim" data-group="1" style="margin-top:2px">ACID vs BASE</p>
+      <p class="eye step-anim" data-group="2" style="margin-top:2px">ACID vs BASE</p>
       <table class="tbl step-anim" data-group="2">
         <thead><tr><th>Propriedade</th><th style="color:var(--red)">ACID — Escrita</th><th style="color:var(--blue)">BASE — Leitura</th></tr></thead>
         <tbody>
@@ -649,7 +642,7 @@ LIMIT 20;</div>
           <tr><td>Prioridade</td><td style="color:var(--red);font-weight:600">Integridade</td><td style="color:var(--blue);font-weight:600">Velocidade</td></tr>
         </tbody>
       </table>
-      <p class="step-anim" data-group="3" style="margin-top:10px;font-size:.72rem;color:var(--dm)">Haerder &amp; Reuter (1983) · Pritchett (2008) · Vogels (2009)</p>
+      <p class="step-anim" data-group="2" style="margin-top:10px;font-size:.72rem;color:var(--dm)">Haerder &amp; Reuter (1983) · Pritchett (2008) · Vogels (2009)</p>
     </div>
   </div>
 </div>
@@ -663,18 +656,18 @@ LIMIT 20;</div>
       <div class="rule reveal d3"></div>
       <p class="step-anim" data-group="1" style="margin-bottom:14px">Em vez de armazenar o <strong style="color:var(--tx)">estado atual</strong>, armazena a <strong style="color:var(--primary)">sequência de eventos</strong> que o produziu. O estado é derivado reproduzindo os eventos em ordem (Young, 2010; Fowler, 2005).</p>
       <ul class="lst step-anim" data-group="2" style="margin-bottom:14px">
-        <li><strong style="color:var(--tx)">Auditoria completa:</strong> cada mudança é um fato histórico imutável</li>
-        <li><strong style="color:var(--tx)">Replay:</strong> modelo de leitura corrompido? Reproduz eventos desde o início</li>
-        <li><strong style="color:var(--tx)">Projeções múltiplas:</strong> diferentes modelos de leitura do mesmo log</li>
+        <li style="display:list-item;"><strong style="color:var(--tx)">Auditoria completa:</strong> cada mudança é um fato histórico imutável</li>
+        <li style="display:list-item;"><strong style="color:var(--tx)">Replay:</strong> modelo de leitura corrompido? Reproduz eventos desde o início</li>
+        <li style="display:list-item;"><strong style="color:var(--tx)">Projeções múltiplas:</strong> diferentes modelos de leitura do mesmo log</li>
       </ul>
-      <div class="card navy step-anim" data-group="3">
+      <div class="card navy step-anim" data-group="4">
         <h4>CQRS + Event Sourcing</h4>
         <p>Os eventos do <em>event store</em> são os mesmos domain events que alimentam o Kafka e atualizam o modelo de leitura — combinação natural. Replay tem custo operacional significativo em históricos longos.</p>
       </div>
     </div>
     <div>
-      <p class="eye step-anim" data-group="1" style="margin-top:2px">Event Store (append-only) — feed do Jorge</p>
-      <div class="pbox step-anim" data-group="2">001 · UsuarioCriado
+      <p class="eye step-anim" data-group="3" style="margin-top:2px">Event Store (append-only) — feed do Jorge</p>
+      <div class="pbox step-anim" data-group="3">001 · UsuarioCriado
      { id: 42, nome: "Jorge" }
 
 002 · ComunidadeCriada
@@ -726,54 +719,14 @@ LIMIT 20;</div>
   </div>
 </div>
 
-<!-- ══ SREFS · REFERÊNCIAS ═════════════════════════════════════ -->
-<div class="slide" id="srefs">
-  <div class="w">
-    <div class="eye reveal d1">Verificação de fontes</div>
-    <h2 class="reveal d2" style="font-size:clamp(1.3rem,2vw,2rem);margin-bottom:4px">Referências</h2>
-    <div class="rule reveal d3" style="margin-bottom:6px"></div>
-    <p class="reveal d3" style="font-size:clamp(8px,.65vw,11px);color:var(--dm);margin-bottom:10px">✅ verificado &nbsp;·&nbsp; ❌ verificação manual pendente (@lucas)</p>
-    <div class="g2 reveal d4" style="align-items:start;gap:16px">
-      <div style="display:flex;flex-direction:column;gap:4px">
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Brewer, E. (2012).</strong> <em>CAP Twelve Years Later</em>. IEEE Computer, 45(2).</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Brutlag, J. (2009).</strong> <em>Speed Matters for Google Web Search</em>. Google Research.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Codd, E.F. (1970).</strong> <em>A Relational Model of Data for Large Shared Data Banks</em>. Comm. ACM, 13(6).</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">❌ <strong style="color:var(--tx)">Crunkilton, B. et al. (2016).</strong> <em>Designing Schemaless</em>. Uber Engineering Blog.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Dahan, U. (2009).</strong> <em>Clarified CQRS</em>. udidahan.com.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">DeCandia, G. et al. (2007).</strong> <em>Dynamo: Amazon's Highly Available Key-Value Store</em>. SOSP '07.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Digital Commerce 360 (2018).</strong> <em>Amazon Prime Day 2018 Outage Cost</em>. digitalcommerce360.com.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Evans, E. (2003).</strong> <em>Domain-Driven Design</em>. Addison-Wesley.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Fowler, M. (2005).</strong> <em>Event Sourcing</em>. martinfowler.com.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Fowler, M. (2011).</strong> <em>CQRS</em>. martinfowler.com.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Gilbert, S. &amp; Lynch, N. (2002).</strong> <em>Brewer's Conjecture and the Feasibility of CAP</em>. ACM SIGACT News, 33(2).</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Haerder, T. &amp; Reuter, A. (1983).</strong> <em>Principles of Transaction-Oriented Database Recovery</em>. ACM Surveys, 15(4).</p>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px">
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">❌ <strong style="color:var(--tx)">Izrailevsky, Y. &amp; Meshenberg, R. (2016).</strong> <em>Completing the Netflix Cloud Migration</em>. Netflix Tech Blog.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Kleppmann, M. (2017).</strong> <em>Designing Data-Intensive Applications</em>. O'Reilly Media.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Kreps, J., Narkhede, N. &amp; Rao, J. (2011).</strong> <em>Kafka: A Distributed Messaging System for Log Processing</em>. NetDB.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">❌ <strong style="color:var(--tx)">Lerner, A. (2014).</strong> <em>The Cost of Downtime</em>. Gartner Research.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Linden, G. (2006).</strong> <em>Make Data Useful</em>. Stanford University.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Mayer, M. (2006).</strong> <em>Improving User Experience Through Browser Responsiveness</em>. O'Reilly Web 2.0 Expo.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Meyer, B. (1988).</strong> <em>Object-Oriented Software Construction</em>. Prentice Hall.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Narkhede, N., Shapira, G. &amp; Palino, T. (2017).</strong> <em>Kafka: The Definitive Guide</em>. O'Reilly Media.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Pritchett, D. (2008).</strong> <em>BASE: An Acid Alternative</em>. ACM Queue, 6(3).</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Richardson, C. (2018).</strong> <em>Microservices Patterns</em>. Manning.</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Vogels, W. (2009).</strong> <em>Eventually Consistent</em>. Comm. ACM, 52(1).</p>
-        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)">✅ <strong style="color:var(--tx)">Young, G. (2010).</strong> <em>CQRS Documents</em>. cqrs.files.wordpress.com.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- ══ S16 · OBRIGADO ══════════════════════════════════════════ -->
 <div class="slide" id="s16" style="text-align:center;
   background:linear-gradient(150deg,#f0f4fa 0%,#f7f8fa 55%,#edf1f9 100%)">
   <div class="w">
     <div class="eye reveal d1">Encerramento</div>
     <h1 class="reveal d2" style="margin-bottom:10px">Obrigado!</h1>
-    <div class="rule reveal d3" style="margin:16px auto 22px"></div>
-    <div class="mstrip reveal d4" style="margin-bottom:28px">
+    <div class="rule reveal d3"></div>
+    <div class="mstrip reveal d4" style="margin-top:100px;margin-bottom:28px">
       <div class="mitem">
         <div class="mval" style="font-size:clamp(1.4rem,2.2vw,2rem)">CQRS</div>
         <div class="mlbl">separação de responsabilidades</div>
@@ -796,10 +749,48 @@ LIMIT 20;</div>
       <div class="cdot"></div>
       <span class="cm" style="color:var(--dm)">Mackenzie · Tópicos Avançados de Arquitetura · 2026</span>
     </div>
-    <p class="reveal d6" style="margin-top:16px;font-size:.72rem;color:var(--dm)">Young (2010) · Fowler (2011) · Kleppmann (2017) · Pritchett (2008) · Gilbert &amp; Lynch (2002) · Brewer (2012) · Richardson (2018)</p>
-    <p class="reveal d7" style="margin-top:12px;font-size:.65rem;color:var(--dm);opacity:.7">
+    <p class="reveal d7" style="border-top:1px solid var(--bdr);padding-top:12px;margin-top:22px;font-size:.65rem;color:var(--dm);opacity:.7">
       Esta apresentação foi elaborada com o auxílio de ferramentas de IA generativa (Claude, Anthropic). Todos os argumentos, referências e afirmações técnicas foram revisados e verificados pelos autores.
     </p>
+  </div>
+</div>
+
+<!-- ══ SREFS · REFERÊNCIAS ═════════════════════════════════════ -->
+<div class="slide" id="srefs">
+  <div class="w">
+    <div class="eye reveal d1">Fontes consultadas para o seminário</div>
+    <h2 class="reveal d2" style="font-size:clamp(1.3rem,2vw,2rem);margin-bottom:4px">Referências</h2>
+    <div class="rule reveal d3" style="margin-bottom:6px"></div>
+    <div class="g2 reveal d4" style="align-items:start;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Brewer, E. (2012).</strong> <em>CAP Twelve Years Later</em>. IEEE Computer, 45(2).</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Brutlag, J. (2009).</strong> <em>Speed Matters for Google Web Search</em>. Google Research.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Codd, E.F. (1970).</strong> <em>A Relational Model of Data for Large Shared Data Banks</em>. Comm. ACM, 13(6).</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Crunkilton, B. et al. (2016).</strong> <em>Designing Schemaless</em>. Uber Engineering Blog.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Dahan, U. (2009).</strong> <em>Clarified CQRS</em>. udidahan.com.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">DeCandia, G. et al. (2007).</strong> <em>Dynamo: Amazon's Highly Available Key-Value Store</em>. SOSP '07.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Digital Commerce 360 (2018).</strong> <em>Amazon Prime Day 2018 Outage Cost</em>. digitalcommerce360.com.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Evans, E. (2003).</strong> <em>Domain-Driven Design</em>. Addison-Wesley.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Fowler, M. (2005).</strong> <em>Event Sourcing</em>. martinfowler.com.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Fowler, M. (2011).</strong> <em>CQRS</em>. martinfowler.com.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Gilbert, S. &amp; Lynch, N. (2002).</strong> <em>Brewer's Conjecture and the Feasibility of CAP</em>. ACM SIGACT News, 33(2).</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Haerder, T. &amp; Reuter, A. (1983).</strong> <em>Principles of Transaction-Oriented Database Recovery</em>. ACM Surveys, 15(4).</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Izrailevsky, Y. &amp; Meshenberg, R. (2016).</strong> <em>Completing the Netflix Cloud Migration</em>. Netflix Tech Blog.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Kleppmann, M. (2017).</strong> <em>Designing Data-Intensive Applications</em>. O'Reilly Media.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Kreps, J., Narkhede, N. &amp; Rao, J. (2011).</strong> <em>Kafka: A Distributed Messaging System for Log Processing</em>. NetDB.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Lerner, A. (2014).</strong> <em>The Cost of Downtime</em>. Gartner Research.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Linden, G. (2006).</strong> <em>Make Data Useful</em>. Stanford University.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Mayer, M. (2006).</strong> <em>Improving User Experience Through Browser Responsiveness</em>. O'Reilly Web 2.0 Expo.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Meyer, B. (1988).</strong> <em>Object-Oriented Software Construction</em>. Prentice Hall.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Narkhede, N., Shapira, G. &amp; Palino, T. (2017).</strong> <em>Kafka: The Definitive Guide</em>. O'Reilly Media.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Pritchett, D. (2008).</strong> <em>BASE: An Acid Alternative</em>. ACM Queue, 6(3).</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Richardson, C. (2018).</strong> <em>Microservices Patterns</em>. Manning.</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Vogels, W. (2009).</strong> <em>Eventually Consistent</em>. Comm. ACM, 52(1).</p>
+        <p style="font-size:clamp(9px,.68vw,11.5px);line-height:1.45;color:var(--mt)"><strong style="color:var(--tx)">Young, G. (2010).</strong> <em>CQRS Documents</em>. cqrs.files.wordpress.com.</p>
+      </div>
+    </div>
   </div>
 </div>
 
