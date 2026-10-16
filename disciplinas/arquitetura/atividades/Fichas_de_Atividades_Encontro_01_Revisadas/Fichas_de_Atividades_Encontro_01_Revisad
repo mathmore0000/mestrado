@@ -1,0 +1,44 @@
+Fichas_de_Atividades_Encontro_01_Revisadas.pdf
+1)
+1.1)
+Pesquisadores - Reservar equipamentos rapidamente e sem conflitos.
+Equipe de técnicos - Fazer manutenções sem conflitos.
+Gerentes - Acompanhar métricas macro da reserva e utilização de equipamentos.
+
+
+1.2)
+Sistema deve permitir a consulta do status de reservas e manutenções
+Autenticação institucional
+
+1.3)
+O p95 das consultas devem ser até 2s.
+A interface deve ser responsiva.
+
+1.4)
+Qualidade da internet no campus.
+Verba disponível para construção e manutenções.
+
+1.5)
+Qual o pico de usuários simultâneos?
+Existe uma janela de uso do sistema (24/7 8/5)?
+
+2)
+2.1)
+Definir como registrar solicitações mesmo sem conexão: aceitar ou tentar uma solução alternativa para a falta de confiabilidade na rede.
+
+2.2)
+A) Centralizar decisões por equipamentos e seus respectivos campi.
+B) Distribuir decisões e aceitar demora de consiliação: registrar solicitações e somente confirma-las ações quando os servidores conseguirem se comunicar.
+
+2.3)
+2.3.1) Necessidade de acesso a equipamentos de diferentes campi - podemos optar por demorar mais para confirmar uma solicitação mas ter acesso mais amplo entre diferentes departamentos.
+2.3.2) Necessidade de alta velocidade na reserva de equipamentos - se precisarmos de alta velocidade de alocação podemos separar os recursos por departamento e com isso se basear em lógica local para alocação.
+2.3.3) Separação igual/desigual de equipamentos, pesquisadores e técnicos de TI em diferentes capi - A depender da separação de trabalhadores em diferentes departamentos podemos inferir uma necessidade maior de conexão entre campi.
+
+2.4)
+Centralizar decisões por departamentos. Essa escolha produz o resultado esperado dentro da problemática, os pesquisadores e  técnicos de um campi, respectivamente, reservam e mantém equipamentos do mesmo campi.
+
+2.5)
+Risco: Separação de técnicos, pesquisadores e técnicos de TI seja desigual, um exmplo será um campi que possui mais equipamentos que outros e ao mesmo tempo uma quantidade reduzida de pesquisadores.
+Premissa: A maior parte dos pesquisadores reservam equipamentos dentro de seus campi
+Como buscar evidências: Entrevistar pesquisadores, técnicos de TI e registrar usos de equipamentos em uso.
